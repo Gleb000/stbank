@@ -28,6 +28,11 @@ public class PaymentController {
     @Autowired
     PaymentService paymentService;
 
+    int water;
+    int electr;
+    int gas;
+    int sum;
+
     @GetMapping("paymentSystem")
     public String getPaymentSystem(Model model, UserInfo userInf, BankAccount bankAccount, @AuthenticationPrincipal User user) {
         if(userInfoRepo.existsById(user.getId())) {
@@ -68,7 +73,7 @@ public class PaymentController {
     ) {
         paymentService.updRefillInfo(user, bankAccount, money);
 
-        return "redirect:/user/paymentSystem";
+        return "redirect:/user/internetBanking";
     }
 
     @GetMapping("transferMoney")
@@ -90,6 +95,40 @@ public class PaymentController {
     ) {
         paymentService.transferMoneyToUser(user, bankAccount, money, bankAcc);
 
-        return "redirect:/user/paymentSystem";
+        return "redirect:/user/internetBanking";
+    }
+
+    @GetMapping("utilities")
+    public String getUtilities(Model model, @AuthenticationPrincipal User user) {
+        UserInfo userInfo = userInfoRepo.getOne(user.getId());
+        BankAccount bankAccount = bankAccountRepo.getOne(user.getId());
+
+        model.addAttribute("firstName", userInfo.getFirstName());
+        model.addAttribute("lastName", userInfo.getLastName());
+        model.addAttribute("patronymic", userInfo.getPatronymic());
+        model.addAttribute("bankAcc", bankAccount.getUserAccount());
+        model.addAttribute("userMoney", bankAccount.getUserMoney());
+
+        water = (int)(Math.random() * (120 - 50) + 50);
+        electr = (int)(Math.random() * (150 - 70) + 70);
+        gas = (int)(Math.random() * (110 - 30) + 30);
+        sum = water + electr + gas;
+
+        model.addAttribute("water", water);
+        model.addAttribute("electr", electr);
+        model.addAttribute("gas", gas);
+        model.addAttribute("sum", sum);
+
+        return "utilities";
+    }
+
+    @PostMapping("utilities")
+    public String payUtils(
+            @AuthenticationPrincipal User user,
+            BankAccount bankAccount
+    ) {
+        paymentService.payUtilities(user, bankAccount, sum);
+
+        return "redirect:/user/internetBanking";
     }
 }

@@ -118,8 +118,9 @@ public class BankCreditController {
         model.addAttribute("lastName", userInfo.getLastName());
         model.addAttribute("patronymic", userInfo.getPatronymic());
         model.addAttribute("bankAccount", bankAccount.getUserAccount());
+        model.addAttribute("userMoney", bankAccount.getUserMoney());
 
-        double percent = (double)(100/bankCredit.getCreditSum() * bankCredit.getPaidOut());
+        double percent = (double)((100/bankCredit.getCreditSum()) * bankCredit.getPaidOut());
 
         if(percent > 0 && percent <= 20) {
             model.addAttribute("percent20", percent);

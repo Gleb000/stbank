@@ -143,7 +143,7 @@
                 </div>
             </div>
         </div>
-        <div class="p-5">
+        <div class="py-5">
             <p class="card-text text-secondary">2017 «СтатусБанк»</p>
             <p class="card-text text-secondary">Регистрационный номер в Едином государственном регистре юридических лиц и индивидуальных предпринимателей №807000043.</p>
         </div>

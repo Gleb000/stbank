@@ -90,7 +90,7 @@
         <div class="form-group row">
             <label class="col-sm-4 col-form-label-lg">Мобильный телефон:</label>
             <div class="col-sm-6">
-                <#if phoneNumber??><label class="col-form-label-lg">+375 ${phoneNumber}</label><#else><label class="col-form-label-lg">Информация отсутствует</label></#if>
+                <#if phoneNumber??><label class="col-form-label-lg">${phoneNumber}</label><#else><label class="col-form-label-lg">Информация отсутствует</label></#if>
             </div>
         </div>
         <div class="form-group row">

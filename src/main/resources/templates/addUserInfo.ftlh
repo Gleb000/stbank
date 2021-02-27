@@ -53,19 +53,15 @@
             <div class="form-group row">
                 <label class="col-sm-5 col-form-label-lg">Пол</label>
                 <div>
-                    <div class="form-check  col-sm-2">
-                        <input class="form-check-input" type="radio" name="sex" id="radio1" value="Мужской">
-                        <label class="form-check-label font-bolt" for="radio1">
-                            Мужской
-                        </label>
-                    </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="sex" id="radio2" value="Женский">
-                        <label class="form-check-label font-bolt" for="radio2">
-                            Женский
-                        </label>
+                        <input type="radio" value="Мужской" class="form-check-input" id="validationFormCheck2" name="sex" required>
+                        <label class="form-check-label" for="validationFormCheck2">Мужской</label>
                     </div>
-                    <div class="invalid-feedback">Выберите хотя-бы одно</div>
+                    <div class="form-check mb-3">
+                        <input type="radio" value="Женский" class="form-check-input" id="validationFormCheck3" name="sex" required>
+                        <label class="form-check-label" for="validationFormCheck3">Женский</label>
+                        <div class="invalid-feedback">Необходимо выбрать пол</div>
+                    </div>
                 </div>
                 <p class="text-danger font-bolt"><strong>*</strong></p>
             </div>

@@ -17,7 +17,7 @@
                 </li>
             </#if>
             <li class="nav-item">
-                <#if !user?? || isAdmin><a class="nav-link disabled">Платежная система</a><#else><a class="nav-link text-light" href="/user/paymentSystem">Платежная система</a></#if>
+                <#if !user?? || isAdmin><a class="nav-link disabled">Интернет банкинг</a><#else><a class="nav-link text-light" href="/user/internetBanking">Интернет банкинг</a></#if>
             </li>
             <li class="nav-item">
                 <#if !user??><a class="nav-link disabled">Профиль</a><#else><a class="nav-link text-light" href="/user/allUserInformation">Профиль</a></#if>

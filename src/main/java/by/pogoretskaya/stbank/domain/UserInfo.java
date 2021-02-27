@@ -17,6 +17,7 @@ public class UserInfo {
     private String patronymic;
     @NotBlank(message = "Необходимо ввести дату рождения")
     private String dateOfBirth;
+    @NotBlank(message = "Необходимо выбрать ваш пол")
     private String sex;
     @NotBlank(message = "Необходимо ввести серию паспорта")
     private String passportSeries;

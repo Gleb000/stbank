@@ -30,7 +30,7 @@ public class BankCreditService {
 
             bankAccount = bankAccountRepo.getOne(user.getId());
 
-            bankAccount.setUserMoney(money);
+            bankAccount.setUserMoney(bankAccount.getUserMoney() + money);
 
             bankCreditRepo.save(bankCredit);
             bankAccountRepo.save(bankAccount);

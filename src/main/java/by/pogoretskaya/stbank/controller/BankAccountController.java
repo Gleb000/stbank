@@ -1,9 +1,7 @@
 package by.pogoretskaya.stbank.controller;
 
 import by.pogoretskaya.stbank.domain.*;
-import by.pogoretskaya.stbank.repos.BankAccountEURRepo;
-import by.pogoretskaya.stbank.repos.BankAccountRepo;
-import by.pogoretskaya.stbank.repos.BankAccountUSDRepo;
+import by.pogoretskaya.stbank.repos.*;
 import by.pogoretskaya.stbank.service.BankAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -22,6 +20,9 @@ public class BankAccountController {
     BankAccountService bankAccountService;
 
     @Autowired
+    UserInfoRepo userInfoRepo;
+
+    @Autowired
     BankAccountRepo bankAccountRepo;
 
     @Autowired
@@ -30,14 +31,52 @@ public class BankAccountController {
     @Autowired
     BankAccountEURRepo bankAccountEURRepo;
 
-    @GetMapping("accInfo")
+    @Autowired
+    BankCreditRepo bankCreditRepo;
+
+    @Autowired
+    PiggiBankRepo piggiBankRepo;
+
+    @GetMapping("internetBanking")
     public String getAccInfo(Model model, @AuthenticationPrincipal User user) {
         model.addAttribute("username", user.getUsername());
 
-        BankAccount bankAccount = bankAccountRepo.getOne(user.getId());
+        if(bankCreditRepo.existsById(user.getId())) {
+            BankCredit bankCredit = bankCreditRepo.getOne(user.getId());
 
-        model.addAttribute("userBankAcc", bankAccount.getUserAccount());
-        model.addAttribute("userAccMoney", bankAccount.getUserMoney());
+            model.addAttribute("creditSum", bankCredit.getCreditSum());
+            model.addAttribute("paidOut", bankCredit.getPaidOut());
+        } else {
+            model.addAttribute("creditSum", null);
+        }
+
+        if(piggiBankRepo.existsById(user.getId())) {
+            PiggiBank piggiBank = piggiBankRepo.getOne(user.getId());
+
+            model.addAttribute("piggiName", piggiBank.getPiggiBankName());
+            model.addAttribute("piggiMoney", piggiBank.getPiggiBankMoney());
+        } else {
+            model.addAttribute("piggiName", null);
+        }
+
+        if(userInfoRepo.existsById(user.getId())) {
+            UserInfo userInfo = userInfoRepo.getOne(user.getId());
+
+            model.addAttribute("firstName", userInfo.getFirstName());
+            model.addAttribute("lastName", userInfo.getLastName());
+            model.addAttribute("patronymic", userInfo.getPatronymic());
+        } else {
+            model.addAttribute("firstName", null);
+        }
+
+        if(bankAccountRepo.existsById(user.getId())) {
+            BankAccount bankAccount = bankAccountRepo.getOne(user.getId());
+
+            model.addAttribute("userBankAcc", bankAccount.getUserAccount());
+            model.addAttribute("userAccMoney", bankAccount.getUserMoney());
+        } else {
+            model.addAttribute("userBankAcc", null);
+        }
 
         if(bankAccountUSDRepo.existsById(user.getId())) {
             BankAccountUSD bankAccountUSD = bankAccountUSDRepo.getOne(user.getId());
@@ -54,7 +93,7 @@ public class BankAccountController {
         } else {
             model.addAttribute("bankAccountEUR", null);
         }
-        return "accInfo";
+        return "internetBanking";
     }
 
     @GetMapping("addAccInfo")
@@ -70,7 +109,7 @@ public class BankAccountController {
             BankAccount bankAccount
     ) {
         bankAccountService.addUserAcc(user, bankAccount);
-        return "redirect:/user/accInfo";
+        return "redirect:/user/internetBanking";
     }
 
     @GetMapping("addAccInfoUSD")
@@ -86,7 +125,7 @@ public class BankAccountController {
             BankAccountUSD bankAccountUSD
     ) {
         bankAccountService.addUserAccUSD(user, bankAccountUSD);
-        return "redirect:/user/accInfo";
+        return "redirect:/user/internetBanking";
     }
 
     @GetMapping("addAccInfoEUR")
@@ -102,7 +141,7 @@ public class BankAccountController {
             BankAccountEUR bankAccountEUR
     ) {
         bankAccountService.addUserAccEUR(user, bankAccountEUR);
-        return "redirect:/user/accInfo";
+        return "redirect:/user/internetBanking";
     }
 
     @GetMapping("BYNtoUSD")
@@ -124,7 +163,7 @@ public class BankAccountController {
     ) {
         bankAccountService.convertBYNtoUSD(user, bankAccount, bankAccountUSD, money);
 
-        return "redirect:/user/accInfo";
+        return "redirect:/user/internetBanking";
     }
 
     @GetMapping("BYNtoEUR")
@@ -146,7 +185,7 @@ public class BankAccountController {
     ) {
         bankAccountService.convertBYNtoEUR(user, bankAccount, bankAccountEUR, money);
 
-        return "redirect:/user/accInfo";
+        return "redirect:/user/internetBanking";
     }
 
     @GetMapping("USDtoBYN")
@@ -168,7 +207,7 @@ public class BankAccountController {
     ) {
         bankAccountService.convertUSDtoBYN(user, bankAccount, bankAccountUSD, money);
 
-        return "redirect:/user/accInfo";
+        return "redirect:/user/internetBanking";
     }
 
     @GetMapping("EURtoBYN")
@@ -190,6 +229,6 @@ public class BankAccountController {
     ) {
         bankAccountService.convertEURtoBYN(user, bankAccount, bankAccountEUR, money);
 
-        return "redirect:/user/accInfo";
+        return "redirect:/user/internetBanking";
     }
 }

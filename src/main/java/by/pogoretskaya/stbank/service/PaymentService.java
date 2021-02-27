@@ -35,4 +35,14 @@ public class PaymentService {
             }
         }
     }
+
+    public void payUtilities(User user, BankAccount bankAccount, int sum) {
+        bankAccount = bankAccountRepo.getOne(user.getId());
+
+        if(bankAccount.getUserMoney() >= sum) {
+            bankAccount.setUserMoney(bankAccount.getUserMoney() - sum);
+
+            bankAccountRepo.save(bankAccount);
+        }
+    }
 }

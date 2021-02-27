@@ -17,6 +17,12 @@
             </div>
         </div>
         <div class="form-group row">
+            <label class="col-sm-4 col-form-label-lg">Сумма на счету:</label>
+            <div class="col-sm-8">
+                <label class="col-form-label-lg">${userMoney}</label>
+            </div>
+        </div>
+        <div class="form-group row">
             <label class="col-sm-4 col-form-label-lg">Кредит на сумму:</label>
             <div class="col-sm-8">
                 <label class="col-form-label-lg">${credit}</label>

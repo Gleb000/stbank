@@ -37,6 +37,13 @@ create table message (
     primary key (id)
 );
 
+create table piggi_bank (
+    id int8 not null,
+    piggi_bank_money int4 not null,
+    piggi_bank_name varchar(255),
+    primary key (id)
+);
+
 create table user_role (
     user_id int8 not null,
     roles varchar(255)

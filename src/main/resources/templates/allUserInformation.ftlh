@@ -57,42 +57,24 @@
                 </div>
             </div>
         </div>
-        <#if !userFirstName??>
-            <div class="form-group-row">
-                <label class="col-sm-6 col-form-label-lg"><a href="/user/accInfo" class="badge badge-success" data-toggle="modal" data-target="#ModalWindow" aria-pressed="true">Информация о счете</a></label>
-            </div>
-        <#else>
-            <#if !bankAccount??>
-                <div class="form-group-row">
-                    <label class="col-sm-6 col-form-label-lg"><a href="/user/accInfo" class="badge badge-success" data-toggle="modal" data-target="#ModalWindow2" aria-pressed="true">Информация о счете</a></label>
-                </div>
-            <#else>
-                <div class="form-group-row">
-                    <label class="col-sm-6 col-form-label-lg"><a href="/user/accInfo" class="badge badge-success" aria-pressed="true">Информация о счете</a></label>
-                </div>
-            </#if>
-            <div class="col-sm-8">
-                <div class="modal fade" id="ModalWindow2" tabindex="-1" role="dialog" aria-labelledby="ModalWindow2" aria-hidden="true">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h3 class="model-title" id="modalCenterTitle">Предупреждение</h3>
-                        </div>
-                        <div class="modal-body">
-                            <label class="col-form-label-lg">
-                                На ваше имя не оформлен счет,
-                                не оформив его вы не сможете совершать большинство операций на сайте,
-                                перейдите по ссылке и оформите счет
-                            </label>
-                        </div>
-                        <div class="modal-footer">
-                            <a href="/user/addAccInfo" class="btn btn-lg btn-success" role="button" aria-pressed="true">Оформить счет</a>
-                        </div>
+        <div class="col-sm-8">
+            <div class="modal fade" id="ModalWindow2" tabindex="-1" role="dialog" aria-labelledby="ModalWindow2" aria-hidden="true">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="model-title" id="modalCenterTitle">Предупреждение</h3>
+                    </div>
+                    <div class="modal-body">
+                        <label class="col-form-label-lg">
+                            На ваше имя не оформлен счет,
+                            не оформив его вы не сможете совершать большинство операций на сайте,
+                            перейдите по ссылке и оформите счет
+                        </label>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="/user/addAccInfo" class="btn btn-lg btn-success" role="button" aria-pressed="true">Оформить счет</a>
                     </div>
                 </div>
             </div>
-        </#if>
-        <div class="form-group-row">
-            <label class="col-sm-6 col-form-label-lg"><a href="/user/credit" class="badge badge-success" aria-pressed="true">работа с кредитом</a></label>
         </div>
         <input type="hidden" name="_csrf" value="${_csrf.token}" />
     </form>
