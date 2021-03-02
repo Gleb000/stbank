@@ -3,8 +3,8 @@
 <@c.page>
     <form method="get">
         <div class="form-group row">
-            <label class="col-sm-2 col-form-label-lg">Пользователь:</label>
-            <div class="col-sm-10">
+            <label class="col-sm-3 col-form-label-lg">Пользователь:</label>
+            <div class="col-sm-9">
                 <label class="col-form-label-lg">${lastName} </label>
                 <label class="col-form-label-lg">${firstName} </label>
                 <label class="col-form-label-lg">${patronymic}</label>
@@ -40,8 +40,8 @@
             </div>
         <#else>
             <div class="form-group row">
-                <label class="col-sm-2 col-form-label-lg">Статус копилки:</label>
-                <div class="col-sm-8">
+                <label class="col-sm-3 col-form-label-lg">Статус копилки:</label>
+                <div class="col-sm-7">
                     <label class="col-form-label-lg">Закрыта</label>
                 </div>
             </div>

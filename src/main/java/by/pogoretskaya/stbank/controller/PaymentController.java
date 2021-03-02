@@ -69,8 +69,27 @@ public class PaymentController {
     public String updateRefillInfo(
             @AuthenticationPrincipal User user,
             BankAccount bankAccount,
+            Model model,
             @RequestParam int money
     ) {
+        if(money < 0 || (money >= 0 && money < 1) || money > 10000) {
+            model.addAttribute("username", user.getUsername());
+
+            if(money < 0) {
+                model.addAttribute("moneyError", "Сумма пополнения меньше нуля");
+            }
+
+            if(money >= 0 && money < 1) {
+                model.addAttribute("moneyError", "Сумма пополнения должна превышать 1 рубль");
+            }
+
+            if(money > 10000) {
+                model.addAttribute("moneyError", "Сумма пополнения не может превышать 10 000 рублей");
+            }
+
+            return "refillAcc";
+        }
+
         paymentService.updRefillInfo(user, bankAccount, money);
 
         return "redirect:/user/internetBanking";
@@ -90,9 +109,37 @@ public class PaymentController {
     public String transferMoney(
             @AuthenticationPrincipal User user,
             BankAccount bankAccount,
+            Model model,
             @RequestParam int money,
             @RequestParam String bankAcc
     ) {
+        bankAccount = bankAccountRepo.getOne(user.getId());
+
+        if(money > bankAccount.getUserMoney() || (money >= 0 && money < 1) || money < 0 || bankAccountRepo.findByUserAccount(bankAcc) == null) {
+            if(money > bankAccount.getUserMoney()) {
+                model.addAttribute("moneyError", "На счету недостаточно средств");
+            }
+
+            if(money < 0) {
+                model.addAttribute("moneyError", "Сумма пополнения не может быть отрицательной");
+            }
+
+            if(bankAccountRepo.findByUserAccount(bankAcc) == null) {
+                model.addAttribute("userError", "Пользователь не найден");
+            }
+
+            if(money >= 0 && money < 1) {
+                model.addAttribute("moneyError", "Сумма перевода должна превышать 1 рубль");
+            }
+
+            bankAccount = bankAccountRepo.getOne(user.getId());
+
+            model.addAttribute("BYN", bankAccount.getUserAccount());
+            model.addAttribute("moneyBYN", bankAccount.getUserMoney());
+
+            return "transferMoney";
+        }
+
         paymentService.transferMoneyToUser(user, bankAccount, money, bankAcc);
 
         return "redirect:/user/internetBanking";
@@ -118,6 +165,12 @@ public class PaymentController {
         model.addAttribute("electr", electr);
         model.addAttribute("gas", gas);
         model.addAttribute("sum", sum);
+
+        if(bankAccount.getUserMoney() < sum) {
+            model.addAttribute("moneyError", "На счету недостаточно средств");
+        } else {
+            model.addAttribute("moneyError", null);
+        }
 
         return "utilities";
     }

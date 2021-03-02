@@ -42,10 +42,10 @@ public class BankCreditService {
         bankAccount = bankAccountRepo.getOne(user.getId());
         bankCredit = bankCreditRepo.getOne(user.getId());
 
-        if(money > 0 || money <= (bankCredit.getCreditSum() - bankCredit.getPaidOut())) {
+        if(money > 0 && money <= (bankCredit.getCreditSum() - bankCredit.getPaidOut())) {
             bankAccount.setUserMoney(bankAccount.getUserMoney() - money);
             bankCredit.setPaidOut(bankCredit.getPaidOut() + money);
-            if(bankCredit.getPaidOut() >= bankCredit.getCreditSum()) {
+            if(bankCredit.getPaidOut() == bankCredit.getCreditSum()) {
                 bankCreditRepo.delete(bankCredit);
             } else {
                 bankCreditRepo.save(bankCredit);

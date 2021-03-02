@@ -51,8 +51,8 @@ public class UserService implements UserDetailsService {
     private void sendMessage(User user) {
         if (!StringUtils.isEmpty(user.getEmail())) {
             String message = String.format(
-                    "Hello, %s! \n" +
-                            "Welcome to <<DD-Bank>>. Please, visit next link: http://localhost:8080/activate/%s",
+                    "Здравствуйте, %s! \n" +
+                            "Добро пожаловать в <Статус-банк>. Пожалуйста, для подтверждения адреса электронной почты перейдите по ссылке: http://localhost:8080/activate/%s",
                     user.getUsername(),
                     user.getActivationCode()
             );

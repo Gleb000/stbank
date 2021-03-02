@@ -27,15 +27,15 @@
             </div>
         </div>
         <div class="form-group-row">
-            <label class="col-sm-6 col-form-label-lg"><a href="/user/profile" class="badge badge-success" aria-pressed="true">Изменить информацию об аккаунте</a></label>
+            <label class="col-sm-6 col-form-label-lg"><a href="/user/profile" class="btn btn-lg btn-success" aria-pressed="true">Изменить информацию об аккаунте</a></label>
         </div>
         <#if !userFirstName??>
         <div class="form-group-row">
-            <label class="col-sm-6 col-form-label-lg"><a href="/user/userInfo" class="badge badge-success" data-toggle="modal" data-target="#ModalWindow" aria-pressed="true">Информация о пользователе</a></label>
+            <label class="col-sm-6 col-form-label-lg"><a href="/user/userInfo" class="btn btn-lg btn-success" data-toggle="modal" data-target="#ModalWindow" aria-pressed="true">Информация о пользователе</a></label>
         </div>
         <#else>
             <div class="form-group-row">
-                <label class="col-sm-6 col-form-label-lg"><a href="/user/userInfo" class="badge badge-success" aria-pressed="true">Информация о пользователе</a></label>
+                <label class="col-sm-6 col-form-label-lg"><a href="/user/userInfo" class="btn btn-lg btn-success" aria-pressed="true">Информация о пользователе</a></label>
             </div>
         </#if>
         <div class="col-sm-8">

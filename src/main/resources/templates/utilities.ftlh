@@ -41,9 +41,18 @@
                     <p class="card-text">Счет для оплаты: ${bankAcc}</p>
                     <p class="card-text">Сумма на счету: ${userMoney} BYN</p>
                 </div>
-                <div class="py-3">
-                    <button class="btn btn-success" type="submit">Оплатить ${sum} BYN</button>
-                </div>
+                <#if moneyError??>
+                    <div class="alert alert-danger" role="alert">
+                        ${moneyError}
+                    </div>
+                    <div class="py-3">
+                        <button class="btn btn-success" disabled type="submit">Оплатить ${sum} BYN</button>
+                    </div>
+                    <#else>
+                        <div class="py-3">
+                            <button class="btn btn-success" type="submit">Оплатить ${sum} BYN</button>
+                        </div>
+                </#if>
             </div>
         </div>
         <div class="py-5">

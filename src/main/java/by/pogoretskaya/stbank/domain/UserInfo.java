@@ -2,6 +2,8 @@ package by.pogoretskaya.stbank.domain;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.PastOrPresent;
 
 @Entity
 @Table(name="usr_info")
@@ -9,11 +11,11 @@ public class UserInfo {
     @Id
     private Long id;
 
-    @NotBlank(message = "Необходимо ввести имя")
+    @NotBlank(message = "Необходимо ввести Имя")
     private String firstName;
-    @NotBlank(message = "Необходимо ввести фамилию")
+    @NotBlank(message = "Необходимо ввести Фамилию")
     private String lastName;
-    @NotBlank(message = "Необходимо ввести отчество")
+    @NotBlank(message = "Необходимо ввести Отчество")
     private String patronymic;
     @NotBlank(message = "Необходимо ввести дату рождения")
     private String dateOfBirth;

@@ -5,7 +5,7 @@
     <form method="post">
         <div class="container">
             <div class="form-group row">
-                <label class="col-sm-4 col-form-label-lg ">Имя</label>
+                <label class="col-sm-4 col-form-label-lg">Имя<label class="text-danger">*</label></label>
                 <div class="col-sm-6">
                     <input type="text" name="firstName" value="<#if userInfo??>${userInfo.firstName}</#if>"
                            class="form-control form-control-lg ${(firstNameError??)?string('is-invalid', '')}"/>
@@ -15,10 +15,9 @@
                         </div>
                     </#if>
                 </div>
-                <p class="text-danger font-bolt"><strong>*</strong></p>
             </div>
             <div class="form-group row">
-                <label class="col-sm-4 col-form-label-lg">Фамилия</label>
+                <label class="col-sm-4 col-form-label-lg">Фамилия<label class="text-danger">*</label></label>
                 <div class="col-sm-6">
                     <input type="text" name="lastName" value="<#if userInfo??>${userInfo.lastName}</#if>"
                            class="form-control form-control-lg ${(lastNameError??)?string('is-invalid', '')}"/>
@@ -28,10 +27,9 @@
                         </div>
                     </#if>
                 </div>
-                <p class="text-danger font-bolt"><strong>*</strong></p>
             </div>
             <div class="form-group row">
-                <label class="col-sm-4 col-form-label-lg">Отчество</label>
+                <label class="col-sm-4 col-form-label-lg">Отчество<label class="text-danger">*</label></label>
                 <div class="col-sm-6">
                     <input type="text" name="patronymic" value="<#if userInfo??>${userInfo.patronymic}</#if>"
                            class="form-control form-control-lg ${(patronymicError??)?string('is-invalid', '')}"/>
@@ -41,17 +39,21 @@
                         </div>
                     </#if>
                 </div>
-                <p class="text-danger font-bolt"><strong>*</strong></p>
             </div>
             <div class="form-group row">
-                <label class="col-sm-4 col-form-label-lg">Дата рождения</label>
+                <label class="col-sm-4 col-form-label-lg">Дата рождения<label class="text-danger">*</label></label>
                 <div class="col-sm-6">
-                    <input type="date" name="dateOfBirth" class="form-control form-control-lg">
+                    <input type="date" name="dateOfBirth" value="<#if userInfo??>${userInfo.dateOfBirth}</#if>"
+                           class="form-control form-control-lg ${(dateOfBirthError??)?string('is-invalid', '')}">
+                    <#if dateOfBirthError??>
+                        <div class="invalid-feedback">
+                            ${dateOfBirthError}
+                        </div>
+                    </#if>
                 </div>
-                <p class="text-danger font-bolt"><strong>*</strong></p>
             </div>
             <div class="form-group row">
-                <label class="col-sm-5 col-form-label-lg">Пол</label>
+                <label class="col-sm-5 col-form-label-lg">Пол<label class="text-danger">*</label></label>
                 <div>
                     <div class="form-check">
                         <input type="radio" value="Мужской" class="form-check-input" id="validationFormCheck2" name="sex" required>
@@ -63,10 +65,9 @@
                         <div class="invalid-feedback">Необходимо выбрать пол</div>
                     </div>
                 </div>
-                <p class="text-danger font-bolt"><strong>*</strong></p>
             </div>
             <div class="form-group row">
-                <label class="col-sm-4 col-form-label-lg">Серия паспорта</label>
+                <label class="col-sm-4 col-form-label-lg">Серия паспорта<label class="text-danger">*</label></label>
                 <div class="col-sm-6">
                     <input type="text" name="passportSeries" value="<#if userInfo??>${userInfo.passportSeries}</#if>"
                            class="form-control form-control-lg ${(passportSeriesError??)?string('is-invalid', '')}"/>
@@ -76,24 +77,22 @@
                         </div>
                     </#if>
                 </div>
-                <p class="text-danger font-bolt"><strong>*</strong></p>
             </div>
             <div class="form-group row">
-                <label class="col-sm-4 col-form-label-lg">Номер паспорта</label>
+                <label class="col-sm-4 col-form-label-lg">Номер паспорта<label class="text-danger">*</label></label>
                 <div class="col-sm-6">
                     <input type="text" name="passportNumber" value="<#if userInfo??>${userInfo.passportNumber}</#if>"
                            class="form-control form-control-lg ${(passportNumberError??)?string('is-invalid', '')}"
-                            placeholder="1234567"/>
+                           placeholder="1234567"/>
                     <#if passportNumberError??>
                         <div class="invalid-feedback">
                             ${passportNumberError}
                         </div>
                     </#if>
                 </div>
-                <p class="text-danger font-bolt"><strong>*</strong></p>
             </div>
             <div class="form-group row">
-                <label class="col-sm-4 col-form-label-lg">Кем выдан</label>
+                <label class="col-sm-4 col-form-label-lg">Кем выдан<label class="text-danger">*</label></label>
                 <div class="col-sm-6">
                     <input type="text" name="issuedBy" value="<#if userInfo??>${userInfo.issuedBy}</#if>"
                            class="form-control form-control-lg ${(issuedByError??)?string('is-invalid', '')}"/>
@@ -103,17 +102,22 @@
                         </div>
                     </#if>
                 </div>
-                <p class="text-danger font-bolt"><strong>*</strong></p>
             </div>
             <div class="form-group row">
-                <label class="col-sm-4 col-form-label-lg">Дата выдачи</label>
+                <label class="col-sm-4 col-form-label-lg">Дата выдачи<label class="text-danger">*</label></label>
                 <div class="col-sm-6">
-                    <input type="date" name="dateOfIssue" class="form-control form-control-lg">
+                    <input type="date" name="dateOfIssue" value="<#if userInfo??>${userInfo.dateOfIssue}</#if>"
+                           class="form-control form-control-lg ${(dateOfIssueError??)?string('is-invalid', '')}">
+                    <#if dateOfIssueError??>
+                        <div class="invalid-feedback">
+                            ${dateOfIssueError}
+                        </div>
+                    </#if>
                 </div>
                 <p class="text-danger font-bolt"><strong>*</strong></p>
             </div>
             <div class="form-group row">
-                <label class="col-sm-4 col-form-label-lg">Идентификационный номер</label>
+                <label class="col-sm-4 col-form-label-lg">Идентификационный номер<label class="text-danger">*</label></label>
                 <div class="col-sm-6">
                     <input type="text" name="identificationNumber" value="<#if userInfo??>${userInfo.identificationNumber}</#if>"
                            class="form-control form-control-lg ${(identificationNumberError??)?string('is-invalid', '')}"
@@ -124,10 +128,9 @@
                         </div>
                     </#if>
                 </div>
-                <p class="text-danger font-bolt"><strong>*</strong></p>
             </div>
             <div class="form-group row">
-                <label class="col-sm-4 col-form-label-lg">Место рождения</label>
+                <label class="col-sm-4 col-form-label-lg">Место рождения<label class="text-danger">*</label></label>
                 <div class="col-sm-6">
                     <input type="text" name="placeOfBirth" value="<#if userInfo??>${userInfo.placeOfBirth}</#if>"
                            class="form-control form-control-lg ${(placeOfBirthError??)?string('is-invalid', '')}"/>
@@ -137,10 +140,9 @@
                         </div>
                     </#if>
                 </div>
-                <p class="text-danger font-bolt"><strong>*</strong></p>
             </div>
             <div class="form-group row">
-                <label for="state1" class="col-sm-4 col-form-label-lg">Город проживания</label>
+                <label for="state1" class="col-sm-4 col-form-label-lg">Город проживания<label class="text-danger">*</label></label>
                 <div class=" col-sm-6">
                     <select class="form-control form-control-lg" id="state1" name="cityOfResidence">
                         <option>Минск</option>
@@ -150,10 +152,9 @@
                         <option>Могилев</option>
                     </select>
                 </div>
-                <p class="text-danger font-bolt"><strong>*</strong></p>
             </div>
             <div class="form-group row">
-                <label class="col-sm-4 col-form-label-lg">Адрес</label>
+                <label class="col-sm-4 col-form-label-lg">Адрес<label class="text-danger">*</label></label>
                 <div class="col-sm-6">
                     <input type="text" name="address" value="<#if userInfo??>${userInfo.address}</#if>"
                            class="form-control form-control-lg ${(addressError??)?string('is-invalid', '')}"/>
@@ -163,7 +164,6 @@
                         </div>
                     </#if>
                 </div>
-                <p class="text-danger font-bolt"><strong>*</strong></p>
             </div>
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label-lg">Домашний телефон</label>
@@ -195,7 +195,7 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label for="state2" class="col-sm-4 col-form-label-lg">Город прописки</label>
+                <label for="state2" class="col-sm-4 col-form-label-lg">Город прописки<label class="text-danger">*</label></label>
                 <div class="col-sm-6">
                     <select class="form-control form-control-lg" id="state2" name="registrationCity">
                         <option>Минск</option>
@@ -206,10 +206,9 @@
                         <option>другое</option>
                     </select>
                 </div>
-                <p class="text-danger font-bolt"><strong>*</strong></p>
             </div>
             <div class="form-group row">
-                <label class="col-sm-4 col-form-label-lg">Адрес прописки</label>
+                <label class="col-sm-4 col-form-label-lg">Адрес прописки<label class="text-danger">*</label></label>
                 <div class="col-sm-6">
                     <input type="text" name="registrationAddress" value="<#if userInfo??>${userInfo.registrationAddress}</#if>"
                            class="form-control form-control-lg ${(registrationAddressError??)?string('is-invalid', '')}"/>
@@ -219,10 +218,9 @@
                         </div>
                     </#if>
                 </div>
-                <p class="text-danger font-bolt"><strong>*</strong></p>
             </div>
             <div class="form-group row">
-                <label for="state3" class="col-sm-4 col-form-label-lg">Семейное положение</label>
+                <label for="state3" class="col-sm-4 col-form-label-lg">Семейное положение<label class="text-danger">*</label></label>
                 <div class="col-sm-6">
                     <select class="form-control form-control-lg" id="state3" name="maritalStatus">
                         <option>Не замужем, не женат</option>
@@ -232,10 +230,9 @@
                         <option>другое</option>
                     </select>
                 </div>
-                <p class="text-danger font-bolt"><strong>*</strong></p>
             </div>
             <div class="form-group row">
-                <label for="state4" class="col-sm-4 col-form-label-lg">Гражданство</label>
+                <label for="state4" class="col-sm-4 col-form-label-lg">Гражданство<label class="text-danger">*</label></label>
                 <div class="col-sm-6">
                     <select class="form-control form-control-lg" id="state4" name="nationality">
                         <option>Республика Беларусь</option>
@@ -247,10 +244,9 @@
                         <option>другое</option>
                     </select>
                 </div>
-                <p class="text-danger font-bolt"><strong>*</strong></p>
             </div>
             <div class="form-group row">
-                <label for="state5" class="col-sm-4 col-form-label-lg">Инвалидность</label>
+                <label for="state5" class="col-sm-4 col-form-label-lg">Инвалидность<label class="text-danger">*</label></label>
                 <div class="col-sm-6">
                     <select class="form-control form-control-lg" id="state5" name="disability">
                         <option>отсутствует</option>
@@ -259,8 +255,6 @@
                         <option>3 группа</option>
                     </select>
                 </div>
-                <p class="text-danger font-bolt"><strong>*</strong></p>
-            </div>
             </div>
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label-lg">Ежемесячный доход</label>
