@@ -16,6 +16,16 @@
                         <li class="nav-item">
                             <a class="nav-link text-success" id="EUR-tab" data-toggle="tab" href="#EUR" role="tab" aria-controls="EUR" aria-selected="false">Счет в евро</a>
                         </li>
+                        <#if creditSum??>
+                            <li class="nav-item">
+                                <a class="nav-link text-success" id="credit-tab" data-toggle="tab" href="#credit" role="tab" aria-controls="credit" aria-selected="false">Информация о кредите</a>
+                            </li>
+                        </#if>
+                        <#if piggiName??>
+                            <li class="nav-item">
+                                <a class="nav-link text-success" id="piggi-tab" data-toggle="tab" href="#piggi" role="tab" aria-controls="piggi" aria-selected="false">Информация о копилке</a>
+                            </li>
+                        </#if>
                     </ul>
                     <div class="tab-content" id="myTabContent">
                         <div class="tab-pane fade show active" id="BYN" role="tabpanel" aria-labelledby="BYN-tab">
@@ -74,6 +84,42 @@
                                 <a href="/user/addAccInfoEUR" class="btn btn-lg btn-success">Оформить</a>
                             </#if>
                         </div>
+                        <#if creditSum??>
+                            <div class="tab-pane fade" id="credit" role="tabpanel" aria-labelledby="credit-tab">
+                                <div class="tab-pane fade show active" id="BYN" role="tabpanel" aria-labelledby="BYN-tab">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label-lg">Сумма кредита:</label>
+                                        <div class="col-sm-6">
+                                            <label class="col-form-label-lg">${creditSum} BYN</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label-lg">Выплачено:</label>
+                                        <div class="col-sm-6">
+                                            <label class="col-form-label-lg">${paidOut} BYN</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </#if>
+                        <#if piggiName??>
+                            <div class="tab-pane fade" id="piggi" role="tabpanel" aria-labelledby="piggi-tab">
+                                <div class="tab-pane fade show active" id="BYN" role="tabpanel" aria-labelledby="BYN-tab">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label-lg">Название копилки:</label>
+                                        <div class="col-sm-6">
+                                            <label class="col-form-label-lg">${piggiName}</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label-lg">Накоплено:</label>
+                                        <div class="col-sm-6">
+                                            <label class="col-form-label-lg">${piggiMoney} BYN</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </#if>
                     </div>
                 </div>
                 <div class="py-3">

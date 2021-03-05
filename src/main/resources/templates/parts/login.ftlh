@@ -69,7 +69,7 @@
             </div>
         </#if>
         <#if !isRegisterForm && !user??><a class="text-lg text-success" href="/registration">Создать аккаунт</a></#if>
-        <button class="btn btn-lg btn-success" type="submit"><#if isRegisterForm>Создать<#else><#if !user??>Авторизоваться<#else>Успешно!</#if></#if></button>
+        <button class="btn btn-success" type="submit"><#if isRegisterForm>Создать<#else><#if !user??>Авторизоваться<#else>Успешно!</#if></#if></button>
     </form>
 </#macro>
 

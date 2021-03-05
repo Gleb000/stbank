@@ -36,7 +36,7 @@
                 </div>
             </div>
             <div class="form-group-row">
-                <label class="col-sm-6 col-form-label-lg"><a href="/user/piggiBankInfo" class="badge badge-success" aria-pressed="true">Информация о копилке</a></label>
+                <label class="col-sm-6 col-form-label-lg"><a href="/user/piggiBankInfo" class="btn btn-success" aria-pressed="true">Информация о копилке</a></label>
             </div>
         <#else>
             <div class="form-group row">
@@ -46,7 +46,7 @@
                 </div>
             </div>
             <div class="form-group-row">
-                <label class="col-sm-6 col-form-label-lg"><a href="/user/addPiggiBank" class="badge badge-success" aria-pressed="true">Открыть копилку</a></label>
+                <label class="col-sm-6 col-form-label-lg"><a href="/user/addPiggiBank" class="btn btn-success" aria-pressed="true">Открыть копилку</a></label>
             </div>
         </#if>
         <input type="hidden" name="_csrf" value="${_csrf.token}" />

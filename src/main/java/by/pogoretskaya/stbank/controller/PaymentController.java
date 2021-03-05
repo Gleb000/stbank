@@ -70,8 +70,16 @@ public class PaymentController {
             @AuthenticationPrincipal User user,
             BankAccount bankAccount,
             Model model,
-            @RequestParam int money
+            @RequestParam Integer money
     ) {
+        if(money == null) {
+            model.addAttribute("username", user.getUsername());
+
+            model.addAttribute("moneyError", "Не указана сумма пополнения");
+
+            return "refillAcc";
+        }
+
         if(money < 0 || (money >= 0 && money < 1) || money > 10000) {
             model.addAttribute("username", user.getUsername());
 
@@ -110,10 +118,27 @@ public class PaymentController {
             @AuthenticationPrincipal User user,
             BankAccount bankAccount,
             Model model,
-            @RequestParam int money,
+            @RequestParam Integer money,
             @RequestParam String bankAcc
     ) {
         bankAccount = bankAccountRepo.getOne(user.getId());
+
+        if(money == null || bankAccountRepo.findByUserAccount(bankAcc) == null) {
+            bankAccount = bankAccountRepo.getOne(user.getId());
+
+            model.addAttribute("BYN", bankAccount.getUserAccount());
+            model.addAttribute("moneyBYN", bankAccount.getUserMoney());
+
+            if(bankAccountRepo.findByUserAccount(bankAcc) == null) {
+                model.addAttribute("userError", "Пользователь не найден");
+            }
+
+            if(money == null) {
+                model.addAttribute("moneyError", "Не указана сумма пополнения");
+            }
+
+            return "transferMoney";
+        }
 
         if(money > bankAccount.getUserMoney() || (money >= 0 && money < 1) || money < 0 || bankAccountRepo.findByUserAccount(bankAcc) == null) {
             if(money > bankAccount.getUserMoney()) {

@@ -7,7 +7,7 @@
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label-lg ">Сумма пополнения:</label>
                 <div class="col-sm-6">
-                    <input type="number" name="money" value="0"
+                    <input type="number" name="money"
                            class="form-control form-control-lg ${(moneyError??)?string('is-invalid', '')}"/>
                     <#if moneyError??>
                         <div class="invalid-feedback">

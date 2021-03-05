@@ -159,8 +159,26 @@ public class BankAccountController {
             @AuthenticationPrincipal User user,
             BankAccount bankAccount,
             BankAccountUSD bankAccountUSD,
+            Model model,
             @RequestParam int money
     ) {
+        bankAccount = bankAccountRepo.getOne(user.getId());
+
+        if(money <= 0 || bankAccount.getUserMoney() < money) {
+            model.addAttribute("BYN", bankAccount.getUserAccount());
+            model.addAttribute("moneyBYN", bankAccount.getUserMoney());
+
+            if(money <= 0) {
+                model.addAttribute("moneyError", "Некорректная сумма пополнения");
+            }
+
+            if (bankAccount.getUserMoney() < money) {
+                model.addAttribute("moneyError", "Недостаточно средств");
+            }
+
+            return "BYNtoUSD";
+        }
+
         bankAccountService.convertBYNtoUSD(user, bankAccount, bankAccountUSD, money);
 
         return "redirect:/user/internetBanking";
@@ -181,8 +199,26 @@ public class BankAccountController {
             @AuthenticationPrincipal User user,
             BankAccount bankAccount,
             BankAccountEUR bankAccountEUR,
+            Model model,
             @RequestParam int money
     ) {
+        bankAccount = bankAccountRepo.getOne(user.getId());
+
+        if(money <= 0 || bankAccount.getUserMoney() < money) {
+            model.addAttribute("BYN", bankAccount.getUserAccount());
+            model.addAttribute("moneyBYN", bankAccount.getUserMoney());
+
+            if(money <= 0) {
+                model.addAttribute("moneyError", "Некорректная сумма пополнения");
+            }
+
+            if (bankAccount.getUserMoney() < money) {
+                model.addAttribute("moneyError", "Недостаточно средств");
+            }
+
+            return "BYNtoEUR";
+        }
+
         bankAccountService.convertBYNtoEUR(user, bankAccount, bankAccountEUR, money);
 
         return "redirect:/user/internetBanking";
@@ -203,8 +239,26 @@ public class BankAccountController {
             @AuthenticationPrincipal User user,
             BankAccount bankAccount,
             BankAccountUSD bankAccountUSD,
+            Model model,
             @RequestParam int money
     ) {
+        bankAccountUSD = bankAccountUSDRepo.getOne(user.getId());
+
+        if(money <= 0 || bankAccountUSD.getUserMoneyUSD() < money) {
+            model.addAttribute("USD", bankAccountUSD.getUserAccountUSD());
+            model.addAttribute("moneyUSD", bankAccountUSD.getUserMoneyUSD());
+
+            if(money <= 0) {
+                model.addAttribute("moneyError", "Некорректная сумма пополнения");
+            }
+
+            if (bankAccountUSD.getUserMoneyUSD() < money) {
+                model.addAttribute("moneyError", "Недостаточно средств");
+            }
+
+            return "USDtoBYN";
+        }
+
         bankAccountService.convertUSDtoBYN(user, bankAccount, bankAccountUSD, money);
 
         return "redirect:/user/internetBanking";
@@ -225,8 +279,26 @@ public class BankAccountController {
             @AuthenticationPrincipal User user,
             BankAccount bankAccount,
             BankAccountEUR bankAccountEUR,
+            Model model,
             @RequestParam int money
     ) {
+        bankAccountEUR = bankAccountEURRepo.getOne(user.getId());
+
+        if(money <= 0 || bankAccountEUR.getUserMoneyEUR() < money) {
+            model.addAttribute("EUR", bankAccountEUR.getUserAccountEUR());
+            model.addAttribute("moneyEUR", bankAccountEUR.getUserMoneyEUR());
+
+            if(money <= 0) {
+                model.addAttribute("moneyError", "Некорректная сумма пополнения");
+            }
+
+            if (bankAccountEUR.getUserMoneyEUR() < money) {
+                model.addAttribute("moneyError", "Недостаточно средств");
+            }
+
+            return "EURtoBYN";
+        }
+
         bankAccountService.convertEURtoBYN(user, bankAccount, bankAccountEUR, money);
 
         return "redirect:/user/internetBanking";

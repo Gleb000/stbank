@@ -28,9 +28,37 @@
                     </#if>
                 </div>
             </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label-lg ">Дата накопления:</label>
+                <div class="col-sm-6">
+                    <input type="date" name="targetDate" value="<#if piggiBank??>${piggiBank.targetDate}</#if>"
+                           class="form-control form-control-lg ${(targetDateError??)?string('is-invalid', '')}"/>
+                    <#if targetDateError??>
+                        <div class="invalid-feedback">
+                            ${targetDateError}
+                        </div>
+                    </#if>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label-lg ">Цель накопления:</label>
+                <div class="col-sm-6">
+                    <input type="number" name="money"
+                           class="form-control form-control-lg ${(moneyError??)?string('is-invalid', '')}"/>
+                    <#if moneyError??>
+                        <div class="invalid-feedback">
+                            ${moneyError}
+                        </div>
+                    </#if>
+                </div>
+            </div>
             <div>
                 <button class="btn btn-lg btn-success" type="submit">Открыть</button>
             </div>
+        </div>
+        <div class="py-5">
+            <p class="card-text text-secondary">2017 «СтатусБанк»</p>
+            <p class="card-text text-secondary">Регистрационный номер в Едином государственном регистре юридических лиц и индивидуальных предпринимателей №807000043.</p>
         </div>
         <input type="hidden" name="_csrf" value="${_csrf.token}" />
     </form>

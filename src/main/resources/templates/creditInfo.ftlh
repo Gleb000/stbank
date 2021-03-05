@@ -59,7 +59,7 @@
                 </#if>
             </#if>
         </#if>
-        <label class="col-sm-6 col-form-label-lg"><a href="/user/payCredit" class="badge badge-success" aria-pressed="true">Выплатить кредит</a></label>
+        <label class="col-sm-6 col-form-label-lg"><a href="/user/payCredit" class="btn btn-success" aria-pressed="true">Выплатить кредит</a></label>
         <input type="hidden" name="_csrf" value="${_csrf.token}" />
     </form>
 </@c.page>

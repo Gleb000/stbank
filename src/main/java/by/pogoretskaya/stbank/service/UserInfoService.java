@@ -34,41 +34,21 @@ public class UserInfoService {
         userInf.setPlaceOfBirth(placeOfBirth);
         userInf.setCityOfResidence(cityOfResidence);
         userInf.setAddress(address);
-
-        if(userInf.getHomeNumber().equals("")) {
-            userInf.setHomeNumber("информация отсутствует");
-        } else {
-            userInf.setHomeNumber(homeNumber);
-        }
-
-        if(userInf.getPhoneNumber().equals("")) {
-            userInf.setPhoneNumber("информация отсутствует");
+        userInf.setHomeNumber(homeNumber);
+        if(phoneNumber.equals("")) {
+            userInf.setPhoneNumber(phoneNumber);
         } else {
             userInf.setPhoneNumber("+375 " + phoneNumber);
         }
-
-        if(userInf.getWorkPlace().equals("")) {
-            userInf.setWorkPlace("информация отсутствует");
-        } else {
-            userInf.setWorkPlace(workPlace);
-        }
-        if(userInf.getPosition().equals("")) {
-            userInf.setPosition("информация отсутствует");
-        } else {
-            userInf.setPosition(position);
-        }
-
+        userInf.setWorkPlace(workPlace);
+        userInf.setPosition(position);
         userInf.setRegistrationCity(registrationCity);
         userInf.setRegistrationAddress(registrationAddress);
         userInf.setMaritalStatus(maritalStatus);
         userInf.setNationality(nationality);
         userInf.setDisability(disability);
+        userInf.setMonthlyEarnings(monthlyEarnings);
 
-        if(userInf.getMonthlyEarnings().equals(null)) {
-            userInf.setMonthlyEarnings("информация отсутствует");
-        } else {
-            userInf.setMonthlyEarnings(monthlyEarnings);
-        }
 
         userInfoRepo.save(userInf);
     }
@@ -85,39 +65,18 @@ public class UserInfoService {
         userInf.setDateOfIssue(dateOfIssue);
         userInf.setCityOfResidence(cityOfResidence);
         userInf.setAddress(address);
-
-        if(userInf.getHomeNumber().equals("")) {
-            userInf.setHomeNumber("информация отсутствует");
-        } else {
-            userInf.setHomeNumber(homeNumber);
-        }
-
-        if(userInf.getPhoneNumber().equals("")) {
-            userInf.setPhoneNumber("информация отсутствует");
+        userInf.setHomeNumber(homeNumber);
+        if(phoneNumber.equals("")) {
+            userInf.setPhoneNumber(phoneNumber);
         } else {
             userInf.setPhoneNumber("+375 " + phoneNumber);
         }
-
-        if(userInf.getWorkPlace().equals("")) {
-            userInf.setWorkPlace("информация отсутствует");
-        } else {
-            userInf.setWorkPlace(workPlace);
-        }
-        if(userInf.getPosition().equals("")) {
-            userInf.setPosition("информация отсутствует");
-        } else {
-            userInf.setPosition(position);
-        }
-
+        userInf.setWorkPlace(workPlace);
+        userInf.setPosition(position);
         userInf.setRegistrationCity(registrationCity);
         userInf.setRegistrationAddress(registrationAddress);
         userInf.setMaritalStatus(maritalStatus);
-
-        if(userInf.getMonthlyEarnings().equals("")) {
-            userInf.setMonthlyEarnings("информация отсутствует");
-        } else {
-            userInf.setMonthlyEarnings(monthlyEarnings);
-        }
+        userInf.setMonthlyEarnings(monthlyEarnings);
 
         userInfoRepo.save(userInf);
     }

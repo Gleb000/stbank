@@ -41,6 +41,8 @@ create table piggi_bank (
     id int8 not null,
     piggi_bank_money int4 not null,
     piggi_bank_name varchar(255),
+    target_date varchar(255),
+    target_money int4,
     primary key (id)
 );
 

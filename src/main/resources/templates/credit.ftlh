@@ -21,32 +21,32 @@
             <#else>
                 <div class="form-group row">
                     <label class="col-sm-4 col-form-label-lg">Не оформлен счет на ваше имя!</label>
-                    <label class="col-sm-6 col-form-label-lg"><a href="/user/addUserInfo" class="badge badge-success" aria-pressed="true">Оформить</a></label>
+                    <label class="col-sm-6 col-form-label-lg"><a href="/user/addUserInfo" class="btn btn-success" aria-pressed="true">Оформить</a></label>
                 </div>
             </#if>
         <#else>
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label-lg">Нет информации о пользователе!</label>
-                <label class="col-sm-6 col-form-label-lg"><a href="/user/addUserInfo" class="badge badge-success" aria-pressed="true">Заполнить</a></label>
+                <label class="col-sm-6 col-form-label-lg"><a href="/user/addUserInfo" class="btn btn-success" aria-pressed="true">Заполнить</a></label>
             </div>
         </#if>
         <#if !userFirstName??>
             <div class="form-group-row">
-                <label class="col-sm-6 col-form-label-lg"><a href="/user/addCredit" class="badge badge-success" data-toggle="modal" data-target="#ModalWindow" aria-pressed="true">Оформить кредит</a></label>
+                <label class="col-sm-6 col-form-label-lg"><a href="/user/addCredit" class="btn btn-success" data-toggle="modal" data-target="#ModalWindow" aria-pressed="true">Оформить кредит</a></label>
             </div>
         <#else>
             <#if !bankAccount??>
                 <div class="form-group-row">
-                    <label class="col-sm-6 col-form-label-lg"><a href="/user/addCredit" class="badge badge-success" data-toggle="modal" data-target="#ModalWindow2" aria-pressed="true">Оформить кредит</a></label>
+                    <label class="col-sm-6 col-form-label-lg"><a href="/user/addCredit" class="btn btn-success" data-toggle="modal" data-target="#ModalWindow2" aria-pressed="true">Оформить кредит</a></label>
                 </div>
             <#else>
                 <#if !creditSum??>
                 <div class="form-group-row">
-                    <label class="col-sm-6 col-form-label-lg"><a href="/user/addCredit" class="badge badge-success" aria-pressed="true">Оформить кредит</a></label>
+                    <label class="col-sm-6 col-form-label-lg"><a href="/user/addCredit" class="btn btn-success" aria-pressed="true">Оформить кредит</a></label>
                 </div>
                 <#else>
                     <div class="form-group-row">
-                        <label class="col-sm-6 col-form-label-lg"><a href="/user/creditInfo" class="badge badge-success" aria-pressed="true">Информация о кредите</a></label>
+                        <label class="col-sm-6 col-form-label-lg"><a href="/user/creditInfo" class="btn btn-success" aria-pressed="true">Информация о кредите</a></label>
                     </div>
                 </#if>
             </#if>

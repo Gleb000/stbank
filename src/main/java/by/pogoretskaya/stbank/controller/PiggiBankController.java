@@ -78,23 +78,56 @@ public class PiggiBankController {
             @Valid PiggiBank piggiBank,
             BindingResult bindingResult,
             Model model,
-            @RequestParam("piggiBankName") String piggiBankName
+            @RequestParam("piggiBankName") String piggiBankName,
+            @RequestParam("targetDate") String targetDate,
+            @RequestParam("money") Integer money
     ) {
         UserInfo userInfo = userInfoRepo.getOne(user.getId());
 
-        if (bindingResult.hasErrors()) {
-            Map<String, String> errors = ControllerUtils.getErrors(bindingResult);
+        Map<String, String> errors = ControllerUtils.getErrors(bindingResult);
+
+        if(money == null || bindingResult.hasErrors()) {
+            model.addAttribute("firstName", userInfo.getFirstName());
+            model.addAttribute("lastName", userInfo.getLastName());
+            model.addAttribute("patronymic", userInfo.getPatronymic());
+
+            if(money == null) {
+                model.addAttribute("moneyError", "Некорректная сумма накопления");
+            }
+
+            if(bindingResult.hasErrors()) {
+                model.mergeAttributes(errors);
+            }
+
+            return "addPiggiBank";
+        }
+
+        if (bindingResult.hasErrors() || money < 0 || (money > 0 && money < 30) || money > 10000) {
 
             model.addAttribute("firstName", userInfo.getFirstName());
             model.addAttribute("lastName", userInfo.getLastName());
             model.addAttribute("patronymic", userInfo.getPatronymic());
 
-            model.mergeAttributes(errors);
+            if(bindingResult.hasErrors()) {
+                model.mergeAttributes(errors);
+            }
+
+            if(money < 0) {
+                model.addAttribute("moneyError", "Некорректная сумма накопления");
+            }
+
+            if((money > 0 && money < 30)) {
+                model.addAttribute("moneyError", "Сумма накопления не может быть меньше 30 рублей");
+            }
+
+            if(money > 10000) {
+                model.addAttribute("moneyError", "Сумма накопления не может быть больше 10 000 рублей");
+            }
 
             return "addPiggiBank";
         }
 
-        piggiBankService.addPiggiBank(user, piggiBank, piggiBankName);
+        piggiBankService.addPiggiBank(user, piggiBank, piggiBankName, targetDate, money);
 
         return "redirect:/user/piggiBank";
     }
@@ -114,7 +147,118 @@ public class PiggiBankController {
 
         model.addAttribute("piggiName", piggiBank.getPiggiBankName());
         model.addAttribute("piggiBankMoney", piggiBank.getPiggiBankMoney());
+        model.addAttribute("date", piggiBank.getTargetDate());
+        model.addAttribute("money", piggiBank.getTargetMoney());
 
         return "piggiBankInfo";
+    }
+
+    @GetMapping("topUpPiggiBank")
+    public String getTopUpPiggi(Model model, @AuthenticationPrincipal User user) {
+        UserInfo userInfo = userInfoRepo.getOne(user.getId());
+        BankAccount bankAccount = bankAccountRepo.getOne(user.getId());
+        PiggiBank piggiBank = piggiBankRepo.getOne(user.getId());
+
+        model.addAttribute("firstName", userInfo.getFirstName());
+        model.addAttribute("lastName", userInfo.getLastName());
+        model.addAttribute("patronymic", userInfo.getPatronymic());
+
+        model.addAttribute("bankAcc", bankAccount.getUserAccount());
+        model.addAttribute("userMoney", bankAccount.getUserMoney());
+
+        model.addAttribute("piggiName", piggiBank.getPiggiBankName());
+        model.addAttribute("piggiBankMoney", piggiBank.getPiggiBankMoney());
+        model.addAttribute("date", piggiBank.getTargetDate());
+        model.addAttribute("money", piggiBank.getTargetMoney());
+
+        return "topUpPiggiBank";
+    }
+
+    @PostMapping("topUpPiggiBank")
+    public String topUpPiggi(
+            @AuthenticationPrincipal User user,
+            Model model,
+            @RequestParam("money") Integer money
+    ) {
+        UserInfo userInfo = userInfoRepo.getOne(user.getId());
+        BankAccount bankAccount = bankAccountRepo.getOne(user.getId());
+        PiggiBank piggiBank = piggiBankRepo.getOne(user.getId());
+
+        if(money == null) {
+            model.addAttribute("firstName", userInfo.getFirstName());
+            model.addAttribute("lastName", userInfo.getLastName());
+            model.addAttribute("patronymic", userInfo.getPatronymic());
+
+            model.addAttribute("bankAcc", bankAccount.getUserAccount());
+            model.addAttribute("userMoney", bankAccount.getUserMoney());
+
+            model.addAttribute("piggiName", piggiBank.getPiggiBankName());
+            model.addAttribute("piggiBankMoney", piggiBank.getPiggiBankMoney());
+            model.addAttribute("date", piggiBank.getTargetDate());
+            model.addAttribute("money", piggiBank.getTargetMoney());
+
+            model.addAttribute("moneyError", "Сумма пополнения не указана");
+
+            return "topUpPiggiBank";
+        }
+
+        if(money < 0 || (money > 0 && money < 1) || money > piggiBank.getTargetMoney() - piggiBank.getPiggiBankMoney()) {
+            model.addAttribute("firstName", userInfo.getFirstName());
+            model.addAttribute("lastName", userInfo.getLastName());
+            model.addAttribute("patronymic", userInfo.getPatronymic());
+
+            model.addAttribute("bankAcc", bankAccount.getUserAccount());
+            model.addAttribute("userMoney", bankAccount.getUserMoney());
+
+            model.addAttribute("piggiName", piggiBank.getPiggiBankName());
+            model.addAttribute("piggiBankMoney", piggiBank.getPiggiBankMoney());
+            model.addAttribute("date", piggiBank.getTargetDate());
+            model.addAttribute("money", piggiBank.getTargetMoney());
+
+            if(money < 0) {
+                model.addAttribute("moneyError", "Сумма пополнения указана некорректно");
+            }
+
+            if(money > 0 && money < 1) {
+                model.addAttribute("moneyError", "Сумма пополнения должна превышать 1 рубль");
+            }
+
+            if(money > piggiBank.getTargetMoney() - piggiBank.getPiggiBankMoney()) {
+                model.addAttribute("moneyError", "Нельзя накопить сумму, выше поставленной цели");
+            }
+
+            piggiBankService.topUpPiggiBank(user, piggiBank, money);
+
+            return "topUpPiggiBank";
+        }
+
+        return "redirect:/user/piggiBankInfo";
+    }
+
+    @GetMapping("crashPiggiBank")
+    public String getCrashPiggiBank(Model model, @AuthenticationPrincipal User user) {
+        UserInfo userInfo = userInfoRepo.getOne(user.getId());
+        BankAccount bankAccount = bankAccountRepo.getOne(user.getId());
+        PiggiBank piggiBank = piggiBankRepo.getOne(user.getId());
+
+        model.addAttribute("firstName", userInfo.getFirstName());
+        model.addAttribute("lastName", userInfo.getLastName());
+        model.addAttribute("patronymic", userInfo.getPatronymic());
+
+        model.addAttribute("bankAcc", bankAccount.getUserAccount());
+
+        model.addAttribute("piggiName", piggiBank.getPiggiBankName());
+        model.addAttribute("piggiBankMoney", piggiBank.getPiggiBankMoney());
+
+        return "crashPiggiBank";
+    }
+
+    @PostMapping("crashPiggiBank")
+    public String crashPiggiBank(@AuthenticationPrincipal User user) {
+        PiggiBank piggiBank = piggiBankRepo.getOne(user.getId());
+
+        piggiBankService.crashPiggi(user, piggiBank);
+
+        return "redirect:/user/internetBanking";
     }
 }
