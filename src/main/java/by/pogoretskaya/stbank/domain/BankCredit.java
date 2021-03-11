@@ -9,8 +9,8 @@ public class BankCredit {
     @Id
     private Long id;
 
-    private int creditSum;
-    private int paidOut;
+    private Double creditSum;
+    private Double paidOut;
 
     public Long getId() {
         return id;
@@ -20,19 +20,19 @@ public class BankCredit {
         this.id = id;
     }
 
-    public int getCreditSum() {
+    public Double getCreditSum() {
         return creditSum;
     }
 
-    public void setCreditSum(int creditSum) {
+    public void setCreditSum(Double creditSum) {
         this.creditSum = creditSum;
     }
 
-    public int getPaidOut() {
+    public Double getPaidOut() {
         return paidOut;
     }
 
-    public void setPaidOut(int paidOut) {
+    public void setPaidOut(Double paidOut) {
         this.paidOut = paidOut;
     }
 }

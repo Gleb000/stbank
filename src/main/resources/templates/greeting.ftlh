@@ -38,7 +38,7 @@
                     <p class="card-text font-italic">- предоставление кредита на банковскую карточку;</p>
                     <p class="card-text font-italic">- без залога и поручителей;</p>
                     <p class="card-text font-italic">- досрочное погашение без комиссий и ограничений.</p>
-                    <a href="/user/credit" class="btn btn-success">Оформить</a>
+                    <a href="/user/internetBanking" class="btn btn-success">Оформить</a>
                 </div>
             </div>
             <div class="card" style="width: 18rem;">
@@ -48,7 +48,7 @@
                     <p class="card-text font-italic">- без справки о доходах;</p>
                     <p class="card-text font-italic">- без первоначального взноса;</p>
                     <p class="card-text font-italic">- получение товара в день оформления кредита.</p>
-                    <a href="/user/credit" class="btn btn-success">Оформить</a>
+                    <a href="/user/internetBanking" class="btn btn-success">Оформить</a>
                 </div>
             </div>
             <div class="card" style="width: 18rem;">
@@ -60,6 +60,44 @@
                     <p class="card-text font-italic">- без справки о доходах;</p>
                     <p class="card-text font-italic">- без первоначального взноса;</p>
                     <p class="card-text font-italic">- досрочное погашение без комиссий и ограничений.</p>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="ModalWindow1" tabindex="-1" aria-labelledby="ModalWindow1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Предупреждение</h5>
+                        <a class="btn btn-lg text-dark" type="button" href="/">&times;</a>
+                    </div>
+                    <div class="modal-body">
+                        У вашего профиля не заполнена информация о пользователе,
+                        не указав ее вы не сможете совершать большинство операций на сайте,
+                        перейдите по ссылке и заполните профиль
+                    </div>
+                    <div class="modal-footer">
+                        <a href="/user/addUserInfo" class="btn btn-success" role="button" aria-pressed="true">Заполнить профиль</a>
+                        <a href="/" class="btn btn-success" role="button" aria-pressed="true">Позже</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="ModalWindow2" tabindex="-1" aria-labelledby="ModalWindow2" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Предупреждение</h5>
+                        <a class="btn btn-lg text-dark" type="button" href="/">&times;</a>
+                    </div>
+                    <div class="modal-body">
+                        На ваше имя не оформлен счет,
+                        перейдите по ссылке и оформите его,
+                        так как без оформления вы не сможете совершать платежные операции на сайте
+                    </div>
+                    <div class="modal-footer">
+                        <a href="/user/addAccInfo" class="btn btn-success" role="button" aria-pressed="true">Оформить счет</a>
+                        <a href="/" class="btn btn-success" role="button" aria-pressed="true">Позже</a>
+                    </div>
                 </div>
             </div>
         </div>

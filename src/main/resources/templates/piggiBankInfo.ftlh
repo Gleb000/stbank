@@ -12,7 +12,7 @@
         <div class="form-group row">
             <label class="col-sm-4 col-form-label-lg">Сумма на счету:</label>
             <div class="col-sm-8">
-                <label class="col-form-label-lg">${userMoney}</label>
+                <label class="col-form-label-lg">${userMoney} BYN</label>
             </div>
         </div>
         <div class="form-group row py-4">
@@ -22,7 +22,7 @@
             </div>
             <label class="col-sm-4 col-form-label-lg">Накоплено:</label>
             <div class="col-sm-8">
-                <label class="col-form-label-lg">${piggiBankMoney}</label>
+                <label class="col-form-label-lg">${piggiBankMoney} BYN</label>
             </div>
             <label class="col-sm-4 col-form-label-lg">Дата конца накопления:</label>
             <div class="col-sm-8">
@@ -30,11 +30,11 @@
             </div>
             <label class="col-sm-4 col-form-label-lg">Цель накопления:</label>
             <div class="col-sm-8">
-                <label class="col-form-label-lg">${money}</label>
+                <label class="col-form-label-lg">${money} BYN</label>
             </div>
         </div>
         <label class="col-sm-6 col-form-label-lg"><a href="/user/topUpPiggiBank" class="btn btn-success" aria-pressed="true">Пополнить копилку</a></label>
-        <label class="col-sm-6 col-form-label-lg"><a href="#" class="btn btn-success" aria-pressed="true">Разбить копилку</a></label>
+        <label class="col-sm-6 col-form-label-lg"><a href="/user/crashPiggiBank" class="btn btn-success" aria-pressed="true">Разбить копилку</a></label>
         <div class="py-5">
             <p class="card-text text-secondary">2017 «СтатусБанк»</p>
             <p class="card-text text-secondary">Регистрационный номер в Едином государственном регистре юридических лиц и индивидуальных предпринимателей №807000043.</p>

@@ -19,7 +19,7 @@
         <div class="form-group row">
             <label class="col-sm-3 col-form-label-lg">Сумма на счету:</label>
             <div class="col-sm-7">
-                <label class="col-form-label-lg">${userMoney}</label>
+                <label class="col-form-label-lg">${userMoney} BYN</label>
             </div>
         </div>
         <#if piggiBank??>
@@ -32,11 +32,12 @@
             <div class="form-group row">
                 <label class="col-sm-3 col-form-label-lg">Денег накоплено:</label>
                 <div class="col-sm-7">
-                    <label class="col-form-label-lg">${piggiMoney}</label>
+                    <label class="col-form-label-lg">${piggiMoney} BYN</label>
                 </div>
             </div>
             <div class="form-group-row">
-                <label class="col-sm-6 col-form-label-lg"><a href="/user/piggiBankInfo" class="btn btn-success" aria-pressed="true">Информация о копилке</a></label>
+                <a href="/user/piggiBankInfo" class="btn btn-success" aria-pressed="true">Информация о копилке</a>
+                <a class="btn btn-success" href="/user/internetBanking" aria-pressed="true">Назад</a>
             </div>
         <#else>
             <div class="form-group row">
@@ -46,7 +47,8 @@
                 </div>
             </div>
             <div class="form-group-row">
-                <label class="col-sm-6 col-form-label-lg"><a href="/user/addPiggiBank" class="btn btn-success" aria-pressed="true">Открыть копилку</a></label>
+                <a href="/user/addPiggiBank" class="btn btn-success" aria-pressed="true">Открыть копилку</a>
+                <a class="btn btn-success" href="/user/internetBanking" aria-pressed="true">Назад</a>
             </div>
         </#if>
         <input type="hidden" name="_csrf" value="${_csrf.token}" />

@@ -43,7 +43,7 @@
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label-lg ">Цель накопления:</label>
                 <div class="col-sm-6">
-                    <input type="number" name="money"
+                    <input type="text" name="money" <#if currentMoney??>value="${currentMoney}"</#if> placeholder="BYN"
                            class="form-control form-control-lg ${(moneyError??)?string('is-invalid', '')}"/>
                     <#if moneyError??>
                         <div class="invalid-feedback">

@@ -32,21 +32,25 @@
         </#if>
         <#if !userFirstName??>
             <div class="form-group-row">
-                <label class="col-sm-6 col-form-label-lg"><a href="/user/addCredit" class="btn btn-success" data-toggle="modal" data-target="#ModalWindow" aria-pressed="true">Оформить кредит</a></label>
+                <a href="/user/addCredit" class="btn btn-success" data-toggle="modal" data-target="#ModalWindow" aria-pressed="true">Оформить кредит</a>
+                <a href="/user/internetBanking" class="btn btn-success" aria-pressed="true">Назад</a>
             </div>
         <#else>
             <#if !bankAccount??>
                 <div class="form-group-row">
-                    <label class="col-sm-6 col-form-label-lg"><a href="/user/addCredit" class="btn btn-success" data-toggle="modal" data-target="#ModalWindow2" aria-pressed="true">Оформить кредит</a></label>
+                    <a href="/user/addCredit" class="btn btn-success" data-toggle="modal" data-target="#ModalWindow2" aria-pressed="true">Оформить кредит</a>
+                    <a href="/user/internetBanking" class="btn btn-success" aria-pressed="true">Назад</a>
                 </div>
             <#else>
                 <#if !creditSum??>
                 <div class="form-group-row">
-                    <label class="col-sm-6 col-form-label-lg"><a href="/user/addCredit" class="btn btn-success" aria-pressed="true">Оформить кредит</a></label>
+                    <a href="/user/addCredit" class="btn btn-success" aria-pressed="true">Оформить кредит</a>
+                    <a href="/user/internetBanking" class="btn btn-success" aria-pressed="true">Назад</a>
                 </div>
                 <#else>
                     <div class="form-group-row">
-                        <label class="col-sm-6 col-form-label-lg"><a href="/user/creditInfo" class="btn btn-success" aria-pressed="true">Информация о кредите</a></label>
+                        <a href="/user/creditInfo" class="btn btn-success" aria-pressed="true">Информация о кредите</a>
+                        <a href="/user/internetBanking" class="btn btn-success" aria-pressed="true">Назад</a>
                     </div>
                 </#if>
             </#if>

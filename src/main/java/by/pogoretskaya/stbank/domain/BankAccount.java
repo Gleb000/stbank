@@ -10,7 +10,7 @@ public class BankAccount {
     public Long id;
 
     private String userAccount;
-    private int userMoney;
+    private Double userMoney;
 
     public Long getId() {
         return id;
@@ -28,11 +28,11 @@ public class BankAccount {
         this.userAccount = userAccount;
     }
 
-    public int getUserMoney() {
+    public Double getUserMoney() {
         return userMoney;
     }
 
-    public void setUserMoney(int userMoney) {
+    public void setUserMoney(Double userMoney) {
         this.userMoney = userMoney;
     }
 }

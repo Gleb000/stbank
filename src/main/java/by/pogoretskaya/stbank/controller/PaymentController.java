@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.regex.Pattern;
+
 @Controller
 @RequestMapping("/user")
 public class PaymentController {
@@ -28,10 +30,10 @@ public class PaymentController {
     @Autowired
     PaymentService paymentService;
 
-    int water;
-    int electr;
-    int gas;
-    int sum;
+    Double water;
+    Double electr;
+    Double gas;
+    Double sum;
 
     @GetMapping("paymentSystem")
     public String getPaymentSystem(Model model, UserInfo userInf, BankAccount bankAccount, @AuthenticationPrincipal User user) {
@@ -55,9 +57,12 @@ public class PaymentController {
 
     @GetMapping("refillAcc")
     public String getRefillInfo(Model model, @AuthenticationPrincipal User user, BankAccount bankAccount) {
-        model.addAttribute("username", user.getUsername());
-
         bankAccount = bankAccountRepo.getOne(user.getId());
+        UserInfo userInfo = userInfoRepo.getOne(user.getId());
+
+        model.addAttribute("firstName", userInfo.getFirstName());
+        model.addAttribute("lastName", userInfo.getLastName());
+        model.addAttribute("patronymic", userInfo.getPatronymic());
 
         model.addAttribute("bankAccount", bankAccount.getUserAccount());
         model.addAttribute("userAccMoney", bankAccount.getUserMoney());
@@ -70,35 +75,43 @@ public class PaymentController {
             @AuthenticationPrincipal User user,
             BankAccount bankAccount,
             Model model,
-            @RequestParam Integer money
+            @RequestParam String money
     ) {
-        if(money == null) {
-            model.addAttribute("username", user.getUsername());
+        UserInfo userInfo = userInfoRepo.getOne(user.getId());
 
-            model.addAttribute("moneyError", "Не указана сумма пополнения");
+        if(Pattern.matches("^[-+]?[0-9]*[.,]?[0-9]+(?:[eE][-+]?[0-9]+)?$", money)) {
+            Double userMoney = Double.parseDouble(money);
+
+            if (userMoney < 0 || (userMoney >= 0 && userMoney < 1) || userMoney > 10000) {
+                model.addAttribute("firstName", userInfo.getFirstName());
+                model.addAttribute("lastName", userInfo.getLastName());
+                model.addAttribute("patronymic", userInfo.getPatronymic());
+
+                if (userMoney < 0) {
+                    model.addAttribute("moneyError", "Сумма пополнения меньше нуля");
+                }
+
+                if (userMoney >= 0 && userMoney < 1) {
+                    model.addAttribute("moneyError", "Сумма пополнения должна превышать 1 рубль");
+                }
+
+                if (userMoney > 10000) {
+                    model.addAttribute("moneyError", "Сумма пополнения не может превышать 10 000 рублей");
+                }
+
+                return "refillAcc";
+            }
+
+            paymentService.updRefillInfo(user, bankAccount, userMoney);
+        } else {
+            model.addAttribute("firstName", userInfo.getFirstName());
+            model.addAttribute("lastName", userInfo.getLastName());
+            model.addAttribute("patronymic", userInfo.getPatronymic());
+
+            model.addAttribute("moneyError", "Введена некорректная сумма");
 
             return "refillAcc";
         }
-
-        if(money < 0 || (money >= 0 && money < 1) || money > 10000) {
-            model.addAttribute("username", user.getUsername());
-
-            if(money < 0) {
-                model.addAttribute("moneyError", "Сумма пополнения меньше нуля");
-            }
-
-            if(money >= 0 && money < 1) {
-                model.addAttribute("moneyError", "Сумма пополнения должна превышать 1 рубль");
-            }
-
-            if(money > 10000) {
-                model.addAttribute("moneyError", "Сумма пополнения не может превышать 10 000 рублей");
-            }
-
-            return "refillAcc";
-        }
-
-        paymentService.updRefillInfo(user, bankAccount, money);
 
         return "redirect:/user/internetBanking";
     }
@@ -106,6 +119,11 @@ public class PaymentController {
     @GetMapping("transferMoney")
     public String transfMoney(Model model, @AuthenticationPrincipal User user, BankAccount bankAccount) {
         bankAccount = bankAccountRepo.getOne(user.getId());
+        UserInfo userInfo = userInfoRepo.getOne(user.getId());
+
+        model.addAttribute("firstName", userInfo.getFirstName());
+        model.addAttribute("lastName", userInfo.getLastName());
+        model.addAttribute("patronymic", userInfo.getPatronymic());
 
         model.addAttribute("BYN", bankAccount.getUserAccount());
         model.addAttribute("moneyBYN", bankAccount.getUserMoney());
@@ -118,54 +136,85 @@ public class PaymentController {
             @AuthenticationPrincipal User user,
             BankAccount bankAccount,
             Model model,
-            @RequestParam Integer money,
+            @RequestParam String money,
             @RequestParam String bankAcc
     ) {
         bankAccount = bankAccountRepo.getOne(user.getId());
 
-        if(money == null || bankAccountRepo.findByUserAccount(bankAcc) == null) {
+        if(!Pattern.matches("^[-+]?[0-9]*[.,]?[0-9]+(?:[eE][-+]?[0-9]+)?$", money) || bankAccountRepo.findByUserAccount(bankAcc) == null) {
             bankAccount = bankAccountRepo.getOne(user.getId());
+            UserInfo userInfo = userInfoRepo.getOne(user.getId());
+
+            model.addAttribute("firstName", userInfo.getFirstName());
+            model.addAttribute("lastName", userInfo.getLastName());
+            model.addAttribute("patronymic", userInfo.getPatronymic());
 
             model.addAttribute("BYN", bankAccount.getUserAccount());
             model.addAttribute("moneyBYN", bankAccount.getUserMoney());
 
             if(bankAccountRepo.findByUserAccount(bankAcc) == null) {
                 model.addAttribute("userError", "Пользователь не найден");
+                model.addAttribute("recipient", null);
+            } else {
+                model.addAttribute("recipient", bankAcc);
             }
 
-            if(money == null) {
-                model.addAttribute("moneyError", "Не указана сумма пополнения");
-            }
+            if(!Pattern.matches("^[-+]?[0-9]*[.,]?[0-9]+(?:[eE][-+]?[0-9]+)?$", money)) {
+                model.addAttribute("moneyError", "Сумма перевода указана некорректно");
+                model.addAttribute("userMoney", null);
+            } else {
+                Double userMoney = Double.parseDouble(money);
 
+                if (userMoney > bankAccount.getUserMoney() || (userMoney >= 0 && userMoney < 1) || userMoney < 0) {
+                    if(userMoney > bankAccount.getUserMoney()) {
+                        model.addAttribute("moneyError", "На счету недостаточно средств");
+                        model.addAttribute("userMoney", null);
+                    } if(userMoney < 0) {
+                        model.addAttribute("moneyError", "Сумма пополнения не может быть отрицательной");
+                        model.addAttribute("userMoney", null);
+                    } if(userMoney >= 0 && userMoney < 1) {
+                        model.addAttribute("moneyError", "Сумма перевода должна превышать 1 рубль");
+                        model.addAttribute("userMoney", null);
+                    }
+                } else {
+                    model.addAttribute("userMoney", Double.toString(userMoney));
+                }
+            }
             return "transferMoney";
+        } else {
+            Double userMoney = Double.parseDouble(money);
+
+            if (userMoney > bankAccount.getUserMoney() || (userMoney >= 0 && userMoney < 1) || userMoney < 0) {
+                if (userMoney > bankAccount.getUserMoney()) {
+                    model.addAttribute("moneyError", "На счету недостаточно средств");
+                    model.addAttribute("userMoney", null);
+                }
+
+                if (userMoney < 0) {
+                    model.addAttribute("moneyError", "Сумма пополнения не может быть отрицательной");
+                    model.addAttribute("userMoney", null);
+                }
+
+                if (userMoney >= 0 && userMoney < 1) {
+                    model.addAttribute("moneyError", "Сумма перевода должна превышать 1 рубль");
+                    model.addAttribute("userMoney", null);
+                }
+
+                bankAccount = bankAccountRepo.getOne(user.getId());
+                UserInfo userInfo = userInfoRepo.getOne(user.getId());
+
+                model.addAttribute("firstName", userInfo.getFirstName());
+                model.addAttribute("lastName", userInfo.getLastName());
+                model.addAttribute("patronymic", userInfo.getPatronymic());
+
+                model.addAttribute("BYN", bankAccount.getUserAccount());
+                model.addAttribute("moneyBYN", bankAccount.getUserMoney());
+
+                return "transferMoney";
+            } else {
+                paymentService.transferMoneyToUser(user, bankAccount, userMoney, bankAcc);
+            }
         }
-
-        if(money > bankAccount.getUserMoney() || (money >= 0 && money < 1) || money < 0 || bankAccountRepo.findByUserAccount(bankAcc) == null) {
-            if(money > bankAccount.getUserMoney()) {
-                model.addAttribute("moneyError", "На счету недостаточно средств");
-            }
-
-            if(money < 0) {
-                model.addAttribute("moneyError", "Сумма пополнения не может быть отрицательной");
-            }
-
-            if(bankAccountRepo.findByUserAccount(bankAcc) == null) {
-                model.addAttribute("userError", "Пользователь не найден");
-            }
-
-            if(money >= 0 && money < 1) {
-                model.addAttribute("moneyError", "Сумма перевода должна превышать 1 рубль");
-            }
-
-            bankAccount = bankAccountRepo.getOne(user.getId());
-
-            model.addAttribute("BYN", bankAccount.getUserAccount());
-            model.addAttribute("moneyBYN", bankAccount.getUserMoney());
-
-            return "transferMoney";
-        }
-
-        paymentService.transferMoneyToUser(user, bankAccount, money, bankAcc);
 
         return "redirect:/user/internetBanking";
     }
@@ -181,9 +230,9 @@ public class PaymentController {
         model.addAttribute("bankAcc", bankAccount.getUserAccount());
         model.addAttribute("userMoney", bankAccount.getUserMoney());
 
-        water = (int)(Math.random() * (120 - 50) + 50);
-        electr = (int)(Math.random() * (150 - 70) + 70);
-        gas = (int)(Math.random() * (110 - 30) + 30);
+        water = (Math.random() * (120 - 50) + 50);
+        electr = (Math.random() * (150 - 70) + 70);
+        gas = (Math.random() * (110 - 30) + 30);
         sum = water + electr + gas;
 
         model.addAttribute("water", water);
@@ -206,6 +255,87 @@ public class PaymentController {
             BankAccount bankAccount
     ) {
         paymentService.payUtilities(user, bankAccount, sum);
+
+        return "redirect:/user/internetBanking";
+    }
+
+    @GetMapping("payMobile")
+    public String getPayMobile(Model model, @AuthenticationPrincipal User user) {
+        UserInfo userInfo = userInfoRepo.getOne(user.getId());
+        BankAccount bankAccount = bankAccountRepo.getOne(user.getId());
+
+        model.addAttribute("firstName", userInfo.getFirstName());
+        model.addAttribute("lastName", userInfo.getLastName());
+        model.addAttribute("patronymic", userInfo.getPatronymic());
+
+        model.addAttribute("bankAcc", bankAccount.getUserAccount());
+        model.addAttribute("bankMoney", bankAccount.getUserMoney());
+
+        return "payMobile";
+    }
+
+    @PostMapping("payMobile")
+    public String addPayMobile(
+            Model model,
+            @AuthenticationPrincipal User user,
+            BankAccount bankAccount,
+            @RequestParam("money") Double money,
+            @RequestParam("phoneNumber") String phone
+    ) {
+        UserInfo userInfo = userInfoRepo.getOne(user.getId());
+        bankAccount = bankAccountRepo.getOne(user.getId());
+
+        if(money == null || phone.equals("")) {
+            model.addAttribute("firstName", userInfo.getFirstName());
+            model.addAttribute("lastName", userInfo.getLastName());
+            model.addAttribute("patronymic", userInfo.getPatronymic());
+
+            model.addAttribute("bankAcc", bankAccount.getUserAccount());
+            model.addAttribute("bankMoney", bankAccount.getUserMoney());
+
+            if(money == null) {
+                model.addAttribute("moneyError", "Не указана сумма пополнения");
+            }
+
+            if(phone.equals("")) {
+                model.addAttribute("phoneError", "Не указан номер телефона");
+            }
+
+            return "payMobile";
+        }
+
+        if(money < 0 || (money > 0 && money < 1) || money > 100 || bankAccount.getUserMoney() < money || phone.equals("")) {
+            model.addAttribute("firstName", userInfo.getFirstName());
+            model.addAttribute("lastName", userInfo.getLastName());
+            model.addAttribute("patronymic", userInfo.getPatronymic());
+
+            model.addAttribute("bankAcc", bankAccount.getUserAccount());
+            model.addAttribute("bankMoney", bankAccount.getUserMoney());
+
+            if(money < 0) {
+                model.addAttribute("moneyError", "Сумма пополнения указана некорректно");
+            }
+
+            if(money > 0 && money < 1) {
+                model.addAttribute("moneyError", "Сумма пополнения должна превышать 1 рубль");
+            }
+
+            if(money > 100) {
+                model.addAttribute("moneyError", "Сумма пополнения не может превышать 100 рублей");
+            }
+
+            if(bankAccount.getUserMoney() < money) {
+                model.addAttribute("moneyError", "Недостаточно средств");
+            }
+
+            if(phone.equals("")) {
+                model.addAttribute("phoneError", "Не указан номер телефона");
+            }
+
+            return "payMobile";
+        }
+
+        paymentService.payMobile(user, bankAccount, money);
 
         return "redirect:/user/internetBanking";
     }

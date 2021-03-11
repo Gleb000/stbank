@@ -43,7 +43,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Предупреждение</h5>
-
+                        <a class="btn btn-lg text-dark" type="button" href="/">&times;</a>
                     </div>
                     <div class="modal-body">
                         У вашего профиля не заполнена информация о пользователе,
@@ -52,6 +52,7 @@
                     </div>
                     <div class="modal-footer">
                         <a href="/user/addUserInfo" class="btn btn-success" role="button" aria-pressed="true">Заполнить профиль</a>
+                        <a href="/" class="btn btn-success" role="button" aria-pressed="true">Позже</a>
                     </div>
                 </div>
             </div>

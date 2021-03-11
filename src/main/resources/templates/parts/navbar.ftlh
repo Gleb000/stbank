@@ -1,7 +1,7 @@
 <#include "security.ftlh">
 <#import "login.ftlh" as l>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <a class="navbar-brand" href="/">
         <img src="/img/StatusBankLogo.png" width="152" height="30" alt="">
     </a>

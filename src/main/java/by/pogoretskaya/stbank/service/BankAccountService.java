@@ -36,7 +36,7 @@ public class BankAccountService {
         }
 
         bankAccount.setUserAccount(account.toString());
-        bankAccount.setUserMoney(0);
+        bankAccount.setUserMoney(0.0);
 
         bankAccountRepo.save(bankAccount);
     }
@@ -55,7 +55,7 @@ public class BankAccountService {
         }
 
         bankAccountUSD.setUserAccountUSD(account.toString());
-        bankAccountUSD.setUserMoneyUSD(0);
+        bankAccountUSD.setUserMoneyUSD(0.0);
 
         bankAccountUSDRepo.save(bankAccountUSD);
     }
@@ -74,12 +74,12 @@ public class BankAccountService {
         }
 
         bankAccountEUR.setUserAccountEUR(account.toString());
-        bankAccountEUR.setUserMoneyEUR(0);
+        bankAccountEUR.setUserMoneyEUR(0.0);
 
         bankAccountEURRepo.save(bankAccountEUR);
     }
 
-    public void convertBYNtoUSD(User user, BankAccount bankAccount, BankAccountUSD bankAccountUSD, int money) {
+    public void convertBYNtoUSD(User user, BankAccount bankAccount, BankAccountUSD bankAccountUSD, Double money) {
         bankAccount = bankAccountRepo.getOne(user.getId());
         bankAccountUSD = bankAccountUSDRepo.getOne(user.getId());
 
@@ -92,7 +92,7 @@ public class BankAccountService {
         bankAccountUSDRepo.save(bankAccountUSD);
     }
 
-    public void convertBYNtoEUR(User user, BankAccount bankAccount, BankAccountEUR bankAccountEUR, int money) {
+    public void convertBYNtoEUR(User user, BankAccount bankAccount, BankAccountEUR bankAccountEUR, Double money) {
         bankAccount = bankAccountRepo.getOne(user.getId());
         bankAccountEUR = bankAccountEURRepo.getOne(user.getId());
 
@@ -105,7 +105,7 @@ public class BankAccountService {
         bankAccountEURRepo.save(bankAccountEUR);
     }
 
-    public void convertUSDtoBYN(User user, BankAccount bankAccount, BankAccountUSD bankAccountUSD, int money) {
+    public void convertUSDtoBYN(User user, BankAccount bankAccount, BankAccountUSD bankAccountUSD, Double money) {
         bankAccount = bankAccountRepo.getOne(user.getId());
         bankAccountUSD = bankAccountUSDRepo.getOne(user.getId());
 
@@ -118,7 +118,7 @@ public class BankAccountService {
         bankAccountRepo.save(bankAccount);
     }
 
-    public void convertEURtoBYN(User user, BankAccount bankAccount, BankAccountEUR bankAccountEUR, int money) {
+    public void convertEURtoBYN(User user, BankAccount bankAccount, BankAccountEUR bankAccountEUR, Double money) {
         bankAccount = bankAccountRepo.getOne(user.getId());
         bankAccountEUR = bankAccountEURRepo.getOne(user.getId());
 

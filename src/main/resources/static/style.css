@@ -1,3 +1,11 @@
 body {
     color: #113333;
 }
+
+#intro {
+    height: 100%
+}
+
+#intro {
+    background: url("img/fon.jpg");
+}

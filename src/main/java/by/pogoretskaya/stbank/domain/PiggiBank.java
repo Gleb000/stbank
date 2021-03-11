@@ -14,8 +14,8 @@ public class PiggiBank {
     private String piggiBankName;
     @NotBlank(message = "Укажите дату, до которой хотите накопить сумму")
     private String targetDate;
-    private Integer targetMoney;
-    private int piggiBankMoney;
+    private Double targetMoney;
+    private Double piggiBankMoney;
 
     public long getId() {
         return id;
@@ -41,19 +41,19 @@ public class PiggiBank {
         this.targetDate = targetDate;
     }
 
-    public Integer getTargetMoney() {
+    public Double getTargetMoney() {
         return targetMoney;
     }
 
-    public void setTargetMoney(Integer targetMoney) {
+    public void setTargetMoney(Double targetMoney) {
         this.targetMoney = targetMoney;
     }
 
-    public int getPiggiBankMoney() {
+    public Double getPiggiBankMoney() {
         return piggiBankMoney;
     }
 
-    public void setPiggiBankMoney(int piggiBankMoney) {
+    public void setPiggiBankMoney(Double piggiBankMoney) {
         this.piggiBankMoney = piggiBankMoney;
     }
 }

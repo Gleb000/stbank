@@ -99,6 +99,9 @@
                                             <label class="col-form-label-lg">${paidOut} BYN</label>
                                         </div>
                                     </div>
+                                    <div class="form-group row">
+                                        <a class="btn btn-success" href="/user/creditInfo">Информация</a>
+                                    </div>
                                 </div>
                             </div>
                         </#if>
@@ -116,6 +119,9 @@
                                         <div class="col-sm-6">
                                             <label class="col-form-label-lg">${piggiMoney} BYN</label>
                                         </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <a class="btn btn-success" href="/user/piggiBankInfo">Информация</a>
                                     </div>
                                 </div>
                             </div>
@@ -202,7 +208,7 @@
                         <div class="card-body">
                             <h5 class="card-title">Телефон</h5>
                             <p class="card-text">Оплата за телефонное соединение без указания оператора</p>
-                            <a href="#" class="btn btn-success">Оплатить</a>
+                            <a href="/user/payMobile" class="btn btn-success">Оплатить</a>
                         </div>
                     </div>
                     <div class="card" style="width: 19rem;">

@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.regex.Pattern;
+
 @Controller
 @RequestMapping("/user")
 public class BankAccountController {
@@ -160,26 +162,34 @@ public class BankAccountController {
             BankAccount bankAccount,
             BankAccountUSD bankAccountUSD,
             Model model,
-            @RequestParam int money
+            @RequestParam String money
     ) {
         bankAccount = bankAccountRepo.getOne(user.getId());
 
-        if(money <= 0 || bankAccount.getUserMoney() < money) {
-            model.addAttribute("BYN", bankAccount.getUserAccount());
-            model.addAttribute("moneyBYN", bankAccount.getUserMoney());
+        model.addAttribute("BYN", bankAccount.getUserAccount());
+        model.addAttribute("moneyBYN", bankAccount.getUserMoney());
 
-            if(money <= 0) {
-                model.addAttribute("moneyError", "Некорректная сумма пополнения");
+        if(Pattern.matches("^[-+]?[0-9]*[.,]?[0-9]+(?:[eE][-+]?[0-9]+)?$", money)) {
+            Double userMoney = Double.parseDouble(money);
+
+            if(userMoney <= 0 || bankAccount.getUserMoney() < userMoney) {
+                if(userMoney <= 0) {
+                    model.addAttribute("moneyError", "Сумма пополнения меньше нуля");
+                }
+
+                if (bankAccount.getUserMoney() < userMoney) {
+                    model.addAttribute("moneyError", "Недостаточно средств");
+                }
+
+                return "BYNtoUSD";
             }
 
-            if (bankAccount.getUserMoney() < money) {
-                model.addAttribute("moneyError", "Недостаточно средств");
-            }
+            bankAccountService.convertBYNtoUSD(user, bankAccount, bankAccountUSD, userMoney);
+        } else {
+            model.addAttribute("moneyError", "Некорректная сумма пополнения");
 
             return "BYNtoUSD";
         }
-
-        bankAccountService.convertBYNtoUSD(user, bankAccount, bankAccountUSD, money);
 
         return "redirect:/user/internetBanking";
     }
@@ -200,26 +210,34 @@ public class BankAccountController {
             BankAccount bankAccount,
             BankAccountEUR bankAccountEUR,
             Model model,
-            @RequestParam int money
+            @RequestParam String money
     ) {
         bankAccount = bankAccountRepo.getOne(user.getId());
 
-        if(money <= 0 || bankAccount.getUserMoney() < money) {
-            model.addAttribute("BYN", bankAccount.getUserAccount());
-            model.addAttribute("moneyBYN", bankAccount.getUserMoney());
+        model.addAttribute("BYN", bankAccount.getUserAccount());
+        model.addAttribute("moneyBYN", bankAccount.getUserMoney());
 
-            if(money <= 0) {
-                model.addAttribute("moneyError", "Некорректная сумма пополнения");
+        if(Pattern.matches("^[-+]?[0-9]*[.,]?[0-9]+(?:[eE][-+]?[0-9]+)?$", money)) {
+            Double userMoney = Double.parseDouble(money);
+
+            if(userMoney <= 0 || bankAccount.getUserMoney() < userMoney) {
+                if(userMoney <= 0) {
+                    model.addAttribute("moneyError", "Сумма пополнения меньше нуля");
+                }
+
+                if (bankAccount.getUserMoney() < userMoney) {
+                    model.addAttribute("moneyError", "Недостаточно средств");
+                }
+
+                return "BYNtoEUR";
             }
 
-            if (bankAccount.getUserMoney() < money) {
-                model.addAttribute("moneyError", "Недостаточно средств");
-            }
+            bankAccountService.convertBYNtoEUR(user, bankAccount, bankAccountEUR, userMoney);
+        } else {
+            model.addAttribute("moneyError", "Некорректная сумма пополнения");
 
             return "BYNtoEUR";
         }
-
-        bankAccountService.convertBYNtoEUR(user, bankAccount, bankAccountEUR, money);
 
         return "redirect:/user/internetBanking";
     }
@@ -240,26 +258,34 @@ public class BankAccountController {
             BankAccount bankAccount,
             BankAccountUSD bankAccountUSD,
             Model model,
-            @RequestParam int money
+            @RequestParam String money
     ) {
         bankAccountUSD = bankAccountUSDRepo.getOne(user.getId());
 
-        if(money <= 0 || bankAccountUSD.getUserMoneyUSD() < money) {
-            model.addAttribute("USD", bankAccountUSD.getUserAccountUSD());
-            model.addAttribute("moneyUSD", bankAccountUSD.getUserMoneyUSD());
+        model.addAttribute("USD", bankAccountUSD.getUserAccountUSD());
+        model.addAttribute("moneyUSD", bankAccountUSD.getUserMoneyUSD());
 
-            if(money <= 0) {
-                model.addAttribute("moneyError", "Некорректная сумма пополнения");
+        if(Pattern.matches("^[-+]?[0-9]*[.,]?[0-9]+(?:[eE][-+]?[0-9]+)?$", money)) {
+            Double userMoney = Double.parseDouble(money);
+
+            if(userMoney <= 0 || bankAccountUSD.getUserMoneyUSD() < userMoney) {
+                if(userMoney <= 0) {
+                    model.addAttribute("moneyError", "Сумма пополнения меньше нуля");
+                }
+
+                if (bankAccountUSD.getUserMoneyUSD() < userMoney) {
+                    model.addAttribute("moneyError", "Недостаточно средств");
+                }
+
+                return "USDtoBYN";
             }
 
-            if (bankAccountUSD.getUserMoneyUSD() < money) {
-                model.addAttribute("moneyError", "Недостаточно средств");
-            }
+            bankAccountService.convertUSDtoBYN(user, bankAccount, bankAccountUSD, userMoney);
+        } else {
+            model.addAttribute("moneyError", "Некорректная сумма пополнения");
 
             return "USDtoBYN";
         }
-
-        bankAccountService.convertUSDtoBYN(user, bankAccount, bankAccountUSD, money);
 
         return "redirect:/user/internetBanking";
     }
@@ -280,26 +306,34 @@ public class BankAccountController {
             BankAccount bankAccount,
             BankAccountEUR bankAccountEUR,
             Model model,
-            @RequestParam int money
+            @RequestParam String money
     ) {
         bankAccountEUR = bankAccountEURRepo.getOne(user.getId());
 
-        if(money <= 0 || bankAccountEUR.getUserMoneyEUR() < money) {
-            model.addAttribute("EUR", bankAccountEUR.getUserAccountEUR());
-            model.addAttribute("moneyEUR", bankAccountEUR.getUserMoneyEUR());
+        model.addAttribute("EUR", bankAccountEUR.getUserAccountEUR());
+        model.addAttribute("moneyEUR", bankAccountEUR.getUserMoneyEUR());
 
-            if(money <= 0) {
-                model.addAttribute("moneyError", "Некорректная сумма пополнения");
+        if(Pattern.matches("^[-+]?[0-9]*[.,]?[0-9]+(?:[eE][-+]?[0-9]+)?$", money)) {
+            Double userMoney = Double.parseDouble(money);
+
+            if(userMoney <= 0 || bankAccountEUR.getUserMoneyEUR() < userMoney) {
+                if(userMoney <= 0) {
+                    model.addAttribute("moneyError", "Некорректная сумма пополнения");
+                }
+
+                if (bankAccountEUR.getUserMoneyEUR() < userMoney) {
+                    model.addAttribute("moneyError", "Недостаточно средств");
+                }
+
+                return "EURtoBYN";
             }
 
-            if (bankAccountEUR.getUserMoneyEUR() < money) {
-                model.addAttribute("moneyError", "Недостаточно средств");
-            }
+            bankAccountService.convertEURtoBYN(user, bankAccount, bankAccountEUR, userMoney);
+        } else {
+            model.addAttribute("moneyError", "Некорректная сумма пополнения");
 
             return "EURtoBYN";
         }
-
-        bankAccountService.convertEURtoBYN(user, bankAccount, bankAccountEUR, money);
 
         return "redirect:/user/internetBanking";
     }

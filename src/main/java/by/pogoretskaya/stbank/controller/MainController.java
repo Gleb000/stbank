@@ -1,9 +1,12 @@
 package by.pogoretskaya.stbank.controller;
 
+import by.pogoretskaya.stbank.domain.BankAccount;
 import by.pogoretskaya.stbank.domain.Message;
 import by.pogoretskaya.stbank.domain.User;
 import by.pogoretskaya.stbank.domain.UserInfo;
+import by.pogoretskaya.stbank.repos.BankAccountRepo;
 import by.pogoretskaya.stbank.repos.MessageRepo;
+import by.pogoretskaya.stbank.repos.UserInfoRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -26,11 +29,17 @@ public class MainController {
     @Autowired
     private MessageRepo messageRepo;
 
+    @Autowired
+    private BankAccountRepo bankAccountRepo;
+
+    @Autowired
+    private UserInfoRepo userInfoRepo;
+
     @Value("${upload.path}")
     private String uploadPath;
 
     @GetMapping("/")
-    public String greeting(Map<String, Object> model, UserInfo userInfo) {
+    public String greeting(Model model) {
         return "greeting";
     }
 

@@ -10,7 +10,7 @@ public class BankAccountEUR {
     public Long id;
 
     private String userAccountEUR;
-    private int userMoneyEUR;
+    private Double userMoneyEUR;
 
     public Long getId() {
         return id;
@@ -28,11 +28,11 @@ public class BankAccountEUR {
         this.userAccountEUR = userAccountEUR;
     }
 
-    public int getUserMoneyEUR() {
+    public Double getUserMoneyEUR() {
         return userMoneyEUR;
     }
 
-    public void setUserMoneyEUR(int userMoneyEUR) {
+    public void setUserMoneyEUR(Double userMoneyEUR) {
         this.userMoneyEUR = userMoneyEUR;
     }
 }

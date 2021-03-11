@@ -21,12 +21,12 @@ public class BankCreditService {
     @Autowired
     private UserRepo userRepo;
 
-    public void addCredit(User user, BankAccount bankAccount, BankCredit bankCredit, int money) {
+    public void addCredit(User user, BankAccount bankAccount, BankCredit bankCredit, Double money) {
 
         if(money > 0) {
             bankCredit.setId(user.getId());
-            bankCredit.setCreditSum(money);
-            bankCredit.setPaidOut(0);
+            bankCredit.setCreditSum(money + (money*0.2));
+            bankCredit.setPaidOut(0.0);
 
             bankAccount = bankAccountRepo.getOne(user.getId());
 
@@ -37,20 +37,20 @@ public class BankCreditService {
         }
     }
 
-    public void payOffCredit(User user, BankAccount bankAccount, BankCredit bankCredit, int money) {
+    public void payOffCredit(User user, BankAccount bankAccount, BankCredit bankCredit, Double money) {
 
         bankAccount = bankAccountRepo.getOne(user.getId());
         bankCredit = bankCreditRepo.getOne(user.getId());
 
-        if(money > 0 && money <= (bankCredit.getCreditSum() - bankCredit.getPaidOut())) {
-            bankAccount.setUserMoney(bankAccount.getUserMoney() - money);
-            bankCredit.setPaidOut(bankCredit.getPaidOut() + money);
-            if(bankCredit.getPaidOut() == bankCredit.getCreditSum()) {
-                bankCreditRepo.delete(bankCredit);
-            } else {
-                bankCreditRepo.save(bankCredit);
-            }
-            bankAccountRepo.save(bankAccount);
+        bankAccount.setUserMoney(bankAccount.getUserMoney() - money);
+        bankCredit.setPaidOut(bankCredit.getPaidOut() + money);
+
+        if(bankCredit.getPaidOut().equals(bankCredit.getCreditSum())) {
+            bankCreditRepo.delete(bankCredit);
+        } else {
+            bankCreditRepo.save(bankCredit);
         }
+
+        bankAccountRepo.save(bankAccount);
     }
 }

@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.regex.Pattern;
+
 @Controller
 @RequestMapping("/user")
 public class BankCreditController {
@@ -96,47 +98,42 @@ public class BankCreditController {
             BankAccount bankAccount,
             BankCredit bankCredit,
             Model model,
-            @RequestParam Integer money
+            @RequestParam String money
     ) {
-        if(money == null) {
-            userInfo = userInfoRepo.getOne(user.getId());
-            bankAccount = bankAccountRepo.getOne(user.getId());
+        userInfo = userInfoRepo.getOne(user.getId());
+        bankAccount = bankAccountRepo.getOne(user.getId());
 
-            model.addAttribute("firstName", userInfo.getFirstName());
-            model.addAttribute("lastName", userInfo.getLastName());
-            model.addAttribute("patronymic", userInfo.getPatronymic());
-            model.addAttribute("bankAccount", bankAccount.getUserAccount());
+        model.addAttribute("firstName", userInfo.getFirstName());
+        model.addAttribute("lastName", userInfo.getLastName());
+        model.addAttribute("patronymic", userInfo.getPatronymic());
+        model.addAttribute("bankAccount", bankAccount.getUserAccount());
 
-            model.addAttribute("moneyError", "Не указана сумма кредита");
+        if(Pattern.matches("^[-+]?[0-9]*[.,]?[0-9]+(?:[eE][-+]?[0-9]+)?$", money)) {
+            Double userMoney = Double.parseDouble(money);
+
+            if(userMoney < 0 || (userMoney > 0 && userMoney < 100) || userMoney > 5000) {
+
+                if(userMoney < 0) {
+                    model.addAttribute("moneyError", "Сумма кредита меньше нуля");
+                }
+
+                if(userMoney > 0 && userMoney < 100) {
+                    model.addAttribute("moneyError", "Взятие кредита на сумму менее 100 рублей невозможно");
+                }
+
+                if(userMoney > 5000) {
+                    model.addAttribute("moneyError", "Взятие кредита на сумму более 5000 рублей невозможно");
+                }
+
+                return "addCredit";
+            }
+
+            bankCreditService.addCredit(user, bankAccount, bankCredit, userMoney);
+        } else {
+            model.addAttribute("moneyError", "некорректная сумма пополнения");
 
             return "addCredit";
         }
-
-        if(money < 0 || (money > 0 && money < 100) || money > 5000) {
-            userInfo = userInfoRepo.getOne(user.getId());
-            bankAccount = bankAccountRepo.getOne(user.getId());
-
-            model.addAttribute("firstName", userInfo.getFirstName());
-            model.addAttribute("lastName", userInfo.getLastName());
-            model.addAttribute("patronymic", userInfo.getPatronymic());
-            model.addAttribute("bankAccount", bankAccount.getUserAccount());
-
-            if(money < 0) {
-                model.addAttribute("moneyError", "Сумма кредита указана некорректно");
-            }
-
-            if(money > 0 && money < 100) {
-                model.addAttribute("moneyError", "Взятие кредита на сумму менее 100 рублей невозможно");
-            }
-
-            if(money > 5000) {
-                model.addAttribute("moneyError", "Взятие кредита на сумму более 5000 рублей невозможно");
-            }
-
-            return "addCredit";
-        }
-
-        bankCreditService.addCredit(user, bankAccount, bankCredit, money);
 
         return "redirect:/user/creditInfo";
     }
@@ -200,6 +197,8 @@ public class BankCreditController {
         model.addAttribute("credit", bankCredit.getCreditSum());
         model.addAttribute("paidOut", bankCredit.getPaidOut());
 
+        model.addAttribute("leftToPay", Double.toString(bankCredit.getCreditSum() - bankCredit.getPaidOut()));
+
         return "payCredit";
     }
 
@@ -209,39 +208,48 @@ public class BankCreditController {
             BankAccount bankAccount,
             BankCredit bankCredit,
             Model model,
-            @RequestParam Integer money
+            @RequestParam String money
     ) {
         bankCredit = bankCreditRepo.getOne(user.getId());
+        bankAccount = bankAccountRepo.getOne(user.getId());
 
-        if(money == null) {
-            model.addAttribute("credit", bankCredit.getCreditSum());
-            model.addAttribute("paidOut", bankCredit.getPaidOut());
+        model.addAttribute("credit", bankCredit.getCreditSum());
+        model.addAttribute("paidOut", bankCredit.getPaidOut());
 
-            model.addAttribute("moneyError", "Сумма пополнения не указана");
+        model.addAttribute("leftToPay", Double.toString(bankCredit.getCreditSum() - bankCredit.getPaidOut()));
+
+        if(Pattern.matches("^[-+]?[0-9]*[.,]?[0-9]+(?:[eE][-+]?[0-9]+)?$", money)) {
+            Double userMoney = Double.parseDouble(money);
+
+            if(userMoney < 0 || (userMoney > 0 && userMoney < 1) || userMoney > (bankCredit.getCreditSum() - bankCredit.getPaidOut()) || userMoney > bankAccount.getUserMoney()) {
+                model.addAttribute("credit", bankCredit.getCreditSum());
+                model.addAttribute("paidOut", bankCredit.getPaidOut());
+
+                if(userMoney < 0) {
+                    model.addAttribute("moneyError", "Сумма погашения меньше нуля");
+                }
+
+                if(userMoney > 0 && userMoney < 1) {
+                    model.addAttribute("moneyError", "Сумма погашения должна превышать 1 рубль");
+                }
+
+                if(userMoney > (bankCredit.getCreditSum() - bankCredit.getPaidOut())) {
+                    model.addAttribute("moneyError", "Сумма погашения меньше введенной вами суммы");
+                }
+
+                if(userMoney > bankAccount.getUserMoney()) {
+                    model.addAttribute("moneyError", "Недостаточно средств");
+                }
+
+                return "payCredit";
+            }
+
+            bankCreditService.payOffCredit(user, bankAccount, bankCredit, userMoney);
+        } else {
+            model.addAttribute("moneyError", "Сумма погашения указана некорректно");
 
             return "payCredit";
         }
-
-        if(money < 0 || (money > 0 && money < 1) || money > (bankCredit.getCreditSum() - bankCredit.getPaidOut())) {
-            model.addAttribute("credit", bankCredit.getCreditSum());
-            model.addAttribute("paidOut", bankCredit.getPaidOut());
-
-            if(money < 0) {
-                model.addAttribute("moneyError", "Сумма погашения указана некорректно");
-            }
-
-            if(money > 0 && money < 1) {
-                model.addAttribute("moneyError", "Сумма погашения должна превышать 1 рубль");
-            }
-
-            if(money > (bankCredit.getCreditSum() - bankCredit.getPaidOut())) {
-                model.addAttribute("moneyError", "Сумма погашения меньше введенной вами суммы");
-            }
-
-            return "payCredit";
-        }
-
-        bankCreditService.payOffCredit(user, bankAccount, bankCredit, money);
 
         return "redirect:/user/credit";
     }

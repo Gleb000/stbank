@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 @Controller
 @RequestMapping("/user")
@@ -80,19 +81,39 @@ public class PiggiBankController {
             Model model,
             @RequestParam("piggiBankName") String piggiBankName,
             @RequestParam("targetDate") String targetDate,
-            @RequestParam("money") Integer money
+            @RequestParam("money") String money
     ) {
         UserInfo userInfo = userInfoRepo.getOne(user.getId());
 
+        model.addAttribute("firstName", userInfo.getFirstName());
+        model.addAttribute("lastName", userInfo.getLastName());
+        model.addAttribute("patronymic", userInfo.getPatronymic());
+
         Map<String, String> errors = ControllerUtils.getErrors(bindingResult);
 
-        if(money == null || bindingResult.hasErrors()) {
-            model.addAttribute("firstName", userInfo.getFirstName());
-            model.addAttribute("lastName", userInfo.getLastName());
-            model.addAttribute("patronymic", userInfo.getPatronymic());
-
-            if(money == null) {
+        if(!Pattern.matches("^[-+]?[0-9]*[.,]?[0-9]+(?:[eE][-+]?[0-9]+)?$", money) || bindingResult.hasErrors()) {
+            if(!Pattern.matches("^[-+]?[0-9]*[.,]?[0-9]+(?:[eE][-+]?[0-9]+)?$", money)) {
                 model.addAttribute("moneyError", "Некорректная сумма накопления");
+            } else {
+                Double userMoney = Double.parseDouble(money);
+
+                if(userMoney < 0 || (userMoney > 0 && userMoney < 30) || userMoney > 10000) {
+                    model.addAttribute("currentMoney", null);
+
+                    if (userMoney < 0) {
+                        model.addAttribute("moneyError", "Сумма накопления меньше нуля");
+                    }
+
+                    if (userMoney > 0 && userMoney < 30) {
+                        model.addAttribute("moneyError", "Сумма накопления не может быть меньше 30 рублей");
+                    }
+
+                    if (userMoney > 10000) {
+                        model.addAttribute("moneyError", "Сумма накопления не может быть больше 10 000 рублей");
+                    }
+                } else {
+                    model.addAttribute("currentMoney", money);
+                }
             }
 
             if(bindingResult.hasErrors()) {
@@ -100,34 +121,38 @@ public class PiggiBankController {
             }
 
             return "addPiggiBank";
+        } else {
+            Double userMoney = Double.parseDouble(money);
+
+            if (bindingResult.hasErrors() || userMoney < 0 || (userMoney > 0 && userMoney < 30) || userMoney > 10000) {
+
+                if(bindingResult.hasErrors()) {
+                    model.mergeAttributes(errors);
+                }
+
+                if(userMoney < 0 || (userMoney > 0 && userMoney < 30) || userMoney > 10000) {
+                    model.addAttribute("currentMoney", null);
+
+                    if (userMoney < 0) {
+                        model.addAttribute("moneyError", "Сумма накопления меньше нуля");
+                    }
+
+                    if (userMoney > 0 && userMoney < 30) {
+                        model.addAttribute("moneyError", "Сумма накопления не может быть меньше 30 рублей");
+                    }
+
+                    if (userMoney > 10000) {
+                        model.addAttribute("moneyError", "Сумма накопления не может быть больше 10 000 рублей");
+                    }
+                } else {
+                    model.addAttribute("currentMoney", money);
+                }
+
+                return "addPiggiBank";
+            }
+
+            piggiBankService.addPiggiBank(user, piggiBank, piggiBankName, targetDate, userMoney);
         }
-
-        if (bindingResult.hasErrors() || money < 0 || (money > 0 && money < 30) || money > 10000) {
-
-            model.addAttribute("firstName", userInfo.getFirstName());
-            model.addAttribute("lastName", userInfo.getLastName());
-            model.addAttribute("patronymic", userInfo.getPatronymic());
-
-            if(bindingResult.hasErrors()) {
-                model.mergeAttributes(errors);
-            }
-
-            if(money < 0) {
-                model.addAttribute("moneyError", "Некорректная сумма накопления");
-            }
-
-            if((money > 0 && money < 30)) {
-                model.addAttribute("moneyError", "Сумма накопления не может быть меньше 30 рублей");
-            }
-
-            if(money > 10000) {
-                model.addAttribute("moneyError", "Сумма накопления не может быть больше 10 000 рублей");
-            }
-
-            return "addPiggiBank";
-        }
-
-        piggiBankService.addPiggiBank(user, piggiBank, piggiBankName, targetDate, money);
 
         return "redirect:/user/piggiBank";
     }
@@ -178,56 +203,50 @@ public class PiggiBankController {
     public String topUpPiggi(
             @AuthenticationPrincipal User user,
             Model model,
-            @RequestParam("money") Integer money
+            @RequestParam("money") String money
     ) {
         UserInfo userInfo = userInfoRepo.getOne(user.getId());
         BankAccount bankAccount = bankAccountRepo.getOne(user.getId());
         PiggiBank piggiBank = piggiBankRepo.getOne(user.getId());
 
-        if(money == null) {
-            model.addAttribute("firstName", userInfo.getFirstName());
-            model.addAttribute("lastName", userInfo.getLastName());
-            model.addAttribute("patronymic", userInfo.getPatronymic());
+        model.addAttribute("firstName", userInfo.getFirstName());
+        model.addAttribute("lastName", userInfo.getLastName());
+        model.addAttribute("patronymic", userInfo.getPatronymic());
 
-            model.addAttribute("bankAcc", bankAccount.getUserAccount());
-            model.addAttribute("userMoney", bankAccount.getUserMoney());
+        model.addAttribute("bankAcc", bankAccount.getUserAccount());
+        model.addAttribute("userMoney", bankAccount.getUserMoney());
 
-            model.addAttribute("piggiName", piggiBank.getPiggiBankName());
-            model.addAttribute("piggiBankMoney", piggiBank.getPiggiBankMoney());
-            model.addAttribute("date", piggiBank.getTargetDate());
-            model.addAttribute("money", piggiBank.getTargetMoney());
+        model.addAttribute("piggiName", piggiBank.getPiggiBankName());
+        model.addAttribute("piggiBankMoney", piggiBank.getPiggiBankMoney());
+        model.addAttribute("date", piggiBank.getTargetDate());
+        model.addAttribute("money", piggiBank.getTargetMoney());
 
-            model.addAttribute("moneyError", "Сумма пополнения не указана");
+        if(Pattern.matches("^[-+]?[0-9]*[.,]?[0-9]+(?:[eE][-+]?[0-9]+)?$", money)) {
+            Double userMoney = Double.parseDouble(money);
 
-            return "topUpPiggiBank";
-        }
+            if(userMoney < 0 || (userMoney >= 0 && userMoney < 1) || userMoney > piggiBank.getTargetMoney() - piggiBank.getPiggiBankMoney() || bankAccount.getUserMoney() < userMoney) {
+                if(userMoney < 0) {
+                    model.addAttribute("moneyError", "Сумма пополнения меньше нуля");
+                }
 
-        if(money < 0 || (money > 0 && money < 1) || money > piggiBank.getTargetMoney() - piggiBank.getPiggiBankMoney()) {
-            model.addAttribute("firstName", userInfo.getFirstName());
-            model.addAttribute("lastName", userInfo.getLastName());
-            model.addAttribute("patronymic", userInfo.getPatronymic());
+                if(userMoney >= 0 && userMoney < 1) {
+                    model.addAttribute("moneyError", "Сумма пополнения должна превышать 1 рубль");
+                }
 
-            model.addAttribute("bankAcc", bankAccount.getUserAccount());
-            model.addAttribute("userMoney", bankAccount.getUserMoney());
+                if(userMoney > piggiBank.getTargetMoney() - piggiBank.getPiggiBankMoney()) {
+                    model.addAttribute("moneyError", "Нельзя накопить сумму, выше поставленной цели");
+                }
 
-            model.addAttribute("piggiName", piggiBank.getPiggiBankName());
-            model.addAttribute("piggiBankMoney", piggiBank.getPiggiBankMoney());
-            model.addAttribute("date", piggiBank.getTargetDate());
-            model.addAttribute("money", piggiBank.getTargetMoney());
+                if(bankAccount.getUserMoney() < userMoney) {
+                    model.addAttribute("moneyError", "Недостаточно средств");
+                }
 
-            if(money < 0) {
-                model.addAttribute("moneyError", "Сумма пополнения указана некорректно");
+                return "topUpPiggiBank";
+            } else {
+                piggiBankService.topUpPiggiBank(user, piggiBank, userMoney);
             }
-
-            if(money > 0 && money < 1) {
-                model.addAttribute("moneyError", "Сумма пополнения должна превышать 1 рубль");
-            }
-
-            if(money > piggiBank.getTargetMoney() - piggiBank.getPiggiBankMoney()) {
-                model.addAttribute("moneyError", "Нельзя накопить сумму, выше поставленной цели");
-            }
-
-            piggiBankService.topUpPiggiBank(user, piggiBank, money);
+        } else {
+            model.addAttribute("moneyError", "Сумма пополнения указана некорректно");
 
             return "topUpPiggiBank";
         }
@@ -250,14 +269,17 @@ public class PiggiBankController {
         model.addAttribute("piggiName", piggiBank.getPiggiBankName());
         model.addAttribute("piggiBankMoney", piggiBank.getPiggiBankMoney());
 
+        model.addAttribute("allMoney", piggiBank.getPiggiBankMoney() + bankAccount.getUserMoney());
+
         return "crashPiggiBank";
     }
 
     @PostMapping("crashPiggiBank")
     public String crashPiggiBank(@AuthenticationPrincipal User user) {
         PiggiBank piggiBank = piggiBankRepo.getOne(user.getId());
+        BankAccount bankAccount = bankAccountRepo.getOne(user.getId());
 
-        piggiBankService.crashPiggi(user, piggiBank);
+        piggiBankService.crashPiggi(user,bankAccount, piggiBank);
 
         return "redirect:/user/internetBanking";
     }

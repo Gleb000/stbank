@@ -13,7 +13,7 @@
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label-lg">Сумма на счету:</label>
                 <div class="col-sm-8">
-                    <label class="col-form-label-lg">${userMoney}</label>
+                    <label class="col-form-label-lg">${userMoney} BYN</label>
                 </div>
             </div>
             <div class="form-group row py-4">
@@ -23,7 +23,7 @@
                 </div>
                 <label class="col-sm-4 col-form-label-lg">Накоплено:</label>
                 <div class="col-sm-8">
-                    <label class="col-form-label-lg">${piggiBankMoney}</label>
+                    <label class="col-form-label-lg">${piggiBankMoney} BYN</label>
                 </div>
                 <label class="col-sm-4 col-form-label-lg">Дата конца накопления:</label>
                 <div class="col-sm-8">
@@ -31,13 +31,13 @@
                 </div>
                 <label class="col-sm-4 col-form-label-lg">Цель накопления:</label>
                 <div class="col-sm-8">
-                    <label class="col-form-label-lg">${money}</label>
+                    <label class="col-form-label-lg">${money} BYN</label>
                 </div>
             </div>
             <div class="form-group row py-2">
                 <label class="col-sm-4 col-form-label-lg ">Сумма пополнения:</label>
                 <div class="col-sm-6">
-                    <input type="number" name="money"
+                    <input type="text" name="money" placeholder="BYN"
                            class="form-control form-control-lg ${(moneyError??)?string('is-invalid', '')}"/>
                     <#if moneyError??>
                         <div class="invalid-feedback">

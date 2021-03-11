@@ -3,28 +3,28 @@ create sequence hibernate_sequence start 1 increment 1;
 create table bank_account (
     id int8 not null,
     user_account varchar(255),
-    user_money int4 not null,
+    user_money float8,
     primary key (id)
 );
 
 create table bank_accounteur (
     id int8 not null,
     user_accounteur varchar(255),
-    user_moneyeur int4 not null,
+    user_moneyeur float8,
     primary key (id)
 );
 
 create table bank_accountusd (
     id int8 not null,
     user_accountusd varchar(255),
-    user_moneyusd int4 not null,
+    user_moneyusd float8,
     primary key (id)
 );
 
 create table bank_credit (
     id int8 not null,
-    credit_sum int4 not null,
-    paid_out int4 not null,
+    credit_sum float8,
+    paid_out float8,
     primary key (id)
 );
 
@@ -39,10 +39,10 @@ create table message (
 
 create table piggi_bank (
     id int8 not null,
-    piggi_bank_money int4 not null,
+    piggi_bank_money float8,
     piggi_bank_name varchar(255),
     target_date varchar(255),
-    target_money int4,
+    target_money float8,
     primary key (id)
 );
 
