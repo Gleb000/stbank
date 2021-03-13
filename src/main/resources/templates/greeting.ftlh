@@ -1,112 +1,154 @@
+<#import "parts/login.ftlh" as l>
+<#include "parts/security.ftlh">
 <#import "parts/common.ftlh" as c>
 
 <@c.page>
-    <div>
-        <div id="carouselExampleIndicators" class="p-4 carousel slide" data-ride="carousel">
-            <ol class="carousel-indicators">
-                <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-                <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-                <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-            </ol>
+    <header class="site-header sticky-top py-1">
+        <nav class="container d-flex flex-column flex-md-row">
+            <a class="py-2 px-5 mx-3" href="/" aria-label="Product">
+                <img width="26" height="26" src="/img/logo.png">
+            </a>
+            <#if user??>
+                <a class="py-2 px-5 mx-3 d-none d-md-inline-block" href="/user/internetBanking">Интернет банкинг</a>
+                <a class="py-2 d-none d-md-inline-block" href="/user/userInfo">Профиль</a>
+            <#else>
+                <a class="py-2 px-5 mx-3 d-none d-md-inline-block" href="/login">Интернет банкинг</a>
+                <a class="py-2 d-none d-md-inline-block" href="/login">Профиль</a>
+            </#if>
+            <a class="py-2 px-5 mx-3 d-none d-md-inline-block" href="/bankInfo">О Банке</a>
+            <li class="nav-item dropdown d-none d-md-inline-block">
+                <a class="px-5 mx-4 nav-link dropdown-toggle" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Профиль
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
+                    <li><a class="dropdown-item" href="/user/allUserInformation">Информация об аккаунте</a></li>
+                    <li><a class="dropdown-item" href="/user/profile">Редактировать аккаунт</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <div class="px-1">
+                        <@l.logout />
+                    </div>
+                </ul>
+            </li>
+        </nav>
+    </header>
+
+    <main>
+        <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            </div>
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img src="/img/carousel1.png" width="1270" height="440" alt="">
+                    <img class="bd-placeholder-img" width="100%" height="100%" src="/img/carousel1.png" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
                 </div>
                 <div class="carousel-item">
-                    <img src="/img/carousel2.png" width="1270" height="440" alt="">
+                    <img class="bd-placeholder-img" width="100%" height="100%" src="/img/carousel2.png" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
                 </div>
                 <div class="carousel-item">
-                    <img src="/img/carousel3.png" width="1270" height="440" alt="">
+                    <img class="bd-placeholder-img" width="100%" height="100%" src="/img/carousel3.png" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
                 </div>
             </div>
-            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+            <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="sr-only">Previous</span>
-            </a>
-            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="sr-only">Next</span>
-            </a>
+                <span class="visually-hidden">Next</span>
+            </button>
         </div>
-        <div class="card-columns p-3">
-            <div class="card" style="width: 18rem;">
-                <img class="card-img-top" src="/img/money.png" alt="">
-                <div class="card-body">
-                    <p class="card-text font-italic">- от 23% годовых;</p>
-                    <p class="card-text font-italic">- до 5 000 рублей на срок до 3 лет;</p>
-                    <p class="card-text font-italic">- до 2 000 рублей без справки о доходах;</p>
-                    <p class="card-text font-italic">- предоставление кредита на банковскую карточку;</p>
-                    <p class="card-text font-italic">- без залога и поручителей;</p>
-                    <p class="card-text font-italic">- досрочное погашение без комиссий и ограничений.</p>
-                    <a href="/user/internetBanking" class="btn btn-success">Оформить</a>
+
+        <div class="container marketing">
+            <div class="row">
+                <div class="col-lg-4">
+                    <img width="300" height="300" src="/img/money.png">
+
+                    <h6 class="text-success">«ВАШИ ДЕНЬГИ»</h6>
+                    <p>&blacktriangleright; от 23% годовых;</p>
+                    <p>&blacktriangleright; до 5 000 рублей на срок до 3 лет;</p>
+                    <p>&blacktriangleright; предоставление кредита на счет;</p>
+                    <p>&blacktriangleright; без залога и поручителей;</p>
+                    <p>&blacktriangleright; досрочное погашение без комиссий и ограничений.</p>
+                    <#if user??>
+                        <p><a class="btn btn-outline-success" href="/user/credit">Подробнее &raquo;</a></p>
+                        <#else>
+                        <button class="btn btn-outline-success" disabled>Подробнее &raquo;</button>
+                            <p class="text-muted">Недоступно, пока вы не авторизируетесь</p>
+                    </#if>
+                </div>
+                <div class="col-lg-4">
+                    <img width="300" height="300" src="/img/fast.png">
+
+                    <h6 class="text-success">«БЫСТРЫЕ ПОКУПКИ»</h6>
+                    <p>&blacktriangleright; от 22% годовых;</p>
+                    <p>&blacktriangleright; без справки о доходах;</p>
+                    <p>&blacktriangleright; без первоначального взноса;</p>
+                    <p>&blacktriangleright; получение товара в день оформления кредита.</p>
+                    <#if user??>
+                        <p><a class="btn btn-outline-success" href="/user/credit">Подробнее &raquo;</a></p>
+                    <#else>
+                        <button class="btn btn-outline-success" disabled>Подробнее &raquo;</button>
+                        <p class="text-muted">Недоступно, пока вы не авторизируетесь</p>
+                    </#if>
+                </div>
+                <div class="col-lg-4">
+                    <img width="300" height="300" src="/img/fastOnl.png">
+
+                    <h6 class="text-success">«БЫСТРЫЕ ПОКУПКИ ОНЛАЙН»</h6>
+                    <p>&blacktriangleright; в онлайн-гипермаркете E-DOSTAVKA.BY на все товары в Корзине;</p>
+                    <p>&blacktriangleright; 36 месяцев;</p>
+                    <p>&blacktriangleright; 25% годовых;</p>
+                    <p>&blacktriangleright; до 5000 белорусских рублей;</p>
+                    <p>&blacktriangleright; без справки о доходах;</p>
+                    <p>&blacktriangleright; без первоначального взноса;</p>
+                    <p>&blacktriangleright; досрочное погашение без комиссий и ограничений.</p>
                 </div>
             </div>
-            <div class="card" style="width: 18rem;">
-                <img class="card-img-top" src="/img/fast.png" alt="">
-                <div class="card-body">
-                    <p class="card-text font-italic">- от 22% годовых;</p>
-                    <p class="card-text font-italic">- без справки о доходах;</p>
-                    <p class="card-text font-italic">- без первоначального взноса;</p>
-                    <p class="card-text font-italic">- получение товара в день оформления кредита.</p>
-                    <a href="/user/internetBanking" class="btn btn-success">Оформить</a>
+
+            <hr class="featurette-divider">
+
+            <div class="row featurette">
+                <div class="col-md-7">
+                    <h2 class="featurette-heading">Приложение банка</h2>
+                    <h3><span class="text-muted">Вы сможете:</span></h3>
+                    <p class="lead">&triangleright; Следить за своими финансами</p>
+                    <p class="lead">&triangleright; Совершать платежи из дома в одно касание</p>
+                    <p class="lead">&triangleright; Переводить деньги на карты</p>
+                    <h4>Доступно в: <span class="text-info">Google play</span> и <span class="text-info">App Store</span></h4>
+                </div>
+                <div class="col-md-5">
+                    <img width="400" height="400" src="/img/prilSTB.png">
                 </div>
             </div>
-            <div class="card" style="width: 18rem;">
-                <img class="card-img-top" src="/img/fastOnl.png" alt="">
-                <div class="card-body">
-                    <p class="card-text font-italic">- в онлайн-гипермаркете E-DOSTAVKA.BY на все товары в Корзине;</p>
-                    <p class="card-text font-italic">- от 22% годовых;</p>
-                    <p class="card-text font-italic">- до 3500 белорусских рублей;</p>
-                    <p class="card-text font-italic">- без справки о доходах;</p>
-                    <p class="card-text font-italic">- без первоначального взноса;</p>
-                    <p class="card-text font-italic">- досрочное погашение без комиссий и ограничений.</p>
+
+            <hr class="featurette-divider">
+
+            <div class="row featurette">
+                <div class="col-md-7 order-md-2">
+                    <h2 class="featurette-heading">Копилка</h2>
+                    <h3><span class="text-muted">Попробуйте в нашем банке</span></h3>
+                    <p class="lead">Копилка - это очень удобно! Возможность накапливать деньги для своей мечты, воплотите в реальность то, чего хотели очень давно</p>
+                    <#if user??>
+                        <a class="btn btn-outline-success" href="/user/addPiggiBank">Открыть копилку &raquo;</a>
+                        <#else>
+                            <button class="btn btn-outline-success" disabled>Открыть копилку &raquo;</button>
+                            <p class="text-muted">Недоступно, пока вы не авторизируетесь</p>
+                    </#if>
+                </div>
+                <div class="col-md-5 order-md-1">
+                    <img width="400" height="400" src="/img/piggiBank.jpg">
                 </div>
             </div>
+
+            <hr class="featurette-divider">
+
         </div>
-        <div class="modal fade" id="ModalWindow1" tabindex="-1" aria-labelledby="ModalWindow1" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Предупреждение</h5>
-                        <a class="btn btn-lg text-dark" type="button" href="/">&times;</a>
-                    </div>
-                    <div class="modal-body">
-                        У вашего профиля не заполнена информация о пользователе,
-                        не указав ее вы не сможете совершать большинство операций на сайте,
-                        перейдите по ссылке и заполните профиль
-                    </div>
-                    <div class="modal-footer">
-                        <a href="/user/addUserInfo" class="btn btn-success" role="button" aria-pressed="true">Заполнить профиль</a>
-                        <a href="/" class="btn btn-success" role="button" aria-pressed="true">Позже</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal fade" id="ModalWindow2" tabindex="-1" aria-labelledby="ModalWindow2" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Предупреждение</h5>
-                        <a class="btn btn-lg text-dark" type="button" href="/">&times;</a>
-                    </div>
-                    <div class="modal-body">
-                        На ваше имя не оформлен счет,
-                        перейдите по ссылке и оформите его,
-                        так как без оформления вы не сможете совершать платежные операции на сайте
-                    </div>
-                    <div class="modal-footer">
-                        <a href="/user/addAccInfo" class="btn btn-success" role="button" aria-pressed="true">Оформить счет</a>
-                        <a href="/" class="btn btn-success" role="button" aria-pressed="true">Позже</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div>
-            <img src="/img/prilSTB.png" width="1110" height="500" alt="Card image">
-        </div>
-        <div class="p-5">
-            <p class="card-text text-secondary">2017 «СтатусБанк»</p>
-            <p class="card-text text-secondary">Регистрационный номер в Едином государственном регистре юридических лиц и индивидуальных предпринимателей №807000043.</p>
-        </div>
-    </div>
+
+        <footer class="container">
+            <p class="text-muted">&copy; 2017 «СтатусБанк»</p>
+            <p class="text-muted">Регистрационный номер в Едином государственном регистре юридических лиц и индивидуальных предпринимателей №807000043.</p>
+        </footer>
+    </main>
 </@c.page>

@@ -1,56 +1,131 @@
+<#import "parts/login.ftlh" as l>
+<#include "parts/security.ftlh">
 <#import "parts/common.ftlh" as c>
 
 <@c.page>
-    <form method="get">
-        <div class="form-group row">
-            <label class="col-sm-3 col-form-label-lg">Пользователь:</label>
-            <div class="col-sm-9">
-                <label class="col-form-label-lg">${lastName} </label>
-                <label class="col-form-label-lg">${firstName} </label>
-                <label class="col-form-label-lg">${patronymic}</label>
-            </div>
-        </div>
-        <div class="form-group row">
-            <label class="col-sm-3 col-form-label-lg">Счет в банке:</label>
-            <div class="col-sm-7">
-                <label class="col-form-label-lg">${userAcc}</label>
-            </div>
-        </div>
-        <div class="form-group row">
-            <label class="col-sm-3 col-form-label-lg">Сумма на счету:</label>
-            <div class="col-sm-7">
-                <label class="col-form-label-lg">${userMoney} BYN</label>
-            </div>
-        </div>
-        <#if piggiBank??>
-            <div class="form-group row">
-                <label class="col-sm-3 col-form-label-lg">Статус копилки:</label>
-                <div class="col-sm-7">
-                    <label class="col-form-label-lg">Открыта</label>
+    <header class="site-header sticky-top py-1">
+        <nav class="container d-flex flex-column flex-md-row">
+            <a class="py-2 px-5 mx-3" href="/" aria-label="Product">
+                <img width="26" height="26" src="/img/logo.png">
+            </a>
+            <#if user??>
+                <a class="py-2 px-5 mx-3 d-none d-md-inline-block" href="/user/internetBanking">Интернет банкинг</a>
+                <a class="py-2 d-none d-md-inline-block" href="/user/userInfo">Профиль</a>
+            <#else>
+                <a class="py-2 px-5 mx-3 d-none d-md-inline-block" href="/login">Интернет банкинг</a>
+                <a class="py-2 d-none d-md-inline-block" href="/login">Профиль</a>
+            </#if>
+            <a class="py-2 px-5 mx-3 d-none d-md-inline-block" href="/bankInfo">О Банке</a>
+            <li class="nav-item dropdown d-none d-md-inline-block">
+                <a class="px-5 mx-4 nav-link dropdown-toggle" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Профиль
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
+                    <li><a class="dropdown-item" href="/user/allUserInformation">Информация об аккаунте</a></li>
+                    <li><a class="dropdown-item" href="/user/profile">Редактировать аккаунт</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <div class="px-1">
+                        <@l.logout />
+                    </div>
+                </ul>
+            </li>
+        </nav>
+    </header>
+
+    <main>
+        <form method="post">
+            <div class="container py-2">
+                <div class="row">
+                    <div class="col-sm">
+                    </div>
+                    <div class="col col-lg-4">
+                        <div class="py-4 px-5 mx-5">
+                            <img width="100" height="100" src="/img/logo2.png">
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                    </div>
                 </div>
             </div>
-            <div class="form-group row">
-                <label class="col-sm-3 col-form-label-lg">Денег накоплено:</label>
-                <div class="col-sm-7">
-                    <label class="col-form-label-lg">${piggiMoney} BYN</label>
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm">
+                    </div>
+                    <div class="col col-lg-3">
+                        <h5 class="text-success px-5 mx-3">Копилка</h5>
+                    </div>
+                    <div class="col-sm">
+                    </div>
                 </div>
             </div>
-            <div class="form-group-row">
-                <a href="/user/piggiBankInfo" class="btn btn-success" aria-pressed="true">Информация о копилке</a>
-                <a class="btn btn-success" href="/user/internetBanking" aria-pressed="true">Назад</a>
-            </div>
-        <#else>
-            <div class="form-group row">
-                <label class="col-sm-3 col-form-label-lg">Статус копилки:</label>
-                <div class="col-sm-7">
-                    <label class="col-form-label-lg">Закрыта</label>
+            <div class="container py-2">
+                <div class="row">
+                    <div class="col-sm">
+                    </div>
+                    <div class="col col-lg-6">
+                        <div class="card border-success">
+                            <div class="card-header">Справочная информация</div>
+                            <div class="card-body">
+                                <h6>Требователь: <label class="text-success">${lastName} ${firstName} ${patronymic}</label></h6>
+                                <h6>Счет пользователя: <label class="text-success">${userAcc}</label></h6>
+                                <h6>Счет пользователя: <label class="text-success">${userAcc}</label></h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                    </div>
                 </div>
             </div>
-            <div class="form-group-row">
-                <a href="/user/addPiggiBank" class="btn btn-success" aria-pressed="true">Открыть копилку</a>
-                <a class="btn btn-success" href="/user/internetBanking" aria-pressed="true">Назад</a>
+            <#if piggiBank??>
+                <div class="container py-2">
+                    <div class="row">
+                        <div class="col-sm">
+                        </div>
+                        <div class="col col-lg-6">
+                            <div class="card border-success">
+                                <div class="card-header">Информация о копилке</div>
+                                <div class="card-body">
+                                    <h6>Название копилки: <label class="text-success">${piggiBank}</label></h6>
+                                    <h6>Дата накопления: <label class="text-success">${targetDate}</label></h6>
+                                    <h6>Цель накопления: <label class="text-success">${targetMoney}</label></h6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm">
+                        </div>
+                    </div>
+                </div>
+            </#if>
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm">
+                    </div>
+                    <div class="col col-lg-6">
+                        <#if piggiBank??>
+                            <a class="btn btn-outline-success" href="/user/piggiBankInfo">Информация о копилке &raquo;</a>
+                            <a class="btn btn-success" href="/user/internetBanking">Назад &xlArr;</a>
+                        <#else>
+                            <a class="btn btn-outline-success" href="/user/addPiggiBank">Открыть копилку &raquo;</a>
+                            <a class="btn btn-success" href="/user/internetBanking">Назад &xlArr;</a>
+                        </#if>
+                        <hr class="featurette-divider">
+                    </div>
+                    <div class="col-sm">
+                    </div>
+                </div>
             </div>
-        </#if>
-        <input type="hidden" name="_csrf" value="${_csrf.token}" />
-    </form>
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm">
+                    </div>
+                    <div class="col col-lg-3">
+                        <p class="px-4 text-muted">&copy; 2017 «СтатусБанк»</p>
+                    </div>
+                    <div class="col-sm">
+                    </div>
+                </div>
+            </div>
+            <input type="hidden" name="_csrf" value="${_csrf.token}" />
+        </form>
+    </main>
 </@c.page>

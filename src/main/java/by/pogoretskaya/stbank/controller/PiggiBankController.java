@@ -54,7 +54,8 @@ public class PiggiBankController {
             PiggiBank piggiBank = piggiBankRepo.getOne(user.getId());
 
             model.addAttribute("piggiBank", piggiBank.getPiggiBankName());
-            model.addAttribute("piggiMoney", piggiBank.getPiggiBankMoney());
+            model.addAttribute("targetDate", piggiBank.getTargetDate());
+            model.addAttribute("targetMoney", piggiBank.getTargetMoney());
         } else {
             model.addAttribute("piggiBank", null);
         }
@@ -64,11 +65,27 @@ public class PiggiBankController {
 
     @GetMapping("addPiggiBank")
     public String getPigBank(Model model, @AuthenticationPrincipal User user) {
-        UserInfo userInfo = userInfoRepo.getOne(user.getId());
+        if(userInfoRepo.existsById(user.getId())) {
+            UserInfo userInfo = userInfoRepo.getOne(user.getId());
 
-        model.addAttribute("firstName", userInfo.getFirstName());
-        model.addAttribute("lastName", userInfo.getLastName());
-        model.addAttribute("patronymic", userInfo.getPatronymic());
+            model.addAttribute("firstName", userInfo.getFirstName());
+        } else {
+            model.addAttribute("firstName", null);
+        }
+
+        if(bankAccountRepo.existsById(user.getId())) {
+            BankAccount bankAccount = bankAccountRepo.getOne(user.getId());
+
+            model.addAttribute("userBankAcc", bankAccount.getUserAccount());
+
+            UserInfo userInfo = userInfoRepo.getOne(user.getId());
+
+            model.addAttribute("firstName", userInfo.getFirstName());
+            model.addAttribute("lastName", userInfo.getLastName());
+            model.addAttribute("patronymic", userInfo.getPatronymic());
+        } else {
+            model.addAttribute("userBankAcc", null);
+        }
 
         return "addPiggiBank";
     }
@@ -251,7 +268,7 @@ public class PiggiBankController {
             return "topUpPiggiBank";
         }
 
-        return "redirect:/user/piggiBankInfo";
+        return "redirect:/user/internetBanking";
     }
 
     @GetMapping("crashPiggiBank")

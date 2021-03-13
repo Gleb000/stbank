@@ -29,32 +29,36 @@ public class UserInfoController {
 
     @GetMapping("userInfo")
     public String getUserInfo(Model model, @AuthenticationPrincipal User user) {
-        UserInfo userInf = userInfoRepo.getOne(user.getId());
+        if(userInfoRepo.existsById(user.getId())) {
+            UserInfo userInf = userInfoRepo.getOne(user.getId());
 
-        model.addAttribute("username", user.getUsername());
-        model.addAttribute("firstName", userInf.getFirstName());
-        model.addAttribute("lastName", userInf.getLastName());
-        model.addAttribute("patronymic", userInf.getPatronymic());
-        model.addAttribute("dateOfBirth", userInf.getDateOfBirth());
-        model.addAttribute("sex", userInf.getSex());
-        model.addAttribute("passportSeries", userInf.getPassportSeries());
-        model.addAttribute("passportNumber", userInf.getPassportNumber());
-        model.addAttribute("issuedBy", userInf.getIssuedBy());
-        model.addAttribute("dateOfIssue", userInf.getDateOfIssue());
-        model.addAttribute("identificationNumber", userInf.getIdentificationNumber());
-        model.addAttribute("placeOfBirth", userInf.getPlaceOfBirth());
-        model.addAttribute("cityOfResidence", userInf.getCityOfResidence());
-        model.addAttribute("address", userInf.getAddress());
-        model.addAttribute("homeNumber", userInf.getHomeNumber());
-        model.addAttribute("phoneNumber", userInf.getPhoneNumber());
-        model.addAttribute("workPlace", userInf.getWorkPlace());
-        model.addAttribute("position", userInf.getPosition());
-        model.addAttribute("registrationCity", userInf.getRegistrationCity());
-        model.addAttribute("registrationAddress", userInf.getRegistrationAddress());
-        model.addAttribute("maritalStatus", userInf.getMaritalStatus());
-        model.addAttribute("nationality", userInf.getNationality());
-        model.addAttribute("disability", userInf.getDisability());
-        model.addAttribute("monthlyEarnings", userInf.getMonthlyEarnings());
+            model.addAttribute("username", user.getUsername());
+            model.addAttribute("firstName", userInf.getFirstName());
+            model.addAttribute("lastName", userInf.getLastName());
+            model.addAttribute("patronymic", userInf.getPatronymic());
+            model.addAttribute("dateOfBirth", userInf.getDateOfBirth());
+            model.addAttribute("sex", userInf.getSex());
+            model.addAttribute("passportSeries", userInf.getPassportSeries());
+            model.addAttribute("passportNumber", userInf.getPassportNumber());
+            model.addAttribute("issuedBy", userInf.getIssuedBy());
+            model.addAttribute("dateOfIssue", userInf.getDateOfIssue());
+            model.addAttribute("identificationNumber", userInf.getIdentificationNumber());
+            model.addAttribute("placeOfBirth", userInf.getPlaceOfBirth());
+            model.addAttribute("cityOfResidence", userInf.getCityOfResidence());
+            model.addAttribute("address", userInf.getAddress());
+            model.addAttribute("homeNumber", userInf.getHomeNumber());
+            model.addAttribute("phoneNumber", userInf.getPhoneNumber());
+            model.addAttribute("workPlace", userInf.getWorkPlace());
+            model.addAttribute("position", userInf.getPosition());
+            model.addAttribute("registrationCity", userInf.getRegistrationCity());
+            model.addAttribute("registrationAddress", userInf.getRegistrationAddress());
+            model.addAttribute("maritalStatus", userInf.getMaritalStatus());
+            model.addAttribute("nationality", userInf.getNationality());
+            model.addAttribute("disability", userInf.getDisability());
+            model.addAttribute("monthlyEarnings", userInf.getMonthlyEarnings());
+        } else {
+            model.addAttribute("firstName", null);
+        }
 
         return "userInfo";
     }
@@ -72,29 +76,29 @@ public class UserInfoController {
             @Valid UserInfo userInf,
             BindingResult bindingResult,
             Model model,
-            @RequestParam String firstName,
-            @RequestParam String lastName,
-            @RequestParam String patronymic,
-            @RequestParam String dateOfBirth,
-            @RequestParam String sex,
-            @RequestParam String passportSeries,
-            @RequestParam String passportNumber,
-            @RequestParam String issuedBy,
-            @RequestParam String dateOfIssue,
-            @RequestParam String identificationNumber,
-            @RequestParam String placeOfBirth,
-            @RequestParam String cityOfResidence,
-            @RequestParam String address,
-            @RequestParam String homeNumber,
-            @RequestParam String phoneNumber,
-            @RequestParam String workPlace,
-            @RequestParam String position,
-            @RequestParam String registrationCity,
-            @RequestParam String registrationAddress,
-            @RequestParam String maritalStatus,
-            @RequestParam String nationality,
-            @RequestParam String disability,
-            @RequestParam String monthlyEarnings
+            @RequestParam("firstName") String firstName,
+            @RequestParam("lastName") String lastName,
+            @RequestParam("patronymic") String patronymic,
+            @RequestParam("dateOfBirth") String dateOfBirth,
+            @RequestParam("sex") String sex,
+            @RequestParam("passportSeries") String passportSeries,
+            @RequestParam("passportNumber") String passportNumber,
+            @RequestParam("issuedBy") String issuedBy,
+            @RequestParam("dateOfIssue") String dateOfIssue,
+            @RequestParam("identificationNumber") String identificationNumber,
+            @RequestParam("placeOfBirth") String placeOfBirth,
+            @RequestParam("cityOfResidence") String cityOfResidence,
+            @RequestParam("address") String address,
+            @RequestParam("homeNumber") String homeNumber,
+            @RequestParam("phoneNumber") String phoneNumber,
+            @RequestParam("workPlace") String workPlace,
+            @RequestParam("position") String position,
+            @RequestParam("registrationCity") String registrationCity,
+            @RequestParam("registrationAddress") String registrationAddress,
+            @RequestParam("maritalStatus") String maritalStatus,
+            @RequestParam("nationality") String nationality,
+            @RequestParam("disability") String disability,
+            @RequestParam("monthlyEarnings") String monthlyEarnings
     ) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errors = ControllerUtils.getErrors(bindingResult);
@@ -141,20 +145,20 @@ public class UserInfoController {
     @PostMapping("editUserInfo")
     public String updateUserInformation(
             @AuthenticationPrincipal User user,
-            @RequestParam String passportSeries,
-            @RequestParam String passportNumber,
-            @RequestParam String issuedBy,
-            @RequestParam String dateOfIssue,
-            @RequestParam String cityOfResidence,
-            @RequestParam String address,
-            @RequestParam String homeNumber,
-            @RequestParam String phoneNumber,
-            @RequestParam String workPlace,
-            @RequestParam String position,
-            @RequestParam String registrationCity,
-            @RequestParam String registrationAddress,
-            @RequestParam String maritalStatus,
-            @RequestParam String monthlyEarnings,
+            @RequestParam("passportSeries") String passportSeries,
+            @RequestParam("passportNumber") String passportNumber,
+            @RequestParam("issuedBy") String issuedBy,
+            @RequestParam("dateOfIssue") String dateOfIssue,
+            @RequestParam("cityOfResidence") String cityOfResidence,
+            @RequestParam("address") String address,
+            @RequestParam("homeNumber") String homeNumber,
+            @RequestParam("phoneNumber") String phoneNumber,
+            @RequestParam("workPlace") String workPlace,
+            @RequestParam("position") String position,
+            @RequestParam("registrationCity") String registrationCity,
+            @RequestParam("registrationAddress") String registrationAddress,
+            @RequestParam("maritalStatus") String maritalStatus,
+            @RequestParam("monthlyEarnings") String monthlyEarnings,
             UserInfo userInfo
     ) {
         userInfoService.updateUserInfo(user, userInfo, passportSeries, passportNumber, issuedBy, dateOfIssue, cityOfResidence,

@@ -192,7 +192,16 @@ public class BankCreditController {
             @AuthenticationPrincipal User user,
             BankCredit bankCredit
     ) {
+        BankAccount bankAccount = bankAccountRepo.getOne(user.getId());
         bankCredit = bankCreditRepo.getOne(user.getId());
+        UserInfo userInfo = userInfoRepo.getOne(user.getId());
+
+        model.addAttribute("firstName", userInfo.getFirstName());
+        model.addAttribute("lastName", userInfo.getLastName());
+        model.addAttribute("patronymic", userInfo.getPatronymic());
+
+        model.addAttribute("userAcc", bankAccount.getUserAccount());
+        model.addAttribute("userMoney", bankAccount.getUserMoney());
 
         model.addAttribute("credit", bankCredit.getCreditSum());
         model.addAttribute("paidOut", bankCredit.getPaidOut());
@@ -212,6 +221,14 @@ public class BankCreditController {
     ) {
         bankCredit = bankCreditRepo.getOne(user.getId());
         bankAccount = bankAccountRepo.getOne(user.getId());
+        UserInfo userInfo = userInfoRepo.getOne(user.getId());
+
+        model.addAttribute("firstName", userInfo.getFirstName());
+        model.addAttribute("lastName", userInfo.getLastName());
+        model.addAttribute("patronymic", userInfo.getPatronymic());
+
+        model.addAttribute("userAcc", bankAccount.getUserAccount());
+        model.addAttribute("userMoney", bankAccount.getUserMoney());
 
         model.addAttribute("credit", bankCredit.getCreditSum());
         model.addAttribute("paidOut", bankCredit.getPaidOut());
@@ -251,6 +268,6 @@ public class BankCreditController {
             return "payCredit";
         }
 
-        return "redirect:/user/credit";
+        return "redirect:/user/internetBanking";
     }
 }

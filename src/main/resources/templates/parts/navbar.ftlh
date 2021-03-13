@@ -1,37 +1,29 @@
 <#include "security.ftlh">
 <#import "login.ftlh" as l>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-    <a class="navbar-brand" href="/">
-        <img src="/img/StatusBankLogo.png" width="152" height="30" alt="">
+<nav class="container d-flex flex-column flex-md-row">
+    <a class="py-2 px-5 mx-3" href="#" aria-label="Product">
+        <img width="26" height="26" src="/img/logo.png">
     </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <#if isAdmin>
-                <li class="nav-item">
-                    <a class="nav-link" href="/main">List of ads</a>
-                </li>
-            </#if>
-            <li class="nav-item">
-                <#if !user?? || isAdmin><a class="nav-link disabled">Интернет банкинг</a><#else><a class="nav-link text-light" href="/user/internetBanking">Интернет банкинг</a></#if>
-            </li>
-            <li class="nav-item">
-                <#if !user??><a class="nav-link disabled">Профиль</a><#else><a class="nav-link text-light" href="/user/allUserInformation">Профиль</a></#if>
-            </li>
-            <#if isAdmin>
-                <li class="nav-item">
-                    <a class="nav-link" href="/user">User list</a>
-                </li>
-            </#if>
-            <li class="nav-item">
-                <a class="nav-link text-light" href="/bankInfo">О БАНКЕ</a>
-            </li>
+    <#if user??>
+        <a class="py-2 px-5 mx-3 d-none d-md-inline-block" href="#">Интернет банкинг</a>
+        <a class="py-2 d-none d-md-inline-block" href="#">Профиль</a>
+    <#else>
+        <a class="py-2 px-5 mx-3 d-none d-md-inline-block" href="/login">Интернет банкинг</a>
+        <a class="py-2 d-none d-md-inline-block" href="/login">Профиль</a>
+    </#if>
+    <a class="py-2 px-5 mx-3 d-none d-md-inline-block" href="#">О Банке</a>
+    <li class="nav-item dropdown d-none d-md-inline-block">
+        <a class="px-5 mx-4 nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Профиль
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
+            <li><a class="dropdown-item" href="#">Информация об аккаунте</a></li>
+            <li><a class="dropdown-item" href="#">Редактировать аккаунт</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <div class="px-1">
+                <@l.logout />
+            </div>
         </ul>
-        <div class="navbar-text mr-3">${name}</div>
-        <@l.logout />
-    </div>
+    </li>
 </nav>
