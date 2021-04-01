@@ -37,14 +37,14 @@ public class PaymentController {
 
     @GetMapping("paymentSystem")
     public String getPaymentSystem(Model model, UserInfo userInf, BankAccount bankAccount, @AuthenticationPrincipal User user) {
-        if(userInfoRepo.existsById(user.getId())) {
+        if (userInfoRepo.existsById(user.getId())) {
             userInf = userInfoRepo.getOne(user.getId());
             model.addAttribute("userFirstName", userInf.getFirstName());
         } else {
             model.addAttribute("userFirstName", null);
         }
 
-        if(bankAccountRepo.existsById(user.getId())) {
+        if (bankAccountRepo.existsById(user.getId())) {
             bankAccount = bankAccountRepo.getOne(user.getId());
             model.addAttribute("bankAccount", bankAccount.getUserAccount());
             model.addAttribute("userAccMoney", bankAccount.getUserMoney());
@@ -79,7 +79,7 @@ public class PaymentController {
     ) {
         UserInfo userInfo = userInfoRepo.getOne(user.getId());
 
-        if(Pattern.matches("^[-+]?[0-9]*[.,]?[0-9]+(?:[eE][-+]?[0-9]+)?$", money)) {
+        if (Pattern.matches("^[-+]?[0-9]*[.,]?[0-9]+(?:[eE][-+]?[0-9]+)?$", money)) {
             Double userMoney = Double.parseDouble(money);
 
             if (userMoney < 0 || (userMoney >= 0 && userMoney < 1) || userMoney > 10000) {
@@ -141,7 +141,7 @@ public class PaymentController {
     ) {
         bankAccount = bankAccountRepo.getOne(user.getId());
 
-        if(!Pattern.matches("^[-+]?[0-9]*[.,]?[0-9]+(?:[eE][-+]?[0-9]+)?$", money) || bankAccountRepo.findByUserAccount(bankAcc) == null) {
+        if (!Pattern.matches("^[-+]?[0-9]*[.,]?[0-9]+(?:[eE][-+]?[0-9]+)?$", money) || bankAccountRepo.findByUserAccount(bankAcc) == null) {
             bankAccount = bankAccountRepo.getOne(user.getId());
             UserInfo userInfo = userInfoRepo.getOne(user.getId());
 
@@ -152,21 +152,21 @@ public class PaymentController {
             model.addAttribute("BYN", bankAccount.getUserAccount());
             model.addAttribute("moneyBYN", bankAccount.getUserMoney());
 
-            if(bankAccountRepo.findByUserAccount(bankAcc) == null) {
+            if (bankAccountRepo.findByUserAccount(bankAcc) == null) {
                 model.addAttribute("userError", "Пользователь не найден");
                 model.addAttribute("recipient", null);
             } else {
                 model.addAttribute("recipient", bankAcc);
             }
 
-            if(!Pattern.matches("^[-+]?[0-9]*[.,]?[0-9]+(?:[eE][-+]?[0-9]+)?$", money)) {
+            if (!Pattern.matches("^[-+]?[0-9]*[.,]?[0-9]+(?:[eE][-+]?[0-9]+)?$", money)) {
                 model.addAttribute("moneyError", "Сумма перевода указана некорректно");
                 model.addAttribute("userMoney", null);
             } else {
                 Double userMoney = Double.parseDouble(money);
 
                 if (userMoney > bankAccount.getUserMoney() || (userMoney >= 0 && userMoney < 1) || userMoney < 0) {
-                    if(userMoney > bankAccount.getUserMoney()) {
+                    if (userMoney > bankAccount.getUserMoney()) {
                         model.addAttribute("moneyError", "На счету недостаточно средств");
                         model.addAttribute("userMoney", null);
                     } if(userMoney < 0) {
@@ -240,7 +240,7 @@ public class PaymentController {
         model.addAttribute("gas", gas);
         model.addAttribute("sum", sum);
 
-        if(bankAccount.getUserMoney() < sum) {
+        if (bankAccount.getUserMoney() < sum) {
             model.addAttribute("moneyError", "На счету недостаточно средств");
         } else {
             model.addAttribute("moneyError", null);
@@ -285,7 +285,7 @@ public class PaymentController {
         UserInfo userInfo = userInfoRepo.getOne(user.getId());
         bankAccount = bankAccountRepo.getOne(user.getId());
 
-        if(money == null || phone.equals("")) {
+        if (money == null || phone.equals("")) {
             model.addAttribute("firstName", userInfo.getFirstName());
             model.addAttribute("lastName", userInfo.getLastName());
             model.addAttribute("patronymic", userInfo.getPatronymic());
@@ -293,18 +293,18 @@ public class PaymentController {
             model.addAttribute("bankAcc", bankAccount.getUserAccount());
             model.addAttribute("bankMoney", bankAccount.getUserMoney());
 
-            if(money == null) {
+            if (money == null) {
                 model.addAttribute("moneyError", "Не указана сумма пополнения");
             }
 
-            if(phone.equals("")) {
+            if (phone.equals("")) {
                 model.addAttribute("phoneError", "Не указан номер телефона");
             }
 
             return "payMobile";
         }
 
-        if(money < 0 || (money > 0 && money < 1) || money > 100 || bankAccount.getUserMoney() < money || phone.equals("")) {
+        if (money < 0 || (money > 0 && money < 1) || money > 100 || bankAccount.getUserMoney() < money || phone.equals("")) {
             model.addAttribute("firstName", userInfo.getFirstName());
             model.addAttribute("lastName", userInfo.getLastName());
             model.addAttribute("patronymic", userInfo.getPatronymic());
@@ -312,23 +312,23 @@ public class PaymentController {
             model.addAttribute("bankAcc", bankAccount.getUserAccount());
             model.addAttribute("bankMoney", bankAccount.getUserMoney());
 
-            if(money < 0) {
+            if (money < 0) {
                 model.addAttribute("moneyError", "Сумма пополнения указана некорректно");
             }
 
-            if(money > 0 && money < 1) {
+            if (money > 0 && money < 1) {
                 model.addAttribute("moneyError", "Сумма пополнения должна превышать 1 рубль");
             }
 
-            if(money > 100) {
+            if (money > 100) {
                 model.addAttribute("moneyError", "Сумма пополнения не может превышать 100 рублей");
             }
 
-            if(bankAccount.getUserMoney() < money) {
+            if (bankAccount.getUserMoney() < money) {
                 model.addAttribute("moneyError", "Недостаточно средств");
             }
 
-            if(phone.equals("")) {
+            if (phone.equals("")) {
                 model.addAttribute("phoneError", "Не указан номер телефона");
             }
 

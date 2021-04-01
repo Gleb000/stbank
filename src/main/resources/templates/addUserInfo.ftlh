@@ -294,13 +294,25 @@
                 <div class="row">
                     <div class="col col-lg-6">
                         <div class="form-floating mb-1">
-                            <input type="text" name="homeNumber" placeholder="Дом. номер телефона в формате 123-45-67" class="form-control"
-                                   id="floatingHomeNumber"/>
+                            <input type="text" name="homeNumber" placeholder="Дом. номер телефона в формате 123-45-67"
+                                   class="form-control ${(homeNumberError??)?string('is-invalid', '')}"
+                                   id="floatingHomeNumber" value="<#if userInfo??>${userInfo.homeNumber}</#if>"/>
+                            <#if homeNumberError??>
+                                <div class="invalid-feedback">
+                                    ${homeNumberError}
+                                </div>
+                            </#if>
                             <label for="floatingHomeNumber">Дом. номер телефона в формате 123-45-67</label>
                         </div>
                         <div class="form-floating mb-1">
-                            <input type="text" name="phoneNumber" class="form-control"
-                                   id="floatingPhoneNumber" placeholder="Номер телефона в формате 29 123-45-67"/>
+                            <input type="text" name="phoneNumber" placeholder="Номер телефона в формате 29 123-45-67"
+                                   class="form-control ${(phoneNumberError??)?string('is-invalid', '')}"
+                                   id="floatingPhoneNumber" value="<#if userInfo??>${userInfo.phoneNumber}</#if>"/>
+                            <#if phoneNumberError??>
+                                <div class="invalid-feedback">
+                                    ${phoneNumberError}
+                                </div>
+                            </#if>
                             <label for="floatingPhoneNumber">Номер телефона в формате 29 123-45-67</label>
                         </div>
                         <div class="form-floating mb-1">

@@ -43,7 +43,7 @@ public class BankAccountController {
     public String getAccInfo(Model model, @AuthenticationPrincipal User user) {
         model.addAttribute("username", user.getUsername());
 
-        if(bankCreditRepo.existsById(user.getId())) {
+        if (bankCreditRepo.existsById(user.getId())) {
             BankCredit bankCredit = bankCreditRepo.getOne(user.getId());
 
             model.addAttribute("creditSum", bankCredit.getCreditSum());
@@ -52,7 +52,7 @@ public class BankAccountController {
             model.addAttribute("creditSum", null);
         }
 
-        if(piggiBankRepo.existsById(user.getId())) {
+        if (piggiBankRepo.existsById(user.getId())) {
             PiggiBank piggiBank = piggiBankRepo.getOne(user.getId());
 
             model.addAttribute("piggiName", piggiBank.getPiggiBankName());
@@ -61,7 +61,7 @@ public class BankAccountController {
             model.addAttribute("piggiName", null);
         }
 
-        if(userInfoRepo.existsById(user.getId())) {
+        if (userInfoRepo.existsById(user.getId())) {
             UserInfo userInfo = userInfoRepo.getOne(user.getId());
 
             model.addAttribute("firstName", userInfo.getFirstName());
@@ -71,7 +71,7 @@ public class BankAccountController {
             model.addAttribute("firstName", null);
         }
 
-        if(bankAccountRepo.existsById(user.getId())) {
+        if (bankAccountRepo.existsById(user.getId())) {
             BankAccount bankAccount = bankAccountRepo.getOne(user.getId());
 
             model.addAttribute("userBankAcc", bankAccount.getUserAccount());
@@ -80,7 +80,7 @@ public class BankAccountController {
             model.addAttribute("userBankAcc", null);
         }
 
-        if(bankAccountUSDRepo.existsById(user.getId())) {
+        if (bankAccountUSDRepo.existsById(user.getId())) {
             BankAccountUSD bankAccountUSD = bankAccountUSDRepo.getOne(user.getId());
             model.addAttribute("bankAccountUSD", bankAccountUSD.getUserAccountUSD());
             model.addAttribute("userAccMoneyUSD", bankAccountUSD.getUserMoneyUSD());
@@ -88,7 +88,7 @@ public class BankAccountController {
             model.addAttribute("bankAccountUSD", null);
         }
 
-        if(bankAccountEURRepo.existsById(user.getId())) {
+        if (bankAccountEURRepo.existsById(user.getId())) {
             BankAccountEUR bankAccountEUR = bankAccountEURRepo.getOne(user.getId());
             model.addAttribute("bankAccountEUR", bankAccountEUR.getUserAccountEUR());
             model.addAttribute("userAccMoneyEUR", bankAccountEUR.getUserMoneyEUR());
@@ -169,11 +169,11 @@ public class BankAccountController {
         model.addAttribute("BYN", bankAccount.getUserAccount());
         model.addAttribute("moneyBYN", bankAccount.getUserMoney());
 
-        if(Pattern.matches("^[-+]?[0-9]*[.,]?[0-9]+(?:[eE][-+]?[0-9]+)?$", money)) {
+        if (Pattern.matches("^[-+]?[0-9]*[.,]?[0-9]+(?:[eE][-+]?[0-9]+)?$", money)) {
             Double userMoney = Double.parseDouble(money);
 
-            if(userMoney <= 0 || bankAccount.getUserMoney() < userMoney) {
-                if(userMoney <= 0) {
+            if (userMoney <= 0 || bankAccount.getUserMoney() < userMoney) {
+                if (userMoney <= 0) {
                     model.addAttribute("moneyError", "Сумма пополнения меньше нуля");
                 }
 
@@ -217,11 +217,11 @@ public class BankAccountController {
         model.addAttribute("BYN", bankAccount.getUserAccount());
         model.addAttribute("moneyBYN", bankAccount.getUserMoney());
 
-        if(Pattern.matches("^[-+]?[0-9]*[.,]?[0-9]+(?:[eE][-+]?[0-9]+)?$", money)) {
+        if (Pattern.matches("^[-+]?[0-9]*[.,]?[0-9]+(?:[eE][-+]?[0-9]+)?$", money)) {
             Double userMoney = Double.parseDouble(money);
 
-            if(userMoney <= 0 || bankAccount.getUserMoney() < userMoney) {
-                if(userMoney <= 0) {
+            if (userMoney <= 0 || bankAccount.getUserMoney() < userMoney) {
+                if (userMoney <= 0) {
                     model.addAttribute("moneyError", "Сумма пополнения меньше нуля");
                 }
 
@@ -265,11 +265,11 @@ public class BankAccountController {
         model.addAttribute("USD", bankAccountUSD.getUserAccountUSD());
         model.addAttribute("moneyUSD", bankAccountUSD.getUserMoneyUSD());
 
-        if(Pattern.matches("^[-+]?[0-9]*[.,]?[0-9]+(?:[eE][-+]?[0-9]+)?$", money)) {
+        if (Pattern.matches("^[-+]?[0-9]*[.,]?[0-9]+(?:[eE][-+]?[0-9]+)?$", money)) {
             Double userMoney = Double.parseDouble(money);
 
-            if(userMoney <= 0 || bankAccountUSD.getUserMoneyUSD() < userMoney) {
-                if(userMoney <= 0) {
+            if (userMoney <= 0 || bankAccountUSD.getUserMoneyUSD() < userMoney) {
+                if (userMoney <= 0) {
                     model.addAttribute("moneyError", "Сумма пополнения меньше нуля");
                 }
 
@@ -313,11 +313,11 @@ public class BankAccountController {
         model.addAttribute("EUR", bankAccountEUR.getUserAccountEUR());
         model.addAttribute("moneyEUR", bankAccountEUR.getUserMoneyEUR());
 
-        if(Pattern.matches("^[-+]?[0-9]*[.,]?[0-9]+(?:[eE][-+]?[0-9]+)?$", money)) {
+        if (Pattern.matches("^[-+]?[0-9]*[.,]?[0-9]+(?:[eE][-+]?[0-9]+)?$", money)) {
             Double userMoney = Double.parseDouble(money);
 
-            if(userMoney <= 0 || bankAccountEUR.getUserMoneyEUR() < userMoney) {
-                if(userMoney <= 0) {
+            if (userMoney <= 0 || bankAccountEUR.getUserMoneyEUR() < userMoney) {
+                if (userMoney <= 0) {
                     model.addAttribute("moneyError", "Некорректная сумма пополнения");
                 }
 

@@ -3,11 +3,13 @@ package by.pogoretskaya.stbank.service;
 import by.pogoretskaya.stbank.domain.User;
 import by.pogoretskaya.stbank.domain.UserInfo;
 import by.pogoretskaya.stbank.repos.UserInfoRepo;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserInfoService {
+    private static final Logger logger = Logger.getLogger(UserInfoService.class);
 
     @Autowired
     UserInfoRepo userInfoRepo;
@@ -35,11 +37,13 @@ public class UserInfoService {
         userInf.setCityOfResidence(cityOfResidence);
         userInf.setAddress(address);
         userInf.setHomeNumber(homeNumber);
-        if(phoneNumber.equals("")) {
+
+        if (phoneNumber.equals("")) {
             userInf.setPhoneNumber(phoneNumber);
         } else {
             userInf.setPhoneNumber("+375 " + phoneNumber);
         }
+
         userInf.setWorkPlace(workPlace);
         userInf.setPosition(position);
         userInf.setRegistrationCity(registrationCity);
@@ -51,6 +55,8 @@ public class UserInfoService {
 
 
         userInfoRepo.save(userInf);
+
+        logger.info("Записаны личные данные о пользователе " + user.getUsername());
     }
 
     public void updateUserInfo(User user, UserInfo userInf, String passportSeries, String passportNumber,
@@ -66,11 +72,13 @@ public class UserInfoService {
         userInf.setCityOfResidence(cityOfResidence);
         userInf.setAddress(address);
         userInf.setHomeNumber(homeNumber);
-        if(phoneNumber.equals("")) {
+
+        if (phoneNumber.equals("")) {
             userInf.setPhoneNumber(phoneNumber);
         } else {
             userInf.setPhoneNumber("+375 " + phoneNumber);
         }
+
         userInf.setWorkPlace(workPlace);
         userInf.setPosition(position);
         userInf.setRegistrationCity(registrationCity);
@@ -79,5 +87,7 @@ public class UserInfoService {
         userInf.setMonthlyEarnings(monthlyEarnings);
 
         userInfoRepo.save(userInf);
+
+        logger.info("Обновлены личные данные пользователя " + user.getUsername());
     }
 }

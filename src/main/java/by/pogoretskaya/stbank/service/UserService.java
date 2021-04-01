@@ -2,6 +2,7 @@ package by.pogoretskaya.stbank.service;
 
 import by.pogoretskaya.stbank.domain.*;
 import by.pogoretskaya.stbank.repos.*;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserService implements UserDetailsService {
+    private static final Logger logger = Logger.getLogger(UserService.class);
 
     @Autowired
     private BankAccountEURRepo bankAccountEURRepo;
@@ -74,6 +76,8 @@ public class UserService implements UserDetailsService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         userRepo.save(user);
+
+        logger.info("Создан пользователь: " + user.getUsername());
 
         //sendMessage(user);
 
@@ -135,6 +139,8 @@ public class UserService implements UserDetailsService {
         }
 
         userRepo.save(user);
+
+        logger.info("Обновлены данные аккаунта у пользователя: " + user.getUsername());
 
         /*if (isEmailChanged) {
             sendMessage(user);

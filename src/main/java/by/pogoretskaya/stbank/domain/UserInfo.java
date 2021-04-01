@@ -1,9 +1,10 @@
 package by.pogoretskaya.stbank.domain;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Past;
-import javax.validation.constraints.PastOrPresent;
+import javax.validation.constraints.Pattern;
 
 @Entity
 @Table(name="usr_info")
@@ -11,25 +12,25 @@ public class UserInfo {
     @Id
     private Long id;
 
-    @NotBlank(message = "Необходимо ввести Имя")
+    //@NotBlank(message = "Необходимо ввести Имя")
+    @Pattern(regexp = "\\A[А-Я]([а-я]+)\\Z", message = "Имя должно быть в формате Xxxxx")
     private String firstName;
-    @NotBlank(message = "Необходимо ввести Фамилию")
+    @Pattern(regexp = "\\A[А-Я]([а-я]+)\\Z", message = "Фамилия должна быть в формате Xxxxx")
     private String lastName;
-    @NotBlank(message = "Необходимо ввести Отчество")
+    @Pattern(regexp = "\\A[А-Я]([а-я]+)\\Z", message = "Отчество должно быть в формате Xxxxx")
     private String patronymic;
     @NotBlank(message = "Необходимо ввести дату рождения")
     private String dateOfBirth;
-    @NotBlank(message = "Необходимо выбрать ваш пол")
     private String sex;
-    @NotBlank(message = "Необходимо ввести серию паспорта")
+    @Pattern(regexp = "\\A[ABHKMPSD][BMHPC]\\Z", message = "Серия паспорта должна быть в формате XY (AB, MP, PP ...)")
     private String passportSeries;
-    @NotBlank(message = "Необходимо ввести номер паспорта")
+    @Pattern(regexp = "\\A([0-9]{7})\\Z", message = "Номер паспорта должен содержать 7 цифровых символов")
     private String passportNumber;
     @NotBlank(message = "Необходимо ввести кем выдан ваш паспорт")
     private String issuedBy;
     @NotBlank(message = "Необходимо ввести дату выдачи паспорта")
     private String dateOfIssue;
-    @NotBlank(message = "Необходимо ввести идентификационный номер")
+    @Pattern(regexp = "\\A[1-6]([0-9]{6})[ABCHKEM]([0-9]{3})[PB][ABI][0-9]\\Z", message = "Идент. номер должен быть в формате 1234567A123AA1")
     private String identificationNumber;
     @NotBlank(message = "Необходимо ввести место рождения")
     private String placeOfBirth;

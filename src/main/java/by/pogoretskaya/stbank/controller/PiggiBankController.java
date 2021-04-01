@@ -50,7 +50,7 @@ public class PiggiBankController {
         model.addAttribute("userAcc", bankAccount.getUserAccount());
         model.addAttribute("userMoney", bankAccount.getUserMoney());
 
-        if(piggiBankRepo.existsById(user.getId())) {
+        if (piggiBankRepo.existsById(user.getId())) {
             PiggiBank piggiBank = piggiBankRepo.getOne(user.getId());
 
             model.addAttribute("piggiBank", piggiBank.getPiggiBankName());
@@ -65,7 +65,7 @@ public class PiggiBankController {
 
     @GetMapping("addPiggiBank")
     public String getPigBank(Model model, @AuthenticationPrincipal User user) {
-        if(userInfoRepo.existsById(user.getId())) {
+        if (userInfoRepo.existsById(user.getId())) {
             UserInfo userInfo = userInfoRepo.getOne(user.getId());
 
             model.addAttribute("firstName", userInfo.getFirstName());
@@ -73,7 +73,7 @@ public class PiggiBankController {
             model.addAttribute("firstName", null);
         }
 
-        if(bankAccountRepo.existsById(user.getId())) {
+        if (bankAccountRepo.existsById(user.getId())) {
             BankAccount bankAccount = bankAccountRepo.getOne(user.getId());
 
             model.addAttribute("userBankAcc", bankAccount.getUserAccount());
@@ -102,19 +102,23 @@ public class PiggiBankController {
     ) {
         UserInfo userInfo = userInfoRepo.getOne(user.getId());
 
+        BankAccount bankAccount = bankAccountRepo.getOne(user.getId());
+
+        model.addAttribute("userBankAcc", bankAccount.getUserAccount());
+
         model.addAttribute("firstName", userInfo.getFirstName());
         model.addAttribute("lastName", userInfo.getLastName());
         model.addAttribute("patronymic", userInfo.getPatronymic());
 
         Map<String, String> errors = ControllerUtils.getErrors(bindingResult);
 
-        if(!Pattern.matches("^[-+]?[0-9]*[.,]?[0-9]+(?:[eE][-+]?[0-9]+)?$", money) || bindingResult.hasErrors()) {
-            if(!Pattern.matches("^[-+]?[0-9]*[.,]?[0-9]+(?:[eE][-+]?[0-9]+)?$", money)) {
+        if (!Pattern.matches("^[-+]?[0-9]*[.,]?[0-9]+(?:[eE][-+]?[0-9]+)?$", money) || bindingResult.hasErrors()) {
+            if (!Pattern.matches("^[-+]?[0-9]*[.,]?[0-9]+(?:[eE][-+]?[0-9]+)?$", money)) {
                 model.addAttribute("moneyError", "Некорректная сумма накопления");
             } else {
                 Double userMoney = Double.parseDouble(money);
 
-                if(userMoney < 0 || (userMoney > 0 && userMoney < 30) || userMoney > 10000) {
+                if (userMoney < 0 || (userMoney > 0 && userMoney < 30) || userMoney > 10000) {
                     model.addAttribute("currentMoney", null);
 
                     if (userMoney < 0) {
@@ -133,7 +137,7 @@ public class PiggiBankController {
                 }
             }
 
-            if(bindingResult.hasErrors()) {
+            if (bindingResult.hasErrors()) {
                 model.mergeAttributes(errors);
             }
 
@@ -147,7 +151,7 @@ public class PiggiBankController {
                     model.mergeAttributes(errors);
                 }
 
-                if(userMoney < 0 || (userMoney > 0 && userMoney < 30) || userMoney > 10000) {
+                if (userMoney < 0 || (userMoney > 0 && userMoney < 30) || userMoney > 10000) {
                     model.addAttribute("currentMoney", null);
 
                     if (userMoney < 0) {
@@ -191,6 +195,12 @@ public class PiggiBankController {
         model.addAttribute("piggiBankMoney", piggiBank.getPiggiBankMoney());
         model.addAttribute("date", piggiBank.getTargetDate());
         model.addAttribute("money", piggiBank.getTargetMoney());
+
+        if (piggiBank.getPiggiBankMoney().equals(piggiBank.getTargetMoney())) {
+            model.addAttribute("isFull", "full");
+        } else {
+            model.addAttribute("isFull", null);
+        }
 
         return "piggiBankInfo";
     }
@@ -238,23 +248,23 @@ public class PiggiBankController {
         model.addAttribute("date", piggiBank.getTargetDate());
         model.addAttribute("money", piggiBank.getTargetMoney());
 
-        if(Pattern.matches("^[-+]?[0-9]*[.,]?[0-9]+(?:[eE][-+]?[0-9]+)?$", money)) {
+        if (Pattern.matches("^[-+]?[0-9]*[.,]?[0-9]+(?:[eE][-+]?[0-9]+)?$", money)) {
             Double userMoney = Double.parseDouble(money);
 
-            if(userMoney < 0 || (userMoney >= 0 && userMoney < 1) || userMoney > piggiBank.getTargetMoney() - piggiBank.getPiggiBankMoney() || bankAccount.getUserMoney() < userMoney) {
-                if(userMoney < 0) {
+            if (userMoney < 0 || (userMoney >= 0 && userMoney < 1) || userMoney > piggiBank.getTargetMoney() - piggiBank.getPiggiBankMoney() || bankAccount.getUserMoney() < userMoney) {
+                if (userMoney < 0) {
                     model.addAttribute("moneyError", "Сумма пополнения меньше нуля");
                 }
 
-                if(userMoney >= 0 && userMoney < 1) {
+                if (userMoney >= 0 && userMoney < 1) {
                     model.addAttribute("moneyError", "Сумма пополнения должна превышать 1 рубль");
                 }
 
-                if(userMoney > piggiBank.getTargetMoney() - piggiBank.getPiggiBankMoney()) {
+                if (userMoney > piggiBank.getTargetMoney() - piggiBank.getPiggiBankMoney()) {
                     model.addAttribute("moneyError", "Нельзя накопить сумму, выше поставленной цели");
                 }
 
-                if(bankAccount.getUserMoney() < userMoney) {
+                if (bankAccount.getUserMoney() < userMoney) {
                     model.addAttribute("moneyError", "Недостаточно средств");
                 }
 

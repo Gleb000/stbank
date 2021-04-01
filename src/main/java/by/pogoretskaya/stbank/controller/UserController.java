@@ -87,14 +87,14 @@ public class UserController {
         model.addAttribute("userName", user.getUsername());
         model.addAttribute("gmail", user.getEmail());
 
-        if(userInfoRepo.existsById(user.getId())) {
+        if (userInfoRepo.existsById(user.getId())) {
             userInf = userInfoRepo.getOne(user.getId());
             model.addAttribute("userFirstName", userInf.getFirstName());
         } else {
             model.addAttribute("userFirstName", null);
         }
 
-        if(bankAccountRepo.existsById(user.getId())) {
+        if (bankAccountRepo.existsById(user.getId())) {
             bankAccount = bankAccountRepo.getOne(user.getId());
             model.addAttribute("bankAccount", bankAccount.getUserAccount());
         } else {

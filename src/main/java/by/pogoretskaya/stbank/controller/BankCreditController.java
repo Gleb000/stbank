@@ -47,7 +47,7 @@ public class BankCreditController {
             UserInfo userInfo,
             BankAccount bankAccount
     ) {
-        if(userInfoRepo.existsById(user.getId())) {
+        if (userInfoRepo.existsById(user.getId())) {
             userInfo = userInfoRepo.getOne(user.getId());
             model.addAttribute("userFirstName", userInfo.getFirstName());
             model.addAttribute("userLastName", userInfo.getLastName());
@@ -56,14 +56,14 @@ public class BankCreditController {
             model.addAttribute("userFirstName", null);
         }
 
-        if(bankAccountRepo.existsById(user.getId())) {
+        if (bankAccountRepo.existsById(user.getId())) {
             bankAccount = bankAccountRepo.getOne(user.getId());
             model.addAttribute("bankAccount", bankAccount.getUserAccount());
         } else {
             model.addAttribute("bankAccount", null);
         }
 
-        if(bankCreditRepo.existsById(user.getId())) {
+        if (bankCreditRepo.existsById(user.getId())) {
             bankCredit = bankCreditRepo.getOne(user.getId());
             model.addAttribute("creditSum", bankCredit.getCreditSum());
         } else {
@@ -108,20 +108,20 @@ public class BankCreditController {
         model.addAttribute("patronymic", userInfo.getPatronymic());
         model.addAttribute("bankAccount", bankAccount.getUserAccount());
 
-        if(Pattern.matches("^[-+]?[0-9]*[.,]?[0-9]+(?:[eE][-+]?[0-9]+)?$", money)) {
+        if (Pattern.matches("^[-+]?[0-9]*[.,]?[0-9]+(?:[eE][-+]?[0-9]+)?$", money)) {
             Double userMoney = Double.parseDouble(money);
 
-            if(userMoney < 0 || (userMoney > 0 && userMoney < 100) || userMoney > 5000) {
+            if (userMoney < 0 || (userMoney > 0 && userMoney < 100) || userMoney > 5000) {
 
-                if(userMoney < 0) {
+                if (userMoney < 0) {
                     model.addAttribute("moneyError", "Сумма кредита меньше нуля");
                 }
 
-                if(userMoney > 0 && userMoney < 100) {
+                if (userMoney > 0 && userMoney < 100) {
                     model.addAttribute("moneyError", "Взятие кредита на сумму менее 100 рублей невозможно");
                 }
 
-                if(userMoney > 5000) {
+                if (userMoney > 5000) {
                     model.addAttribute("moneyError", "Взятие кредита на сумму более 5000 рублей невозможно");
                 }
 
@@ -156,32 +156,6 @@ public class BankCreditController {
         model.addAttribute("patronymic", userInfo.getPatronymic());
         model.addAttribute("bankAccount", bankAccount.getUserAccount());
         model.addAttribute("userMoney", bankAccount.getUserMoney());
-
-        double percent = (double)((100/bankCredit.getCreditSum()) * bankCredit.getPaidOut());
-
-        if(percent > 0 && percent <= 20) {
-            model.addAttribute("percent20", percent);
-        } else {
-            model.addAttribute("percent20", null);
-        }
-
-        if(percent > 20 && percent <= 40) {
-            model.addAttribute("percent40", percent);
-        } else {
-            model.addAttribute("percent40", null);
-        }
-
-        if(percent > 40 && percent <= 60) {
-            model.addAttribute("percent60", percent);
-        } else {
-            model.addAttribute("percent60", null);
-        }
-
-        if(percent > 60 && percent <= 100) {
-            model.addAttribute("percent80", percent);
-        } else {
-            model.addAttribute("percent80", null);
-        }
 
         return "creditInfo";
     }
@@ -238,23 +212,23 @@ public class BankCreditController {
         if(Pattern.matches("^[-+]?[0-9]*[.,]?[0-9]+(?:[eE][-+]?[0-9]+)?$", money)) {
             Double userMoney = Double.parseDouble(money);
 
-            if(userMoney < 0 || (userMoney > 0 && userMoney < 1) || userMoney > (bankCredit.getCreditSum() - bankCredit.getPaidOut()) || userMoney > bankAccount.getUserMoney()) {
+            if (userMoney < 0 || (userMoney > 0 && userMoney < 1) || userMoney > (bankCredit.getCreditSum() - bankCredit.getPaidOut()) || userMoney > bankAccount.getUserMoney()) {
                 model.addAttribute("credit", bankCredit.getCreditSum());
                 model.addAttribute("paidOut", bankCredit.getPaidOut());
 
-                if(userMoney < 0) {
+                if (userMoney < 0) {
                     model.addAttribute("moneyError", "Сумма погашения меньше нуля");
                 }
 
-                if(userMoney > 0 && userMoney < 1) {
+                if (userMoney > 0 && userMoney < 1) {
                     model.addAttribute("moneyError", "Сумма погашения должна превышать 1 рубль");
                 }
 
-                if(userMoney > (bankCredit.getCreditSum() - bankCredit.getPaidOut())) {
+                if (userMoney > (bankCredit.getCreditSum() - bankCredit.getPaidOut())) {
                     model.addAttribute("moneyError", "Сумма погашения меньше введенной вами суммы");
                 }
 
-                if(userMoney > bankAccount.getUserMoney()) {
+                if (userMoney > bankAccount.getUserMoney()) {
                     model.addAttribute("moneyError", "Недостаточно средств");
                 }
 

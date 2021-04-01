@@ -72,34 +72,49 @@
                                     ${passwordError}
                                 </div>
                                 <#else>
-                                    <#if numberError??>
-                                        <div class="invalid-feedback">
-                                            &horbar; ${numberError}
-                                        </div>
-                                    </#if>
-                                    <#if symbolError??>
-                                        <div class="invalid-feedback">
-                                            &horbar; ${symbolError}
-                                        </div>
-                                    </#if>
-                                    <#if symbol2Error??>
-                                        <div class="invalid-feedback">
-                                            &horbar; ${symbol2Error}
-                                        </div>
-                                    </#if>
-                                    <#if specSymbolError??>
-                                        <div class="invalid-feedback">
-                                            &horbar; ${specSymbolError}
-                                        </div>
-                                    </#if>
-                                    <#if spaceError??>
-                                        <div class="invalid-feedback">
-                                            &horbar; ${spaceError}
-                                        </div>
-                                    </#if>
-                                    <#if toSmallError??>
-                                        <div class="invalid-feedback">
-                                            &horbar; ${toSmallError}
+                                    <#if numberError?? || symbolError?? || symbol2Error?? || specSymbolError?? || spaceError?? || toSmallError??>
+                                        <div class="accordion accordion-flush" id="accordionFlushExample">
+                                            <div class="accordion-item">
+                                                <h2 class="accordion-header" id="flush-headingOne">
+                                                    <button class="accordion-button collapsed text-danger" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                                                        Ошибки
+                                                    </button>
+                                                </h2>
+                                                <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                                                    <div class="accordion-body">
+                                                        <#if numberError??>
+                                                            <div class="text-danger">
+                                                                &horbar; ${numberError}
+                                                            </div>
+                                                        </#if>
+                                                        <#if symbolError??>
+                                                            <div class="text-danger">
+                                                                &horbar; ${symbolError}
+                                                            </div>
+                                                        </#if>
+                                                        <#if symbol2Error??>
+                                                            <div class="text-danger">
+                                                                &horbar; ${symbol2Error}
+                                                            </div>
+                                                        </#if>
+                                                        <#if specSymbolError??>
+                                                            <div class="text-danger">
+                                                                &horbar; ${specSymbolError}
+                                                            </div>
+                                                        </#if>
+                                                        <#if spaceError??>
+                                                            <div class="text-danger">
+                                                                &horbar; ${spaceError}
+                                                            </div>
+                                                        </#if>
+                                                        <#if toSmallError??>
+                                                            <div class="text-danger">
+                                                                &horbar; ${toSmallError}
+                                                            </div>
+                                                        </#if>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </#if>
                             </#if>

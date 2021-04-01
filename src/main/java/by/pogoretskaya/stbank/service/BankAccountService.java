@@ -7,11 +7,13 @@ import by.pogoretskaya.stbank.domain.User;
 import by.pogoretskaya.stbank.repos.BankAccountEURRepo;
 import by.pogoretskaya.stbank.repos.BankAccountRepo;
 import by.pogoretskaya.stbank.repos.BankAccountUSDRepo;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class BankAccountService {
+    private static final Logger logger = Logger.getLogger(BankAccountService.class);
 
     @Autowired
     BankAccountRepo bankAccountRepo;
@@ -28,7 +30,8 @@ public class BankAccountService {
         StringBuilder account = new StringBuilder("BY22BYN");
         String randString;
         int randNumbers;
-        for(int i = 0; i < 5; i++) {
+
+        for (int i = 0; i < 5; i++) {
             randNumbers = (int)(Math.random()*(9999-1000) + 1000);
             randString = Integer.toString(randNumbers);
 
@@ -39,6 +42,8 @@ public class BankAccountService {
         bankAccount.setUserMoney(0.0);
 
         bankAccountRepo.save(bankAccount);
+
+        logger.info("Открыт счет в валюте BYN на пользователя: " + user.getUsername());
     }
 
     public void addUserAccUSD(User user, BankAccountUSD bankAccountUSD) {
@@ -47,7 +52,8 @@ public class BankAccountService {
         StringBuilder account = new StringBuilder("BY33USD");
         String randString;
         int randNumbers;
-        for(int i = 0; i < 5; i++) {
+
+        for (int i = 0; i < 5; i++) {
             randNumbers = (int)(Math.random()*(9999-1000) + 1000);
             randString = Integer.toString(randNumbers);
 
@@ -58,6 +64,8 @@ public class BankAccountService {
         bankAccountUSD.setUserMoneyUSD(0.0);
 
         bankAccountUSDRepo.save(bankAccountUSD);
+
+        logger.info("Открыт счет в валюте USD на пользователя: " + user.getUsername());
     }
 
     public void addUserAccEUR(User user, BankAccountEUR bankAccountEUR) {
@@ -66,7 +74,8 @@ public class BankAccountService {
         StringBuilder account = new StringBuilder("BY44EUR");
         String randString;
         int randNumbers;
-        for(int i = 0; i < 5; i++) {
+
+        for (int i = 0; i < 5; i++) {
             randNumbers = (int)(Math.random()*(9999-1000) + 1000);
             randString = Integer.toString(randNumbers);
 
@@ -77,15 +86,19 @@ public class BankAccountService {
         bankAccountEUR.setUserMoneyEUR(0.0);
 
         bankAccountEURRepo.save(bankAccountEUR);
+
+        logger.info("Открыт счет в валюте EUR на пользователя: " + user.getUsername());
     }
 
     public void convertBYNtoUSD(User user, BankAccount bankAccount, BankAccountUSD bankAccountUSD, Double money) {
         bankAccount = bankAccountRepo.getOne(user.getId());
         bankAccountUSD = bankAccountUSDRepo.getOne(user.getId());
 
-        if(money > 0 && (bankAccount.getUserMoney() - money) >= 0) {
+        if (money > 0 && (bankAccount.getUserMoney() - money) >= 0) {
             bankAccount.setUserMoney(bankAccount.getUserMoney() - money);
             bankAccountUSD.setUserMoneyUSD(bankAccountUSD.getUserMoneyUSD() + money/2);
+
+            logger.info("Конвертация пользователем: " + user.getUsername() + ", " + money + " BYN в USD");
         }
 
         bankAccountRepo.save(bankAccount);
@@ -96,9 +109,11 @@ public class BankAccountService {
         bankAccount = bankAccountRepo.getOne(user.getId());
         bankAccountEUR = bankAccountEURRepo.getOne(user.getId());
 
-        if(money > 0 && (bankAccount.getUserMoney() - money) >= 0) {
+        if (money > 0 && (bankAccount.getUserMoney() - money) >= 0) {
             bankAccount.setUserMoney(bankAccount.getUserMoney() - money);
             bankAccountEUR.setUserMoneyEUR(bankAccountEUR.getUserMoneyEUR() + money/3);
+
+            logger.info("Конвертация пользователем: " + user.getUsername() + ", " + money + " BYN в EUR");
         }
 
         bankAccountRepo.save(bankAccount);
@@ -109,9 +124,11 @@ public class BankAccountService {
         bankAccount = bankAccountRepo.getOne(user.getId());
         bankAccountUSD = bankAccountUSDRepo.getOne(user.getId());
 
-        if(money > 0 && (bankAccountUSD.getUserMoneyUSD() - money) >= 0) {
+        if (money > 0 && (bankAccountUSD.getUserMoneyUSD() - money) >= 0) {
             bankAccountUSD.setUserMoneyUSD(bankAccountUSD.getUserMoneyUSD() - money);
             bankAccount.setUserMoney(bankAccount.getUserMoney() + money*2);
+
+            logger.info("Конвертация пользователем: " + user.getUsername() + ", " + money + " USD в BYN");
         }
 
         bankAccountUSDRepo.save(bankAccountUSD);
@@ -122,9 +139,11 @@ public class BankAccountService {
         bankAccount = bankAccountRepo.getOne(user.getId());
         bankAccountEUR = bankAccountEURRepo.getOne(user.getId());
 
-        if(money > 0 && (bankAccountEUR.getUserMoneyEUR() - money) >= 0) {
+        if (money > 0 && (bankAccountEUR.getUserMoneyEUR() - money) >= 0) {
             bankAccountEUR.setUserMoneyEUR(bankAccountEUR.getUserMoneyEUR() - money);
             bankAccount.setUserMoney(bankAccount.getUserMoney() + money*3);
+
+            logger.info("Конвертация пользователем: " + user.getUsername() + ", " + money + " EUR в BYN");
         }
 
         bankAccountEURRepo.save(bankAccountEUR);

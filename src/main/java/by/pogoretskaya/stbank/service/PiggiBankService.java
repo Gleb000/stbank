@@ -6,11 +6,13 @@ import by.pogoretskaya.stbank.domain.User;
 import by.pogoretskaya.stbank.domain.UserInfo;
 import by.pogoretskaya.stbank.repos.BankAccountRepo;
 import by.pogoretskaya.stbank.repos.PiggiBankRepo;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class PiggiBankService {
+    private static final Logger logger = Logger.getLogger(PiggiBankService.class);
 
     @Autowired
     BankAccountRepo bankAccountRepo;
@@ -36,11 +38,15 @@ public class PiggiBankService {
 
         bankAccountRepo.save(bankAccount);
         piggiBankRepo.save(piggiBank);
+
+        logger.info("Списаны средства: " + money + " BYN, Со счета пользователя: " + user.getUsername());
     }
 
     public void crashPiggi(User user, BankAccount bankAccount, PiggiBank piggiBank) {
         bankAccount.setUserMoney(bankAccount.getUserMoney() + piggiBank.getPiggiBankMoney());
 
         piggiBankRepo.delete(piggiBank);
+
+        logger.info("На счет пользователя: " + user.getUsername() + ", Зачислено: " + piggiBank.getPiggiBankMoney() + " BYN");
     }
 }

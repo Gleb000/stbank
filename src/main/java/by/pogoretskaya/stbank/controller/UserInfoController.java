@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 @Controller
 @RequestMapping("/user")
@@ -29,7 +30,7 @@ public class UserInfoController {
 
     @GetMapping("userInfo")
     public String getUserInfo(Model model, @AuthenticationPrincipal User user) {
-        if(userInfoRepo.existsById(user.getId())) {
+        if (userInfoRepo.existsById(user.getId())) {
             UserInfo userInf = userInfoRepo.getOne(user.getId());
 
             model.addAttribute("username", user.getUsername());
@@ -100,11 +101,26 @@ public class UserInfoController {
             @RequestParam("disability") String disability,
             @RequestParam("monthlyEarnings") String monthlyEarnings
     ) {
-        if (bindingResult.hasErrors()) {
-            Map<String, String> errors = ControllerUtils.getErrors(bindingResult);
-
+        if (bindingResult.hasErrors()/* || (!homeNumber.equals("")) || (!phoneNumber.equals(""))*/) {
             model.addAttribute("username", user.getUsername());
-            model.mergeAttributes(errors);
+
+            if (bindingResult.hasErrors()) {
+                Map<String, String> errors = ControllerUtils.getErrors(bindingResult);
+
+                model.mergeAttributes(errors);
+            }
+
+            /*if (!homeNumber.equals("")) {
+                if (!Pattern.matches("\\A([0-9]{3})[-]([0-9]{2})[-]([0-9]{2})\\Z", homeNumber)) {
+                    model.addAttribute("homeNumberError", "Дом. номер телефона должен быть в формате 123-45-67");
+                }
+            }
+
+            if (!phoneNumber.equals("")) {
+                if (!Pattern.matches("\\A[234][9345]\\s([0-9]{3})[-]([0-9]{2})[-]([0-9]{2})\\Z", phoneNumber)) {
+                    model.addAttribute("phoneNumberError", "мобильный номер телефона должен быть в формате 29 123-45-67");
+                }
+            }*/
 
             return "addUserInfo";
         }

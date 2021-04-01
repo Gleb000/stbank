@@ -85,7 +85,9 @@
                     <div class="col-sm">
                     </div>
                     <div class="col col-lg-6">
-                        <a class="btn btn-outline-success" href="/user/topUpPiggiBank">Пополнить &raquo;</a>
+                        <#if !isFull??>
+                            <a class="btn btn-outline-success" href="/user/topUpPiggiBank">Пополнить &raquo;</a>
+                        </#if>
                         <a class="btn btn-outline-success" href="/user/crashPiggiBank">Разбить &times;</a>
                         <a class="btn btn-success" href="/user/internetBanking">На главную &curvearrowleft;</a>
                         <hr class="featurette-divider">
