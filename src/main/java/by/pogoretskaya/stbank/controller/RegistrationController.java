@@ -1,9 +1,8 @@
 package by.pogoretskaya.stbank.controller;
 
 import by.pogoretskaya.stbank.domain.User;
-import by.pogoretskaya.stbank.domain.dto.CaptchaResponseDto;
 import by.pogoretskaya.stbank.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,25 +12,20 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.client.RestTemplate;
 
 import javax.validation.Valid;
-import java.util.Collections;
 import java.util.Map;
 import java.util.regex.Pattern;
 
 @Controller
+@RequiredArgsConstructor
 public class RegistrationController {
     private final static String CAPTCHA_URL = "https://www.google.com/recaptcha/api/siteverify?secret=%s&response=%s";
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
     @Value("${recaptcha.secret}")
     private String secret;
-
-    @Autowired
-    private RestTemplate restTemplate;
 
     @GetMapping("/registration")
     public String registration() {

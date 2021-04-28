@@ -3,3 +3,13 @@
 2021-04-01 16:14:10 INFO  Application:16 - Веб-сервис СтатусБанк выключен
 2021-04-01 16:49:49 INFO  BankAccountService:66 - Открыт счет в валюте USD на пользователя: Gleb
 2021-04-01 16:50:13 INFO  BankAccountService:98 - Конвертация пользователем: Gleb, 1000.0 BYN в USD
+2021-04-27 12:54:55 INFO  UserService:69 - Создан пользователь: Gleb
+2021-04-27 12:56:57 INFO  UserInfoService:59 - Записаны личные данные о пользователе Gleb
+2021-04-27 12:57:10 INFO  BankAccountService:42 - Открыт счет в валюте BYN на пользователя: Gleb
+2021-04-27 12:57:29 INFO  BankAccountService:64 - Открыт счет в валюте USD на пользователя: Gleb
+2021-04-27 16:16:31 INFO  BankAccountService:86 - Открыт счет в валюте EUR на пользователя: Gleb
+2021-04-27 16:26:24 INFO  PaymentService:25 - На счет пользователя: Gleb, Зачислено: 4000.0 BYN
+2021-04-27 16:26:38 INFO  BankAccountService:99 - Конвертация пользователем: Gleb, 2600.0 BYN в USD
+2021-04-27 16:27:11 INFO  BankAccountService:129 - Конвертация пользователем: Gleb, 1015.03 USD в BYN
+2021-04-27 16:27:30 INFO  BankAccountService:114 - Конвертация пользователем: Gleb, 2000.0 BYN в EUR
+2021-04-27 16:27:37 INFO  BankAccountService:99 - Конвертация пользователем: Gleb, 1500.0 BYN в USD

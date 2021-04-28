@@ -8,7 +8,7 @@ import by.pogoretskaya.stbank.repos.BankAccountRepo;
 import by.pogoretskaya.stbank.repos.PiggiBankRepo;
 import by.pogoretskaya.stbank.repos.UserInfoRepo;
 import by.pogoretskaya.stbank.service.PiggiBankService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,20 +23,14 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/user")
 public class PiggiBankController {
 
-    @Autowired
-    UserInfoRepo userInfoRepo;
-
-    @Autowired
-    BankAccountRepo bankAccountRepo;
-
-    @Autowired
-    PiggiBankRepo piggiBankRepo;
-
-    @Autowired
-    PiggiBankService piggiBankService;
+    private final UserInfoRepo userInfoRepo;
+    private final BankAccountRepo bankAccountRepo;
+    private final PiggiBankRepo piggiBankRepo;
+    private final PiggiBankService piggiBankService;
 
     @GetMapping("piggiBank")
     public String getPiggiBank(Model model, @AuthenticationPrincipal User user) {

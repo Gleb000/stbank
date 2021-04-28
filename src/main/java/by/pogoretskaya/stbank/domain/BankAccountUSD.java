@@ -1,9 +1,12 @@
 package by.pogoretskaya.stbank.domain;
 
+import lombok.Data;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
+@Data
 public class BankAccountUSD {
 
     @Id
@@ -12,7 +15,7 @@ public class BankAccountUSD {
     private String userAccountUSD;
     private Double userMoneyUSD;
 
-    public Long getId() {
+    /*public Long getId() {
         return id;
     }
 
@@ -34,5 +37,5 @@ public class BankAccountUSD {
 
     public void setUserMoneyUSD(Double userMoneyUSD) {
         this.userMoneyUSD = userMoneyUSD;
-    }
+    }*/
 }

@@ -68,6 +68,7 @@
                             <div class="card-body">
                                 <h6>Счет: <label class="text-success">${EUR}</label></h6>
                                 <h6>Сумма на счету: <label class="text-success">${moneyEUR}</label></h6>
+                                <h6>Курс: 1 EUR = <label class="text-success">${EURRate} BYN</label></h6>
                             </div>
                         </div>
                         <div class="form-floating mb-1 py-2">

@@ -7,22 +7,20 @@ import by.pogoretskaya.stbank.domain.User;
 import by.pogoretskaya.stbank.repos.BankAccountEURRepo;
 import by.pogoretskaya.stbank.repos.BankAccountRepo;
 import by.pogoretskaya.stbank.repos.BankAccountUSDRepo;
+import by.pogoretskaya.stbank.util.NationalBankCourceApi;
+import lombok.RequiredArgsConstructor;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class BankAccountService {
     private static final Logger logger = Logger.getLogger(BankAccountService.class);
 
-    @Autowired
-    BankAccountRepo bankAccountRepo;
-
-    @Autowired
-    BankAccountUSDRepo bankAccountUSDRepo;
-
-    @Autowired
-    BankAccountEURRepo bankAccountEURRepo;
+    private final NationalBankCourceApi nationalBankCourceApi;
+    private final BankAccountRepo bankAccountRepo;
+    private final BankAccountUSDRepo bankAccountUSDRepo;
+    private final BankAccountEURRepo bankAccountEURRepo;
 
     public void addUserAcc(User user, BankAccount bankAccount) {
         bankAccount.setId(user.getId());
@@ -96,7 +94,7 @@ public class BankAccountService {
 
         if (money > 0 && (bankAccount.getUserMoney() - money) >= 0) {
             bankAccount.setUserMoney(bankAccount.getUserMoney() - money);
-            bankAccountUSD.setUserMoneyUSD(bankAccountUSD.getUserMoneyUSD() + money/2);
+            bankAccountUSD.setUserMoneyUSD(bankAccountUSD.getUserMoneyUSD() + money/nationalBankCourceApi.getUSDOfficialRate());
 
             logger.info("Конвертация пользователем: " + user.getUsername() + ", " + money + " BYN в USD");
         }
@@ -111,7 +109,7 @@ public class BankAccountService {
 
         if (money > 0 && (bankAccount.getUserMoney() - money) >= 0) {
             bankAccount.setUserMoney(bankAccount.getUserMoney() - money);
-            bankAccountEUR.setUserMoneyEUR(bankAccountEUR.getUserMoneyEUR() + money/3);
+            bankAccountEUR.setUserMoneyEUR(bankAccountEUR.getUserMoneyEUR() + money/nationalBankCourceApi.getEUROfficialRate());
 
             logger.info("Конвертация пользователем: " + user.getUsername() + ", " + money + " BYN в EUR");
         }
@@ -126,7 +124,7 @@ public class BankAccountService {
 
         if (money > 0 && (bankAccountUSD.getUserMoneyUSD() - money) >= 0) {
             bankAccountUSD.setUserMoneyUSD(bankAccountUSD.getUserMoneyUSD() - money);
-            bankAccount.setUserMoney(bankAccount.getUserMoney() + money*2);
+            bankAccount.setUserMoney(bankAccount.getUserMoney() + money * nationalBankCourceApi.getUSDOfficialRate());
 
             logger.info("Конвертация пользователем: " + user.getUsername() + ", " + money + " USD в BYN");
         }
@@ -141,7 +139,7 @@ public class BankAccountService {
 
         if (money > 0 && (bankAccountEUR.getUserMoneyEUR() - money) >= 0) {
             bankAccountEUR.setUserMoneyEUR(bankAccountEUR.getUserMoneyEUR() - money);
-            bankAccount.setUserMoney(bankAccount.getUserMoney() + money*3);
+            bankAccount.setUserMoney(bankAccount.getUserMoney() + money * nationalBankCourceApi.getEUROfficialRate());
 
             logger.info("Конвертация пользователем: " + user.getUsername() + ", " + money + " EUR в BYN");
         }

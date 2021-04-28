@@ -60,7 +60,36 @@
             </button>
         </div>
 
-        <div class="container marketing">
+        <div class="container marketing py-4">
+            <div class="row">
+                <div class="col col-lg-3">
+                    <h4>Курсы валют:</h4>
+                </div>
+                <div class="col col-lg-1">
+                    <img width="55" height="32" src="/img/USDRate.png">
+                </div>
+                <div class="col col-lg-2">
+                    <h5>1 USD</h5>
+                    <h5>${USDRate} BYN</h5>
+                </div>
+                <div class="col col-lg-1">
+                    <img width="55" height="32" src="/img/EURRate.png">
+                </div>
+                <div class="col col-lg-2">
+                    <h5>1 EUR</h5>
+                    <h5>${EURRate} BYN</h5>
+                </div>
+                <div class="col col-lg-1">
+                    <img width="55" height="32" src="/img/RUBRate.png">
+                </div>
+                <div class="col col-lg-2">
+                    <h5>100 RUB</h5>
+                    <h5>${RUBRate} BYN</h5>
+                </div>
+            </div>
+
+            <hr class="featurette-divider">
+
             <div class="row">
                 <div class="col-lg-4">
                     <img width="300" height="300" src="/img/money.png">

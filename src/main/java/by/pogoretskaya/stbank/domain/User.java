@@ -1,6 +1,6 @@
 package by.pogoretskaya.stbank.domain;
 
-import by.pogoretskaya.stbank.repos.UserInfoRepo;
+import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -11,6 +11,7 @@ import java.util.Collection;
 import java.util.Set;
 
 @Entity
+@Data
 @Table(name = "usr")
 public class User implements UserDetails {
     @Id
@@ -36,7 +37,7 @@ public class User implements UserDetails {
         return roles.contains(Role.ADMIN);
     }
 
-    public Long getId() {
+    /*public Long getId() {
         return id;
     }
 
@@ -46,7 +47,7 @@ public class User implements UserDetails {
 
     public String getUsername() {
         return username;
-    }
+    }*/
 
     @Override
     public boolean isAccountNonExpired() {
@@ -68,15 +69,18 @@ public class User implements UserDetails {
         return isActive();
     }
 
+    /*
     public void setUsername(String username) {
         this.username = username;
     }
+    */
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return getRoles();
     }
 
+    /*
     public String getPassword() {
         return password;
     }
@@ -115,5 +119,5 @@ public class User implements UserDetails {
 
     public void setActivationCode(String activationCode) {
         this.activationCode = activationCode;
-    }
+    }*/
 }

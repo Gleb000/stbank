@@ -9,7 +9,7 @@ import by.pogoretskaya.stbank.repos.BankCreditRepo;
 import by.pogoretskaya.stbank.repos.UserInfoRepo;
 import by.pogoretskaya.stbank.repos.UserRepo;
 import by.pogoretskaya.stbank.service.BankCreditService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,23 +21,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.regex.Pattern;
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/user")
 public class BankCreditController {
 
-    @Autowired
-    UserRepo userRepo;
-
-    @Autowired
-    BankCreditRepo bankCreditRepo;
-
-    @Autowired
-    UserInfoRepo userInfoRepo;
-
-    @Autowired
-    BankAccountRepo bankAccountRepo;
-
-    @Autowired
-    BankCreditService bankCreditService;
+    private final UserRepo userRepo;
+    private final BankCreditRepo bankCreditRepo;
+    private final UserInfoRepo userInfoRepo;
+    private final BankAccountRepo bankAccountRepo;
+    private final BankCreditService bankCreditService;
 
     @GetMapping("credit")
     public String getCredit(

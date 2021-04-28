@@ -1,13 +1,10 @@
 package by.pogoretskaya.stbank.controller;
 
-import by.pogoretskaya.stbank.domain.BankAccount;
 import by.pogoretskaya.stbank.domain.Message;
 import by.pogoretskaya.stbank.domain.User;
-import by.pogoretskaya.stbank.domain.UserInfo;
-import by.pogoretskaya.stbank.repos.BankAccountRepo;
 import by.pogoretskaya.stbank.repos.MessageRepo;
-import by.pogoretskaya.stbank.repos.UserInfoRepo;
-import org.springframework.beans.factory.annotation.Autowired;
+import by.pogoretskaya.stbank.util.NationalBankCourceApi;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -25,21 +22,21 @@ import java.util.Map;
 import java.util.UUID;
 
 @Controller
+@RequiredArgsConstructor
 public class MainController {
-    @Autowired
-    private MessageRepo messageRepo;
 
-    @Autowired
-    private BankAccountRepo bankAccountRepo;
-
-    @Autowired
-    private UserInfoRepo userInfoRepo;
+    private final NationalBankCourceApi nationalBankCourceApi;
+    private final MessageRepo messageRepo;
 
     @Value("${upload.path}")
     private String uploadPath;
 
     @GetMapping("/")
     public String greeting(Model model) {
+        model.addAttribute("USDRate", nationalBankCourceApi.getUSDOfficialRate());
+        model.addAttribute("EURRate", nationalBankCourceApi.getEUROfficialRate());
+        model.addAttribute("RUBRate", nationalBankCourceApi.getRUBOfficialRate());
+
         return "greeting";
     }
 

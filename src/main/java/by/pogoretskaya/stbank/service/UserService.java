@@ -1,9 +1,10 @@
 package by.pogoretskaya.stbank.service;
 
-import by.pogoretskaya.stbank.domain.*;
+import by.pogoretskaya.stbank.domain.Role;
+import by.pogoretskaya.stbank.domain.User;
 import by.pogoretskaya.stbank.repos.*;
+import lombok.RequiredArgsConstructor;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -15,29 +16,17 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class UserService implements UserDetailsService {
     private static final Logger logger = Logger.getLogger(UserService.class);
 
-    @Autowired
-    private BankAccountEURRepo bankAccountEURRepo;
-
-    @Autowired
-    private BankAccountUSDRepo bankAccountUSDRepo;
-
-    @Autowired
-    private BankAccountRepo bankAccountRepo;
-
-    @Autowired
-    private UserInfoRepo userInfoRepo;
-
-    @Autowired
-    private UserRepo userRepo;
-
-    @Autowired
-    private MailSender mailSender;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final BankAccountEURRepo bankAccountEURRepo;
+    private final BankAccountUSDRepo bankAccountUSDRepo;
+    private final BankAccountRepo bankAccountRepo;
+    private final UserInfoRepo userInfoRepo;
+    private final UserRepo userRepo;
+    private final MailSender mailSender;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

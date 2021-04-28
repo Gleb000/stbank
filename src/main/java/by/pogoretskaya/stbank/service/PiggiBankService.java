@@ -3,22 +3,19 @@ package by.pogoretskaya.stbank.service;
 import by.pogoretskaya.stbank.domain.BankAccount;
 import by.pogoretskaya.stbank.domain.PiggiBank;
 import by.pogoretskaya.stbank.domain.User;
-import by.pogoretskaya.stbank.domain.UserInfo;
 import by.pogoretskaya.stbank.repos.BankAccountRepo;
 import by.pogoretskaya.stbank.repos.PiggiBankRepo;
+import lombok.RequiredArgsConstructor;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class PiggiBankService {
     private static final Logger logger = Logger.getLogger(PiggiBankService.class);
 
-    @Autowired
-    BankAccountRepo bankAccountRepo;
-
-    @Autowired
-    PiggiBankRepo piggiBankRepo;
+    private final BankAccountRepo bankAccountRepo;
+    private final PiggiBankRepo piggiBankRepo;
 
     public void addPiggiBank(User user, PiggiBank piggiBank, String piggiName, String date, Double targetMoney) {
         piggiBank.setId(user.getId());

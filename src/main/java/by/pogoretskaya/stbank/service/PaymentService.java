@@ -3,16 +3,16 @@ package by.pogoretskaya.stbank.service;
 import by.pogoretskaya.stbank.domain.BankAccount;
 import by.pogoretskaya.stbank.domain.User;
 import by.pogoretskaya.stbank.repos.BankAccountRepo;
+import lombok.RequiredArgsConstructor;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class PaymentService {
     private static final Logger logger = Logger.getLogger(PaymentService.class);
 
-    @Autowired
-    BankAccountRepo bankAccountRepo;
+    private final BankAccountRepo bankAccountRepo;
 
     public void updRefillInfo(User user, BankAccount bankAccount, Double money) {
         bankAccount = bankAccountRepo.getOne(user.getId());

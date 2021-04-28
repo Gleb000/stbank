@@ -3,7 +3,8 @@ package by.pogoretskaya.stbank.controller;
 import by.pogoretskaya.stbank.domain.*;
 import by.pogoretskaya.stbank.repos.*;
 import by.pogoretskaya.stbank.service.BankAccountService;
-import org.springframework.beans.factory.annotation.Autowired;
+import by.pogoretskaya.stbank.util.NationalBankCourceApi;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,29 +16,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.regex.Pattern;
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/user")
 public class BankAccountController {
 
-    @Autowired
-    BankAccountService bankAccountService;
-
-    @Autowired
-    UserInfoRepo userInfoRepo;
-
-    @Autowired
-    BankAccountRepo bankAccountRepo;
-
-    @Autowired
-    BankAccountUSDRepo bankAccountUSDRepo;
-
-    @Autowired
-    BankAccountEURRepo bankAccountEURRepo;
-
-    @Autowired
-    BankCreditRepo bankCreditRepo;
-
-    @Autowired
-    PiggiBankRepo piggiBankRepo;
+    private final BankAccountService bankAccountService;
+    private final UserInfoRepo userInfoRepo;
+    private final BankAccountRepo bankAccountRepo;
+    private final BankAccountUSDRepo bankAccountUSDRepo;
+    private final BankAccountEURRepo bankAccountEURRepo;
+    private final BankCreditRepo bankCreditRepo;
+    private final PiggiBankRepo piggiBankRepo;
+    private final NationalBankCourceApi nationalBankCourceApi;
 
     @GetMapping("internetBanking")
     public String getAccInfo(Model model, @AuthenticationPrincipal User user) {
@@ -152,6 +142,7 @@ public class BankAccountController {
 
         model.addAttribute("BYN", bankAccount.getUserAccount());
         model.addAttribute("moneyBYN", bankAccount.getUserMoney());
+        model.addAttribute("USDRate", nationalBankCourceApi.getUSDOfficialRate());
 
         return "BYNtoUSD";
     }
@@ -168,6 +159,7 @@ public class BankAccountController {
 
         model.addAttribute("BYN", bankAccount.getUserAccount());
         model.addAttribute("moneyBYN", bankAccount.getUserMoney());
+        model.addAttribute("USDRate", nationalBankCourceApi.getUSDOfficialRate());
 
         if (Pattern.matches("^[-+]?[0-9]*[.,]?[0-9]+(?:[eE][-+]?[0-9]+)?$", money)) {
             Double userMoney = Double.parseDouble(money);
@@ -200,6 +192,7 @@ public class BankAccountController {
 
         model.addAttribute("BYN", bankAccount.getUserAccount());
         model.addAttribute("moneyBYN", bankAccount.getUserMoney());
+        model.addAttribute("EURRate", nationalBankCourceApi.getEUROfficialRate());
 
         return "BYNtoEUR";
     }
@@ -216,6 +209,7 @@ public class BankAccountController {
 
         model.addAttribute("BYN", bankAccount.getUserAccount());
         model.addAttribute("moneyBYN", bankAccount.getUserMoney());
+        model.addAttribute("EURRate", nationalBankCourceApi.getEUROfficialRate());
 
         if (Pattern.matches("^[-+]?[0-9]*[.,]?[0-9]+(?:[eE][-+]?[0-9]+)?$", money)) {
             Double userMoney = Double.parseDouble(money);
@@ -248,6 +242,7 @@ public class BankAccountController {
 
         model.addAttribute("USD", bankAccountUSD.getUserAccountUSD());
         model.addAttribute("moneyUSD", bankAccountUSD.getUserMoneyUSD());
+        model.addAttribute("USDRate", nationalBankCourceApi.getUSDOfficialRate());
 
         return "USDtoBYN";
     }
@@ -264,6 +259,7 @@ public class BankAccountController {
 
         model.addAttribute("USD", bankAccountUSD.getUserAccountUSD());
         model.addAttribute("moneyUSD", bankAccountUSD.getUserMoneyUSD());
+        model.addAttribute("USDRate", nationalBankCourceApi.getUSDOfficialRate());
 
         if (Pattern.matches("^[-+]?[0-9]*[.,]?[0-9]+(?:[eE][-+]?[0-9]+)?$", money)) {
             Double userMoney = Double.parseDouble(money);
@@ -296,6 +292,7 @@ public class BankAccountController {
 
         model.addAttribute("EUR", bankAccountEUR.getUserAccountEUR());
         model.addAttribute("moneyEUR", bankAccountEUR.getUserMoneyEUR());
+        model.addAttribute("EURRate", nationalBankCourceApi.getEUROfficialRate());
 
         return "EURtoBYN";
     }
@@ -312,6 +309,7 @@ public class BankAccountController {
 
         model.addAttribute("EUR", bankAccountEUR.getUserAccountEUR());
         model.addAttribute("moneyEUR", bankAccountEUR.getUserMoneyEUR());
+        model.addAttribute("EURRate", nationalBankCourceApi.getEUROfficialRate());
 
         if (Pattern.matches("^[-+]?[0-9]*[.,]?[0-9]+(?:[eE][-+]?[0-9]+)?$", money)) {
             Double userMoney = Double.parseDouble(money);

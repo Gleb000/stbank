@@ -4,7 +4,7 @@ import by.pogoretskaya.stbank.domain.User;
 import by.pogoretskaya.stbank.domain.UserInfo;
 import by.pogoretskaya.stbank.repos.UserInfoRepo;
 import by.pogoretskaya.stbank.service.UserInfoService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,17 +16,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/user")
 public class UserInfoController {
 
-    @Autowired
-    UserInfoService userInfoService;
-
-    @Autowired
-    UserInfoRepo userInfoRepo;
+    private final UserInfoService userInfoService;
+    private final UserInfoRepo userInfoRepo;
 
     @GetMapping("userInfo")
     public String getUserInfo(Model model, @AuthenticationPrincipal User user) {
@@ -101,7 +98,7 @@ public class UserInfoController {
             @RequestParam("disability") String disability,
             @RequestParam("monthlyEarnings") String monthlyEarnings
     ) {
-        if (bindingResult.hasErrors()/* || (!homeNumber.equals("")) || (!phoneNumber.equals(""))*/) {
+        if (bindingResult.hasErrors()) {
             model.addAttribute("username", user.getUsername());
 
             if (bindingResult.hasErrors()) {
@@ -109,18 +106,6 @@ public class UserInfoController {
 
                 model.mergeAttributes(errors);
             }
-
-            /*if (!homeNumber.equals("")) {
-                if (!Pattern.matches("\\A([0-9]{3})[-]([0-9]{2})[-]([0-9]{2})\\Z", homeNumber)) {
-                    model.addAttribute("homeNumberError", "Дом. номер телефона должен быть в формате 123-45-67");
-                }
-            }
-
-            if (!phoneNumber.equals("")) {
-                if (!Pattern.matches("\\A[234][9345]\\s([0-9]{3})[-]([0-9]{2})[-]([0-9]{2})\\Z", phoneNumber)) {
-                    model.addAttribute("phoneNumberError", "мобильный номер телефона должен быть в формате 29 123-45-67");
-                }
-            }*/
 
             return "addUserInfo";
         }
@@ -161,6 +146,9 @@ public class UserInfoController {
     @PostMapping("editUserInfo")
     public String updateUserInformation(
             @AuthenticationPrincipal User user,
+            @Valid UserInfo userInf,
+            BindingResult bindingResult,
+            Model model,
             @RequestParam("passportSeries") String passportSeries,
             @RequestParam("passportNumber") String passportNumber,
             @RequestParam("issuedBy") String issuedBy,
@@ -177,6 +165,18 @@ public class UserInfoController {
             @RequestParam("monthlyEarnings") String monthlyEarnings,
             UserInfo userInfo
     ) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("username", user.getUsername());
+
+            if (bindingResult.hasErrors()) {
+                Map<String, String> errors = ControllerUtils.getErrors(bindingResult);
+
+                model.mergeAttributes(errors);
+            }
+
+            return "editUserInfo";
+        }
+
         userInfoService.updateUserInfo(user, userInfo, passportSeries, passportNumber, issuedBy, dateOfIssue, cityOfResidence,
                 address, homeNumber, phoneNumber, workPlace, position, registrationCity, registrationAddress,
                 maritalStatus, monthlyEarnings);

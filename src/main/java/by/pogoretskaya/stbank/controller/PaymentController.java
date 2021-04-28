@@ -6,7 +6,7 @@ import by.pogoretskaya.stbank.domain.UserInfo;
 import by.pogoretskaya.stbank.repos.BankAccountRepo;
 import by.pogoretskaya.stbank.repos.UserInfoRepo;
 import by.pogoretskaya.stbank.service.PaymentService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,17 +18,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.regex.Pattern;
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/user")
 public class PaymentController {
 
-    @Autowired
-    UserInfoRepo userInfoRepo;
-
-    @Autowired
-    BankAccountRepo bankAccountRepo;
-
-    @Autowired
-    PaymentService paymentService;
+    private final UserInfoRepo userInfoRepo;
+    private final BankAccountRepo bankAccountRepo;
+    private final PaymentService paymentService;
 
     Double water;
     Double electr;

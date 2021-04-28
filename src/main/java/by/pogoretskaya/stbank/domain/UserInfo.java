@@ -1,5 +1,7 @@
 package by.pogoretskaya.stbank.domain;
 
+import lombok.Data;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -7,12 +9,12 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 @Entity
+@Data
 @Table(name="usr_info")
 public class UserInfo {
     @Id
     private Long id;
 
-    //@NotBlank(message = "Необходимо ввести Имя")
     @Pattern(regexp = "\\A[А-Я]([а-я]+)\\Z", message = "Имя должно быть в формате Xxxxx")
     private String firstName;
     @Pattern(regexp = "\\A[А-Я]([а-я]+)\\Z", message = "Фамилия должна быть в формате Xxxxx")
@@ -54,7 +56,7 @@ public class UserInfo {
     private String disability;
     private String monthlyEarnings;
 
-    public Long getId() {
+    /*public Long getId() {
         return id;
     }
 
@@ -244,5 +246,5 @@ public class UserInfo {
 
     public void setMonthlyEarnings(String monthlyEarnings) {
         this.monthlyEarnings = monthlyEarnings;
-    }
+    }*/
 }

@@ -1,9 +1,12 @@
 package by.pogoretskaya.stbank.domain;
 
+import lombok.Data;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
+@Data
 public class BankCredit {
 
     @Id
@@ -12,7 +15,7 @@ public class BankCredit {
     private Double creditSum;
     private Double paidOut;
 
-    public Long getId() {
+    /*public Long getId() {
         return id;
     }
 
@@ -34,5 +37,5 @@ public class BankCredit {
 
     public void setPaidOut(Double paidOut) {
         this.paidOut = paidOut;
-    }
+    }*/
 }

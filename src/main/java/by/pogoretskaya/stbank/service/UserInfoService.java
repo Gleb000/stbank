@@ -3,16 +3,16 @@ package by.pogoretskaya.stbank.service;
 import by.pogoretskaya.stbank.domain.User;
 import by.pogoretskaya.stbank.domain.UserInfo;
 import by.pogoretskaya.stbank.repos.UserInfoRepo;
+import lombok.RequiredArgsConstructor;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class UserInfoService {
     private static final Logger logger = Logger.getLogger(UserInfoService.class);
 
-    @Autowired
-    UserInfoRepo userInfoRepo;
+    private final UserInfoRepo userInfoRepo;
 
     public void addUserInfo(User user, UserInfo userInf, String firstName, String lastName, String patronymic,
                             String dateOfBirth, String sex, String passportSeries, String passportNumber,

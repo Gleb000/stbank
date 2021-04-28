@@ -1,12 +1,13 @@
 package by.pogoretskaya.stbank.controller;
 
-import by.pogoretskaya.stbank.domain.*;
+import by.pogoretskaya.stbank.domain.BankAccount;
+import by.pogoretskaya.stbank.domain.Role;
+import by.pogoretskaya.stbank.domain.User;
+import by.pogoretskaya.stbank.domain.UserInfo;
 import by.pogoretskaya.stbank.repos.BankAccountRepo;
-import by.pogoretskaya.stbank.repos.BankAccountEURRepo;
-import by.pogoretskaya.stbank.repos.BankAccountUSDRepo;
 import by.pogoretskaya.stbank.repos.UserInfoRepo;
 import by.pogoretskaya.stbank.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -16,23 +17,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/user")
 public class UserController {
 
-    @Autowired
-    private BankAccountUSDRepo bankAccountUSDRepo;
-
-    @Autowired
-    private BankAccountEURRepo bankAccountEURRepo;
-
-    @Autowired
-    private BankAccountRepo bankAccountRepo;
-
-    @Autowired
-    private UserInfoRepo userInfoRepo;
-
-    @Autowired
-    private UserService userService;
+    private final BankAccountRepo bankAccountRepo;
+    private final UserInfoRepo userInfoRepo;
+    private final UserService userService;
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping

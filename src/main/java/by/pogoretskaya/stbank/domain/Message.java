@@ -1,11 +1,17 @@
 package by.pogoretskaya.stbank.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
 @Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Message {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
@@ -23,7 +29,7 @@ public class Message {
 
     private String filename;
 
-    public Message() {
+    /*public Message() {
     }
 
     public Message(String text, String tag, User user) {
@@ -74,5 +80,5 @@ public class Message {
 
     public void setFilename(String filename) {
         this.filename = filename;
-    }
+    }*/
 }
