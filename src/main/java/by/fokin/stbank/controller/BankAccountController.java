@@ -2,8 +2,6 @@ package by.fokin.stbank.controller;
 
 import by.fokin.stbank.domain.*;
 import by.fokin.stbank.repos.*;
-import by.pogoretskaya.stbank.domain.*;
-import by.pogoretskaya.stbank.repos.*;
 import by.fokin.stbank.service.BankAccountService;
 import by.fokin.stbank.util.NationalBankCourceApi;
 import lombok.RequiredArgsConstructor;

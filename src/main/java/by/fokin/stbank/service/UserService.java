@@ -3,7 +3,6 @@ package by.fokin.stbank.service;
 import by.fokin.stbank.domain.Role;
 import by.fokin.stbank.domain.User;
 import by.fokin.stbank.repos.*;
-import by.pogoretskaya.stbank.repos.*;
 import lombok.RequiredArgsConstructor;
 import org.apache.log4j.Logger;
 import org.springframework.security.core.userdetails.UserDetails;
