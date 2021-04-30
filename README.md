@@ -18,3 +18,20 @@
 - Версия Maven - 4.0.0
 # Заметки:
 Для отображения статических файлов необходимо создать папку uploads в корне проекта и загрузить туда необходимые изображения.
+# Небольшая иллюстрация веб-сервиса:
+- Главная страница:
+![alt tag](https://github.com/Gleb000/images/raw/main/stbankFirst.png)
+
+![alt tag](https://github.com/Gleb000/images/raw/main/stbankSecond.png)
+
+
+- Страница регистрации:
+![alt tag](https://github.com/Gleb000/images/raw/main/stbankThird.png)
+
+
+- Страница интернет банкинга:
+![alt tag](https://github.com/Gleb000/images/raw/main/stbankFifth.png)
+
+
+- Страница конвертации валюты:
+![alt tag](https://github.com/Gleb000/images/raw/main/stbankSixth.png)
