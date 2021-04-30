@@ -22,6 +22,7 @@
 - Главная страница:
 ![alt tag](https://github.com/Gleb000/images/raw/main/stbankFirst.png)
 
+- Продолжение главной страницы:
 ![alt tag](https://github.com/Gleb000/images/raw/main/stbankSecond.png)
 
 
